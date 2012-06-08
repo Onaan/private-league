@@ -5,13 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import de.draigon.waw.R;
-import de.draigon.waw.menues.SetServerDataMenu;
 
 import static de.draigon.waw.utils.PrefConstants.*;
 
@@ -71,9 +67,7 @@ public class StartActivity extends Activity {
         final Intent intent = new Intent(this, TeamBetActivity.class);
         startActivity(intent);
     }
-
-
-    @Override
+    /*   @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         final MenuInflater blowUp = getMenuInflater();
         blowUp.inflate(R.menu.server_location, menu);
@@ -93,7 +87,7 @@ public class StartActivity extends Activity {
                 throw new IllegalArgumentException(item.getItemId() + "");
         }
         return true;
-    }
+    }*/
 
 
 }

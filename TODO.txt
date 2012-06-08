@@ -1,0 +1,13 @@
+* Fehlermeldung bei falschem logon (Overlay benutzer/pw unbekannt)
+* mehrere accounts auf einem gerate
+* anzeige der Tips anderer Spieler
+* spieltagauswahl scrollt nicht mit
+* icon
+* sondertip senden/anzeigen
+* updatebenachrichtigung
+* anzeigen ob tip erfolgreich
+* kein internet abfangen
+* anzeigen ergebnis/tendenz/sieger
+* upload nur bei noch nicht gestarteten spielen erlauben
+* refresh-knoepfe einbauen
+* login not case sensitive

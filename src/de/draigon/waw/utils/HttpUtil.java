@@ -41,7 +41,7 @@ public class HttpUtil {
         final HttpPost post = new HttpPost(uri);
         String document = null;
         try {
-            final UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "ISO8859_1");         //
+            final UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "ISO8859_1");
             post.setEntity(entity);
             final HttpResponse response = client.execute(post);
             document = EntityUtils.toString(response.getEntity());
@@ -117,12 +117,12 @@ public class HttpUtil {
             teams[i] = playerNodes.item(i).getAttributes().getNamedItem("name").getTextContent();
 
         }
-        final TeamBet tbd = new TeamBet();
+        final TeamBet teamBet = new TeamBet();
         Arrays.sort(teams);
-        tbd.setChoices(teams);
-        tbd.setBettable(isTeamBettable(xml));
-        tbd.setSelected("");
-        return tbd;
+        teamBet.setChoices(teams);
+        teamBet.setBettable(isTeamBettable(xml));
+        teamBet.setSelected("");
+        return teamBet;
 
     }
 

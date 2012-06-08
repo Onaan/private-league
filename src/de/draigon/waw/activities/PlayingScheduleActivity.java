@@ -6,9 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ScrollView;
-import de.draigon.waw.R;
 import de.draigon.waw.data.MatchDay;
 import de.draigon.waw.layouts.MatchDayLayout;
 import de.draigon.waw.layouts.MatchLayout;
@@ -24,17 +22,18 @@ import static de.draigon.waw.utils.PrefConstants.*;
 public class PlayingScheduleActivity extends Activity implements View.OnClickListener {
     public static final String TAG = "de.draigon.waw.activities.PlayingScheduleActivity";
 
-    private MatchDayLayout v;
+    private MatchDayLayout matchDayLayout;
     private SharedPreferences prefs;
-    private ScrollView sv;
+    private ScrollView scrollView;
+
 
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        this.sv = new ScrollView(this);
+        this.scrollView = new ScrollView(this);
         final ScrollView.LayoutParams lp = new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
-        this.sv.setLayoutParams(lp);
-        this.setContentView(this.sv);
+        this.scrollView.setLayoutParams(lp);
+        this.setContentView(this.scrollView);
 
 
     }
@@ -42,7 +41,7 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     public void onResume() {
         super.onResume();
         try {
-            new PlayingScheduleDownloader().execute(new URI(this.prefs.getString(GET_SERVER, getResources().getString(R.string.default_get_server))));
+            new PlayingScheduleDownloader().execute(new URI(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
         } catch (URISyntaxException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -52,7 +51,7 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
 
     public void onClick(final View view) {
         final Intent intent = new Intent(this, MatchDetailsActivity.class);
-        intent.putExtra("match", ((MatchLayout) view).getMatch());
+        intent.putExtra(MATCH, ((MatchLayout) view).getMatch());
         startActivity(intent);
     }
 
@@ -67,11 +66,11 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
 
 
         @Override
-        protected void onPostExecute(final List<MatchDay> spieltage) {
-            final ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            PlayingScheduleActivity.this.v = new MatchDayLayout(PlayingScheduleActivity.this, PlayingScheduleActivity.this, spieltage);
-            PlayingScheduleActivity.this.sv.removeAllViews();
-            PlayingScheduleActivity.this.sv.addView(PlayingScheduleActivity.this.v);
+        protected void onPostExecute(final List<MatchDay> matchDays) {
+            //final ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            PlayingScheduleActivity.this.matchDayLayout = new MatchDayLayout(PlayingScheduleActivity.this, PlayingScheduleActivity.this, matchDays);
+            PlayingScheduleActivity.this.scrollView.removeAllViews();
+            PlayingScheduleActivity.this.scrollView.addView(PlayingScheduleActivity.this.matchDayLayout);
         }
     }
 }

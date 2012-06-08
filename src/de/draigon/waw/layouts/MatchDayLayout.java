@@ -1,7 +1,9 @@
 package de.draigon.waw.layouts;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,24 +16,31 @@ import de.draigon.waw.data.MatchDay;
 
 import java.util.List;
 
+import static de.draigon.waw.utils.PrefConstants.MATCH_DAY;
+import static de.draigon.waw.utils.PrefConstants.PREFS_NAME;
+
 
 public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSelectedListener {
     private final OnClickListener listener;
     private final Context context;
     private Spinner spinner;
     private final List<MatchDay> matchDays;
+    private final SharedPreferences prefs;
+    private static final String TAG = MatchDayLayout.class.getCanonicalName();
 
 
-    public MatchDayLayout(final Context context, final OnClickListener listener, final List<MatchDay> spieltage) {
+    public MatchDayLayout(final Context context, final OnClickListener listener, final List<MatchDay> matchDays) {
         super(context);
         this.context = context;
         this.listener = listener;
-        this.matchDays = spieltage;
-        setUp();
+        this.matchDays = matchDays;
+        this.prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        setUp(prefs.getInt(MATCH_DAY, 0));
+        Log.e(TAG, prefs.getInt(MATCH_DAY, 0) + " day");
 
     }
 
-    private void setUp() {
+    private void setUp(final int startPosition) {
         this.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
         this.setOrientation(VERTICAL);
         createSpinner();
@@ -40,21 +49,23 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
         for (int i = 0; i < this.matchDays.size(); ++i) {
             days[i] = this.matchDays.get(i).getName();
         }
-        final ArrayAdapter<CharSequence> st = new ArrayAdapter<CharSequence>(this.context, android.R.layout.simple_spinner_item, days);
-        this.spinner.setAdapter(st);
-        updateMatchDayData(0);
+        final ArrayAdapter<CharSequence> matchDayAdapter = new ArrayAdapter<CharSequence>(this.context, android.R.layout.simple_spinner_item, days);
+        this.spinner.setAdapter(matchDayAdapter);
+        spinner.setSelection(startPosition);
+        updateMatchDayData(startPosition);
 
 
     }
 
-    private void updateMatchDayData(final int pos) {
+    private void updateMatchDayData(final int startPosition) {
         removeAllViews();
         this.addView(this.spinner);
         addLine();
-        for (final Match m : this.matchDays.get(pos).getMatches()) {
+        for (final Match m : this.matchDays.get(startPosition).getMatches()) {
             createMatch(m);
 
         }
+        prefs.edit().putInt(MATCH_DAY, startPosition).commit();
     }
 
     private void createMatch(final Match m) {
@@ -86,8 +97,9 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
         this.spinner.setPrompt(getResources().getString(R.string.spielplan_spinner_label));
     }
 
-    public void onItemSelected(final AdapterView<?> adapterView, final View view, final int i, final long l) {
-        updateMatchDayData(i);
+    public void onItemSelected(final AdapterView<?> adapterView, final View view, final int selected, final long l) {
+        updateMatchDayData(selected);
+
     }
 
     public void onNothingSelected(final AdapterView<?> adapterView) {
