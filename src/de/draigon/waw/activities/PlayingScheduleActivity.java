@@ -55,7 +55,11 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     public void onClick(final View view) {
         Match match = ((MatchLayout) view).getMatch();
         if (match.isBettable()) {
-            final Intent intent = new Intent(this, MatchDetailsActivity.class);
+            final Intent intent = new Intent(this, BetMatchActivity.class);
+            intent.putExtra(MATCH, match);
+            startActivity(intent);
+        } else {
+            final Intent intent = new Intent(this, AllMatchBetsActivity.class);
             intent.putExtra(MATCH, match);
             startActivity(intent);
         }

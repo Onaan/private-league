@@ -18,7 +18,7 @@ import java.net.URISyntaxException;
 
 import static de.draigon.waw.utils.PrefConstants.*;
 
-public class MatchDetailsActivity extends Activity {
+public class BetMatchActivity extends Activity {
     private Match match;
     private TextView home;
     private TextView guest;
@@ -32,15 +32,15 @@ public class MatchDetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         this.match = (Match) getIntent().getSerializableExtra("match");
-        this.setContentView(R.layout.matchdetails);
+        this.setContentView(R.layout.bet_match);
         this.home = (TextView) findViewById(R.id.t_matchdetails_home);
         this.guest = (TextView) findViewById(R.id.t_matchdetails_guest);
         this.homeTip = (EditText) findViewById(R.id.et_matchdetails_bet_home);
         this.guestTip = (EditText) findViewById(R.id.et_matchdetails_bet_guest);
-        this.home.setText(this.match.getHomeTeam());
-        this.guest.setText(this.match.getGuestTeam());
-        this.homeTip.setText(this.match.getHomeScoreTip());
-        this.guestTip.setText(this.match.getGuestScoreTip());
+        this.home.setText(this.match.getHome());
+        this.guest.setText(this.match.getGuest());
+        this.homeTip.setText(this.match.getHomeScoreBet());
+        this.guestTip.setText(this.match.getGuestScoreBet());
     }
 
     @Override
@@ -66,9 +66,9 @@ public class MatchDetailsActivity extends Activity {
 
         @Override
         protected BetState doInBackground(final URI... uris) {
-            MatchDetailsActivity.this.match.setHomeScoreTip(MatchDetailsActivity.this.homeTip.getText().toString());
-            MatchDetailsActivity.this.match.setGuestScoreTip(MatchDetailsActivity.this.guestTip.getText().toString());
-            return new HttpUtil().uploadBet(uris[0], MatchDetailsActivity.this.prefs.getString(USERNAME, ""), MatchDetailsActivity.this.prefs.getString(PASSWORD, ""), MatchDetailsActivity.this.match);
+            BetMatchActivity.this.match.setHomeScoreBet(BetMatchActivity.this.homeTip.getText().toString());
+            BetMatchActivity.this.match.setGuestScoreBet(BetMatchActivity.this.guestTip.getText().toString());
+            return new HttpUtil().uploadBet(uris[0], BetMatchActivity.this.prefs.getString(USERNAME, ""), BetMatchActivity.this.prefs.getString(PASSWORD, ""), BetMatchActivity.this.match);
 
         }
 
@@ -90,7 +90,7 @@ public class MatchDetailsActivity extends Activity {
                     throw new IllegalStateException("Illegal BetState " + betState + "recieved");
             }
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-            MatchDetailsActivity.this.finish();
+            BetMatchActivity.this.finish();
 
         }
     }

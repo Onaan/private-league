@@ -60,7 +60,7 @@ public class HttpUtil {
         } catch (ParserConfigurationException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        Log.d(TAG, document);
+        Log.v(TAG, document);
         return xml;
     }
 
@@ -78,7 +78,7 @@ public class HttpUtil {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
         formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
-        formparams.add(new BasicNameValuePair("tips", match.getId() + ":" + match.getHomeScoreTip() + ":" + match.getGuestScoreTip()));
+        formparams.add(new BasicNameValuePair("tips", match.getId() + ":" + match.getHomeScoreBet() + ":" + match.getGuestScoreBet()));
         final Document xml = doPost(uri, formparams);
         return isBetPlacementSuccessful(xml);
 

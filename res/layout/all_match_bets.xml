@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/t_all_match_bets_home"
+            android:textSize="25dp"
+            android:gravity="center"
+            />
+    <TableLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:shrinkColumns="*"
+                 android:stretchColumns="*">
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent">
+            <TextView android:layout_height="wrap_content" android:layout_width="50dp"
+                      android:id="@+id/t_all_match_bets_home_score" android:gravity="center" android:textSize="25dp"/>
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text=":"
+                      android:gravity="center" android:textSize="25dp"/>
+
+            <TextView android:layout_height="wrap_content" android:layout_width="50dp"
+                      android:id="@+id/t_all_match_bets_guest_score" android:gravity="center" android:textSize="25dp"/>
+        </TableRow>
+    </TableLayout>
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/t_all_match_bets_guest"
+            android:textSize="25dp"
+            android:gravity="center"
+            />
+    <ListView android:layout_height="wrap_content" android:layout_width="fill_parent" android:isScrollContainer="true"
+              android:id="@+id/lv_all_match_bets" android:clickable="false" android:paddingTop="10dp"/>
+</LinearLayout>

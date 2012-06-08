@@ -25,8 +25,8 @@ public class MatchLayout extends TableLayout {
         final TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
         this.setLayoutParams(tlp);
         this.addView(createMatchDate());
-        this.addView(createTableRow(m.getHomeTeam(), m.getHomeScore(), m.getHomeScoreTip()));
-        this.addView(createTableRow(m.getGuestTeam(), m.getGuestScore(), m.getGuestScoreTip()));
+        this.addView(createTableRow(m.getHome(), m.getHomeScore(), m.getHomeScoreBet()));
+        this.addView(createTableRow(m.getGuest(), m.getGuestScore(), m.getGuestScoreBet()));
         this.setColumnShrinkable(1, true);
         this.setColumnStretchable(1, true);
 
@@ -56,8 +56,8 @@ public class MatchLayout extends TableLayout {
     private int getDateColor() {
         if (this.match.isBettable()) {
             try {
-                Integer.parseInt(this.match.getGuestScoreTip());
-                Integer.parseInt(this.match.getHomeScoreTip());
+                Integer.parseInt(this.match.getGuestScoreBet());
+                Integer.parseInt(this.match.getHomeScoreBet());
                 // Das Spiel ist getippt
                 return Color.BLUE;
             } catch (IllegalArgumentException e) {

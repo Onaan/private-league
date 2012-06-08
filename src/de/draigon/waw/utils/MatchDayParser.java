@@ -41,20 +41,37 @@ public class MatchDayParser {
         final NamedNodeMap home = this.getTeamAttributes(matchNode, "home");
         final NamedNodeMap guest = this.getTeamAttributes(matchNode, "guest");
         final NamedNodeMap bet = this.getBet(matchNode, username);
-        match.setGuestTeam(guest.getNamedItem("name").getTextContent());
+        populateBetList(matchNode, match);
+        match.setGuest(guest.getNamedItem("name").getTextContent());
         match.setGuestScore(guest.getNamedItem("goals").getTextContent());
         match.setHomeScore(home.getNamedItem("goals").getTextContent());
-        match.setHomeTeam(home.getNamedItem("name").getTextContent());
+        match.setHome(home.getNamedItem("name").getTextContent());
         match.setId(matchNode.getAttributes().getNamedItem("id").getTextContent());
         match.setKickOff(new Date(Long.parseLong(matchNode.getAttributes().getNamedItem("kickoff").getTextContent()) * 1000));
         match.setBettable(Boolean.valueOf(matchNode.getAttributes().getNamedItem("bettable").getTextContent()));
         try {
-            match.setGuestScoreTip(bet.getNamedItem("guest").getTextContent());
-            match.setHomeScoreTip(bet.getNamedItem("home").getTextContent());
+            match.setGuestScoreBet(bet.getNamedItem("guest").getTextContent());
+            match.setHomeScoreBet(bet.getNamedItem("home").getTextContent());
         } catch (NullPointerException e) {
             // hier wurde noch kein tip abgegeben, es wird "-" angezeigt
         }
         return match;
+    }
+
+    private void populateBetList(Node matchNode, Match match) {
+        List<CharSequence> bets = match.getBets();
+        for (int i = 0; i < matchNode.getChildNodes().getLength(); ++i) {
+            if ("bets".equals(matchNode.getChildNodes().item(i).getNodeName())) {
+                for (int j = 0; j < matchNode.getChildNodes().item(i).getChildNodes().getLength(); ++j) {
+                    if ("bet".equals(matchNode.getChildNodes().item(i).getChildNodes().item(j).getNodeName())) {
+                        NamedNodeMap attributes = matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes();
+                        String bet = attributes.getNamedItem("username").getTextContent() + " " + attributes.getNamedItem("home").getTextContent() + ":" + attributes.getNamedItem("guest").getTextContent();
+                        bets.add(bet);
+
+                    }
+                }
+            }
+        }
     }
 
     private NamedNodeMap getTeamAttributes(final Node matchNode, final String team) {

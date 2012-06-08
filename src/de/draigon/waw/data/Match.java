@@ -1,18 +1,50 @@
 package de.draigon.waw.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Match implements Serializable {
     private String id;
-    private String homeTeam;
-    private String guestTeam;
+    private String home;
+    private String guest;
     private String homeScore;
     private String guestScore;
-    private String homeScoreTip = "-";
-    private String guestScoreTip = "-";
+    private String homeScoreBet = "-";
+    private String guestScoreBet = "-";
+    private String homeTempScore = "-";
+    private String guestTempScore = "-";
+
     private Date kickOff;
     private boolean bettable;
+
+    private List<CharSequence> bets = new ArrayList<CharSequence>();
+
+
+    public List<CharSequence> getBets() {
+        return bets;
+    }
+
+    public void setBets(List<CharSequence> bets) {
+        this.bets = bets;
+    }
+
+    public String getHomeTempScore() {
+        return this.homeTempScore;
+    }
+
+    public void setHomeTempScore(final String homeTempScore) {
+        this.homeTempScore = homeTempScore;
+    }
+
+    public String getGuestTempScore() {
+        return this.guestTempScore;
+    }
+
+    public void setGuestTempScore(final String guestTempScore) {
+        this.guestTempScore = guestTempScore;
+    }
 
     public boolean isBettable() {
         return this.bettable;
@@ -30,20 +62,20 @@ public class Match implements Serializable {
         this.id = id;
     }
 
-    public String getHomeTeam() {
-        return this.homeTeam;
+    public String getHome() {
+        return this.home;
     }
 
-    public void setHomeTeam(final String homeTeam) {
-        this.homeTeam = homeTeam;
+    public void setHome(final String home) {
+        this.home = home;
     }
 
-    public String getGuestTeam() {
-        return this.guestTeam;
+    public String getGuest() {
+        return this.guest;
     }
 
-    public void setGuestTeam(final String guestTeam) {
-        this.guestTeam = guestTeam;
+    public void setGuest(final String guest) {
+        this.guest = guest;
     }
 
     public String getHomeScore() {
@@ -62,20 +94,20 @@ public class Match implements Serializable {
         this.guestScore = guestScore;
     }
 
-    public String getHomeScoreTip() {
-        return this.homeScoreTip;
+    public String getHomeScoreBet() {
+        return this.homeScoreBet;
     }
 
-    public void setHomeScoreTip(final String homeScoreTip) {
-        this.homeScoreTip = homeScoreTip;
+    public void setHomeScoreBet(final String homeScoreBet) {
+        this.homeScoreBet = homeScoreBet;
     }
 
-    public String getGuestScoreTip() {
-        return this.guestScoreTip;
+    public String getGuestScoreBet() {
+        return this.guestScoreBet;
     }
 
-    public void setGuestScoreTip(final String guestScoreTip) {
-        this.guestScoreTip = guestScoreTip;
+    public void setGuestScoreBet(final String guestScoreBet) {
+        this.guestScoreBet = guestScoreBet;
     }
 
     public Date getKickOff() {
@@ -84,5 +116,22 @@ public class Match implements Serializable {
 
     public void setKickOff(final Date kickOff) {
         this.kickOff = kickOff;
+    }
+
+    @Override
+    public String toString() {
+        return "Match{" +
+                "id='" + this.id + '\'' +
+                ", home='" + this.home + '\'' +
+                ", guest='" + this.guest + '\'' +
+                ", homeScore='" + this.homeScore + '\'' +
+                ", guestScore='" + this.guestScore + '\'' +
+                ", homeScoreBet='" + this.homeScoreBet + '\'' +
+                ", guestScoreBet='" + this.guestScoreBet + '\'' +
+                ", homeTempScore='" + this.homeTempScore + '\'' +
+                ", guestTempScore='" + this.guestTempScore + '\'' +
+                ", kickOff=" + this.kickOff +
+                ", bettable=" + this.bettable +
+                '}';
     }
 }
