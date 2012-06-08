@@ -24,6 +24,7 @@ public class MatchDetailsActivity extends Activity {
     private EditText guestTip;
     private SharedPreferences prefs;
 
+    @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -39,6 +40,7 @@ public class MatchDetailsActivity extends Activity {
         this.guestTip.setText(this.match.getGuestScoreTip());
     }
 
+    @Override
     public void onResume() {
         super.onResume();
 

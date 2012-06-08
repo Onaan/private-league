@@ -23,6 +23,7 @@ public class TeamBetActivity extends Activity implements AdapterView.OnItemClick
     private SharedPreferences prefs;
     private ArrayAdapter<CharSequence> adapter;
 
+    @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teambet);
@@ -32,6 +33,7 @@ public class TeamBetActivity extends Activity implements AdapterView.OnItemClick
 
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         this.adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_list_item_1);

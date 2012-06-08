@@ -14,6 +14,7 @@ public class SetServerDataMenu extends Activity {
     private EditText getServer;
     private EditText postServer;
 
+    @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_server_data);

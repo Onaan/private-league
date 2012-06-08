@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import de.draigon.waw.R;
 
 import static de.draigon.waw.utils.PrefConstants.*;
@@ -20,6 +21,7 @@ public class SetLoginDataActivity extends Activity {
     private SharedPreferences prefs;
     private RadioGroup rg;
 
+    @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
@@ -32,6 +34,7 @@ public class SetLoginDataActivity extends Activity {
 
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         this.username.setText(this.prefs.getString(USERNAME, ""));
@@ -64,14 +67,17 @@ public class SetLoginDataActivity extends Activity {
         e.putString(PASSWORD, this.password.getText().toString());
         e.putBoolean("showPassword", this.showPassword.isChecked());
         e.commit();
+        Toast.makeText(getApplicationContext(), getResources().getText(R.string.set_login_data_save_message), Toast.LENGTH_SHORT).show();
         this.finish();
     }
 
-    public void togglePasswordVisibility(final View view) {
+    private void togglePasswordVisibility(final View view) {
         if (!this.showPassword.isChecked()) {
             this.password.setTransformationMethod(PasswordTransformationMethod.getInstance());
         } else {
             this.password.setTransformationMethod(null);
         }
     }
+
+
 }

@@ -15,22 +15,24 @@ import java.net.URISyntaxException;
 import static de.draigon.waw.utils.PrefConstants.*;
 
 public class RankingActivity extends Activity {
-    ListView lv;
-    ArrayAdapter<CharSequence> adapter;
-    SharedPreferences prefs;
+    private ListView rankingList;
+    private ArrayAdapter<CharSequence> adapter;
+    private SharedPreferences prefs;
 
+    @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ranking);
-        this.lv = (ListView) findViewById(R.id.lv_ranking);
+        this.rankingList = (ListView) findViewById(R.id.lv_ranking);
         this.prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         this.adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_list_item_1);
-        this.lv.setAdapter(this.adapter);
+        this.rankingList.setAdapter(this.adapter);
         try {
             new getRankings().execute(new URI(this.prefs.getString(GET_SERVER, getResources().getString(R.string.default_get_server))));
         } catch (URISyntaxException e) {

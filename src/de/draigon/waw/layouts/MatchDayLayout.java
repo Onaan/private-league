@@ -35,8 +35,8 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
         this.listener = listener;
         this.matchDays = matchDays;
         this.prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        setUp(prefs.getInt(MATCH_DAY, 0));
-        Log.e(TAG, prefs.getInt(MATCH_DAY, 0) + " day");
+        setUp(this.prefs.getInt(MATCH_DAY, 0));
+        Log.e(TAG, this.prefs.getInt(MATCH_DAY, 0) + " day");
 
     }
 
@@ -51,7 +51,7 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
         }
         final ArrayAdapter<CharSequence> matchDayAdapter = new ArrayAdapter<CharSequence>(this.context, android.R.layout.simple_spinner_item, days);
         this.spinner.setAdapter(matchDayAdapter);
-        spinner.setSelection(startPosition);
+        this.spinner.setSelection(startPosition);
         updateMatchDayData(startPosition);
 
 
@@ -65,7 +65,7 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
             createMatch(m);
 
         }
-        prefs.edit().putInt(MATCH_DAY, startPosition).commit();
+        this.prefs.edit().putInt(MATCH_DAY, startPosition).commit();
     }
 
     private void createMatch(final Match m) {
@@ -85,6 +85,7 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
         this.addView(v);
     }
 
+    @SuppressWarnings({"SameParameterValue"})
     private int getPixels(final int dipValue) {
         final Resources r = getResources();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, r.getDisplayMetrics());

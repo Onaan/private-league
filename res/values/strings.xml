@@ -9,6 +9,7 @@
     <string name="set_login_data_password">Passwort</string>
     <string name="set_login_data_show">Passwort anzeigen</string>
     <string name="set_login_data_save">Speichern</string>
+    <string name="set_login_data_save_message">Daten erfolgreich gespeichert</string>
     <string name="spielplan_spinner_label">Spieltag</string>
     <string name="server_location_menu_edit_server_data">Server</string>
     <string name="set_server_data_get_server">Hole Daten von:</string>

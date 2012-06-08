@@ -28,7 +28,7 @@ import java.util.List;
 
 
 public class HttpUtil {
-    public static final String TAG = HttpUtil.class.getName();
+    private static final String TAG = HttpUtil.class.getName();
     private static final BasicNameValuePair login = new BasicNameValuePair("login", "true");
     private final MatchDayParser matchDayParser = new MatchDayParser();
 
@@ -80,7 +80,7 @@ public class HttpUtil {
         formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
         formparams.add(new BasicNameValuePair("tips", match.getId() + ":" + match.getHomeScoreTip() + ":" + match.getGuestScoreTip()));
         final Document xml = doPost(uri, formparams);
-        return true;
+        return true;     //TODO: error handling, check if upload was successful
 
     }
 

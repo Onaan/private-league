@@ -20,13 +20,14 @@ import static de.draigon.waw.utils.PrefConstants.*;
 
 
 public class PlayingScheduleActivity extends Activity implements View.OnClickListener {
-    public static final String TAG = "de.draigon.waw.activities.PlayingScheduleActivity";
+    private static final String TAG = PlayingScheduleActivity.class.getCanonicalName();
 
     private MatchDayLayout matchDayLayout;
     private SharedPreferences prefs;
     private ScrollView scrollView;
 
 
+    @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -38,6 +39,7 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
 
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         try {
@@ -67,7 +69,6 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
 
         @Override
         protected void onPostExecute(final List<MatchDay> matchDays) {
-            //final ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             PlayingScheduleActivity.this.matchDayLayout = new MatchDayLayout(PlayingScheduleActivity.this, PlayingScheduleActivity.this, matchDays);
             PlayingScheduleActivity.this.scrollView.removeAllViews();
             PlayingScheduleActivity.this.scrollView.addView(PlayingScheduleActivity.this.matchDayLayout);

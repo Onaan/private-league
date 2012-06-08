@@ -19,6 +19,7 @@ public class StartActivity extends Activity {
     private Button rankingButton;
     private Button teamBetButton;
 
+    @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(TAG, TAG + ".onCreate() called");
@@ -29,6 +30,7 @@ public class StartActivity extends Activity {
         this.teamBetButton = (Button) findViewById(R.id.b_startActivity_special_bet);
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         if (this.prefs.getString(USERNAME, "").length() > 0 && this.prefs.getString(PASSWORD, "").length() > 0) {
@@ -63,7 +65,7 @@ public class StartActivity extends Activity {
     }
 
     @SuppressWarnings("unused")
-    public void goToTeamBet(final View v) {
+    public void goToTeamBet(final View view) {
         final Intent intent = new Intent(this, TeamBetActivity.class);
         startActivity(intent);
     }
