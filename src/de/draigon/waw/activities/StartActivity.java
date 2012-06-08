@@ -16,62 +16,57 @@ import de.draigon.waw.menues.SetServerDataMenu;
 import static de.draigon.waw.utils.PrefConstants.*;
 
 
-/**
- * Created by IntelliJ IDEA.
- * User: Schnabel
- * Date: 04.06.12
- * Time: 13:13
- * To change this template use File | Settings | File Templates.
- */
 public class StartActivity extends Activity {
-
     private static final String TAG = StartActivity.class.getName();
-    private SharedPreferences loginPrefs;
-    private Button spielplanButton;
+    private SharedPreferences prefs;
+    private Button playingScheduleButton;
     private Button rankingButton;
     private Button teamBetButton;
 
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(TAG, TAG + ".onCreate() called");
         setContentView(R.layout.start_activity);
-        loginPrefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        spielplanButton = (Button) findViewById(R.id.b_startActivity_playing_schedule);
-        rankingButton = (Button) findViewById(R.id.b_startActivity_ranking);
-        teamBetButton = (Button) findViewById(R.id.b_startActivity_special_bet);
+        this.prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        this.playingScheduleButton = (Button) findViewById(R.id.b_startActivity_playing_schedule);
+        this.rankingButton = (Button) findViewById(R.id.b_startActivity_ranking);
+        this.teamBetButton = (Button) findViewById(R.id.b_startActivity_special_bet);
     }
 
     public void onResume() {
         super.onResume();
-        if (loginPrefs.getString(USERNAME, "").length() > 0 && loginPrefs.getString(PASSWORD, "").length() > 0) {
-            rankingButton.setEnabled(true);
-            spielplanButton.setEnabled(true);
+        if (this.prefs.getString(USERNAME, "").length() > 0 && this.prefs.getString(PASSWORD, "").length() > 0) {
+            this.rankingButton.setEnabled(true);
+            this.playingScheduleButton.setEnabled(true);
             //TODO: funktionsfaehig machen
-            teamBetButton.setEnabled(false);
+            this.teamBetButton.setEnabled(false);
         } else {
-            rankingButton.setEnabled(false);
-            spielplanButton.setEnabled(false);
-            teamBetButton.setEnabled(false);
+            this.rankingButton.setEnabled(false);
+            this.playingScheduleButton.setEnabled(false);
+            this.teamBetButton.setEnabled(false);
         }
 
     }
 
-
+    @SuppressWarnings("unused")
     public void goToPlayingSchedule(final View view) {
         final Intent intent = new Intent(this, PlayingScheduleActivity.class);
         startActivity(intent);
     }
 
+    @SuppressWarnings("unused")
     public void goToSetLoginData(final View view) {
         final Intent intent = new Intent(this, SetLoginDataActivity.class);
         startActivity(intent);
     }
 
+    @SuppressWarnings("unused")
     public void goToRanking(final View view) {
         final Intent intent = new Intent(this, RankingActivity.class);
         startActivity(intent);
     }
 
+    @SuppressWarnings("unused")
     public void goToTeamBet(final View v) {
         final Intent intent = new Intent(this, TeamBetActivity.class);
         startActivity(intent);
@@ -79,15 +74,15 @@ public class StartActivity extends Activity {
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater blowUp = getMenuInflater();
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        final MenuInflater blowUp = getMenuInflater();
         blowUp.inflate(R.menu.server_location, menu);
         return true;
     }
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.server_location_menu_edit_server_data:

@@ -9,30 +9,24 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import de.draigon.waw.R;
-import de.draigon.waw.data.MatchDay;
 import de.draigon.waw.data.Match;
+import de.draigon.waw.data.MatchDay;
 
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Schnabel
- * Date: 05.06.12
- * Time: 15:10
- * To change this template use File | Settings | File Templates.
- */
+
 public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSelectedListener {
-    private OnClickListener listener;
-    private Context context;
+    private final OnClickListener listener;
+    private final Context context;
     private Spinner spinner;
-    private List<MatchDay> spieltage;
+    private final List<MatchDay> matchDays;
 
 
-    public MatchDayLayout(Context context, OnClickListener listener, List<MatchDay> spieltage) {
+    public MatchDayLayout(final Context context, final OnClickListener listener, final List<MatchDay> spieltage) {
         super(context);
         this.context = context;
         this.listener = listener;
-        this.spieltage = spieltage;
+        this.matchDays = spieltage;
         setUp();
 
     }
@@ -41,42 +35,32 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
         this.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
         this.setOrientation(VERTICAL);
         createSpinner();
-
-        spinner.setOnItemSelectedListener(this);
-
-
-        CharSequence[] days = new CharSequence[spieltage.size()];
-        for (int i = 0; i < spieltage.size(); ++i) {
-            days[i] = spieltage.get(i).getName();
+        this.spinner.setOnItemSelectedListener(this);
+        final CharSequence[] days = new CharSequence[this.matchDays.size()];
+        for (int i = 0; i < this.matchDays.size(); ++i) {
+            days[i] = this.matchDays.get(i).getName();
         }
-        ArrayAdapter<CharSequence> st = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_item, days);
-        spinner.setAdapter(st);
-
-        updateSpieltagData(0);
+        final ArrayAdapter<CharSequence> st = new ArrayAdapter<CharSequence>(this.context, android.R.layout.simple_spinner_item, days);
+        this.spinner.setAdapter(st);
+        updateMatchDayData(0);
 
 
     }
 
-    private void updateSpieltagData(int pos) {
+    private void updateMatchDayData(final int pos) {
         removeAllViews();
-        this.addView(spinner);
+        this.addView(this.spinner);
         addLine();
-
-        for (Match m : spieltage.get(pos).getMatches()) {
+        for (final Match m : this.matchDays.get(pos).getMatches()) {
             createMatch(m);
 
         }
     }
 
-    private void createMatch(Match m) {
-
-
-        MatchLayout t = new MatchLayout(context, m);
-
-        t.setOnClickListener(listener);
+    private void createMatch(final Match m) {
+        final MatchLayout t = new MatchLayout(this.context, m);
+        t.setOnClickListener(this.listener);
         this.addView(t);
-
-
         addLine();
 
 
@@ -84,31 +68,29 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
 
 
     private void addLine() {
-        View v = new View(context);
+        final View v = new View(this.context);
         v.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, getPixels(2)));
         v.setBackgroundColor(0xFF909090);
         this.addView(v);
     }
 
-    private int getPixels(int dipValue) {
-        Resources r = getResources();
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, r.getDisplayMetrics());
-        return px;
+    private int getPixels(final int dipValue) {
+        final Resources r = getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, r.getDisplayMetrics());
     }
 
     private void createSpinner() {
-        spinner = new Spinner(context);
-        Spinner.LayoutParams slp = new Spinner.LayoutParams(Spinner.LayoutParams.FILL_PARENT, Spinner.LayoutParams.WRAP_CONTENT);
-        spinner.setLayoutParams(slp);
-        spinner.setPrompt(getResources().getString(R.string.spielplan_spinner_label));
+        this.spinner = new Spinner(this.context);
+        final Spinner.LayoutParams slp = new Spinner.LayoutParams(Spinner.LayoutParams.FILL_PARENT, Spinner.LayoutParams.WRAP_CONTENT);
+        this.spinner.setLayoutParams(slp);
+        this.spinner.setPrompt(getResources().getString(R.string.spielplan_spinner_label));
     }
 
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        updateSpieltagData(i);
+    public void onItemSelected(final AdapterView<?> adapterView, final View view, final int i, final long l) {
+        updateMatchDayData(i);
     }
 
-    public void onNothingSelected(AdapterView<?> adapterView) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void onNothingSelected(final AdapterView<?> adapterView) {
     }
 }
 

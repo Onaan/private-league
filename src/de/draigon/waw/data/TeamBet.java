@@ -1,38 +1,31 @@
 package de.draigon.waw.data;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Schnabel
- * Date: 07.06.12
- * Time: 19:30
- * To change this template use File | Settings | File Templates.
- */
 public class TeamBet {
     private boolean bettable = false;
     private CharSequence[] choices;
     private CharSequence selected = null;
 
     public CharSequence getSelected() {
-        return selected;
+        return this.selected;
     }
 
-    public void setSelected(CharSequence selected) {
+    public void setSelected(final CharSequence selected) {
         this.selected = selected;
     }
 
     public CharSequence[] getChoices() {
-        return choices;
+        return this.choices;
     }
 
-    public void setChoices(CharSequence[] choices) {
+    public void setChoices(final CharSequence[] choices) {
         this.choices = choices;
     }
 
     public boolean isBettable() {
-        return bettable;
+        return this.bettable;
     }
 
-    public void setBettable(boolean bettable) {
+    public void setBettable(final boolean bettable) {
         this.bettable = bettable;
     }
 }

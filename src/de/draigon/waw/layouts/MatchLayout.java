@@ -11,27 +11,20 @@ import de.draigon.waw.data.Match;
 
 import java.text.SimpleDateFormat;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Schnabel
- * Date: 06.06.12
- * Time: 11:16
- * To change this template use File | Settings | File Templates.
- */
+
 public class MatchLayout extends TableLayout {
-    private Context context;
-    private static SimpleDateFormat sdf = new SimpleDateFormat("E',' dd.MM.yyyy HH:mm");
-    private Match match;
+    private final Context context;
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("E',' dd.MM.yyyy HH:mm");
+    private final Match match;
 
 
-    public MatchLayout(Context context, Match m) {
+    public MatchLayout(final Context context, final Match m) {
         super(context);
         this.context = context;
         this.match = m;
-        TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
+        final TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
         this.setLayoutParams(tlp);
         this.addView(createMatchDate());
-
         this.addView(createTableRow(m.getHomeTeam(), m.getHomeScore(), m.getHomeScoreTip()));
         this.addView(createTableRow(m.getGuestTeam(), m.getGuestScore(), m.getGuestScoreTip()));
         this.setColumnShrinkable(1, true);
@@ -40,35 +33,31 @@ public class MatchLayout extends TableLayout {
     }
 
     private TableRow createTableRow(final String team, final String score, final String bet) {
-        TableRow r = new TableRow(context);
-
+        final TableRow r = new TableRow(this.context);
         r.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        TextView teamName = new TextView(context);
+        final TextView teamName = new TextView(this.context);
         teamName.setText(team);
         r.addView(teamName);
-        TextView teamScore = new TextView(context);
+        final TextView teamScore = new TextView(this.context);
         teamScore.setText(score + " (" + bet + ")");
         teamScore.setGravity(Gravity.RIGHT);
         r.addView(teamScore);
-
         return r;
     }
 
     private TextView createMatchDate() {
-        TextView dateView = new TextView(context);
+        final TextView dateView = new TextView(this.context);
         dateView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        dateView.setText(sdf.format(match.getKickOff()));
+        dateView.setText(sdf.format(this.match.getKickOff()));
         dateView.setTextColor(getDateColor());
         return dateView;
     }
 
     private int getDateColor() {
-        if (match.isBettable()) {
-
-
+        if (this.match.isBettable()) {
             try {
-                Integer.parseInt(match.getGuestScoreTip());
-                Integer.parseInt(match.getHomeScoreTip());
+                Integer.parseInt(this.match.getGuestScoreTip());
+                Integer.parseInt(this.match.getHomeScoreTip());
                 // Das Spiel ist getippt
                 return Color.BLUE;
             } catch (IllegalArgumentException e) {
@@ -82,6 +71,6 @@ public class MatchLayout extends TableLayout {
 
 
     public Match getMatch() {
-        return match;
+        return this.match;
     }
 }

@@ -11,34 +11,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Schnabel
- * Date: 08.06.12
- * Time: 11:17
- * To change this template use File | Settings | File Templates.
- */
 public class MatchDayParser {
 
 
-    public List<MatchDay> createSpielplan(Document xml, String username) {
-
-        List<MatchDay> spieltage = new ArrayList<MatchDay>();
-
-        NodeList rounds = xml.getElementsByTagName("round");
+    public List<MatchDay> createSpielplan(final Document xml, final String username) {
+        final List<MatchDay> matchDays = new ArrayList<MatchDay>();
+        final NodeList rounds = xml.getElementsByTagName("round");
         for (int i = 0; i < rounds.getLength(); ++i) {
-            spieltage.add(this.parseRound(rounds.item(i), username));
+            matchDays.add(this.parseRound(rounds.item(i), username));
         }
-
-
-        return spieltage;  //To change body of created methods use File | Settings | File Templates.
+        return matchDays;
     }
 
-    private MatchDay parseRound(Node round, String username) {
-        MatchDay spieltag = new MatchDay(round.getAttributes().getNamedItem("name").getTextContent());
-        List<Match> matches = new ArrayList<Match>();
-
-        NodeList childs = round.getChildNodes();
+    private MatchDay parseRound(final Node round, final String username) {
+        final MatchDay spieltag = new MatchDay(round.getAttributes().getNamedItem("name").getTextContent());
+        final List<Match> matches = new ArrayList<Match>();
+        final NodeList childs = round.getChildNodes();
         for (int i = 0; i < childs.getLength(); ++i) {
             if (Node.ELEMENT_NODE == childs.item(i).getNodeType()) {
                 matches.add(this.parseMatch(childs.item(i), username));
@@ -48,17 +36,14 @@ public class MatchDayParser {
         return spieltag;
     }
 
-    private Match parseMatch(Node matchNode, String username) {
-        Match match = new Match();
-        NamedNodeMap home = this.getTeamAttributes(matchNode, "home");
-        NamedNodeMap guest = this.getTeamAttributes(matchNode, "guest");
-        NamedNodeMap bet = this.getBet(matchNode, username);
-
+    private Match parseMatch(final Node matchNode, final String username) {
+        final Match match = new Match();
+        final NamedNodeMap home = this.getTeamAttributes(matchNode, "home");
+        final NamedNodeMap guest = this.getTeamAttributes(matchNode, "guest");
+        final NamedNodeMap bet = this.getBet(matchNode, username);
         match.setGuestTeam(guest.getNamedItem("name").getTextContent());
         match.setGuestScore(guest.getNamedItem("goals").getTextContent());
-
         match.setHomeScore(home.getNamedItem("goals").getTextContent());
-
         match.setHomeTeam(home.getNamedItem("name").getTextContent());
         match.setId(matchNode.getAttributes().getNamedItem("id").getTextContent());
         match.setKickOff(new Date(Long.parseLong(matchNode.getAttributes().getNamedItem("kickoff").getTextContent()) * 1000));
@@ -69,23 +54,19 @@ public class MatchDayParser {
         } catch (NullPointerException e) {
             // hier wurde noch kein tip abgegeben, es wird "-" angezeigt
         }
-
-        return match;  //To change body of created methods use File | Settings | File Templates.
+        return match;
     }
 
-    private NamedNodeMap getTeamAttributes(Node matchNode, String team) {
+    private NamedNodeMap getTeamAttributes(final Node matchNode, final String team) {
         for (int i = 0; i < matchNode.getChildNodes().getLength(); ++i) {
             if (matchNode.getChildNodes().item(i).getNodeName().equals(team)) {
                 return matchNode.getChildNodes().item(i).getAttributes();
             }
         }
-
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        return null;
     }
 
-    private NamedNodeMap getBet(Node matchNode, String username) {
-
-
+    private NamedNodeMap getBet(final Node matchNode, final String username) {
         for (int i = 0; i < matchNode.getChildNodes().getLength(); ++i) {
             if ("bets".equals(matchNode.getChildNodes().item(i).getNodeName())) {
                 for (int j = 0; j < matchNode.getChildNodes().item(i).getChildNodes().getLength(); ++j) {
@@ -97,7 +78,6 @@ public class MatchDayParser {
                 }
             }
         }
-
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        return null;
     }
 }

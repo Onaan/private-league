@@ -26,46 +26,32 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Schnabel
- * Date: 07.06.12
- * Time: 11:16
- * To change this template use File | Settings | File Templates.
- */
+
 public class HttpUtil {
     public static final String TAG = HttpUtil.class.getName();
     private static final BasicNameValuePair login = new BasicNameValuePair("login", "true");
-    private MatchDayParser spielTagParser = new MatchDayParser();
+    private final MatchDayParser matchDayParser = new MatchDayParser();
 
     public HttpUtil() {
-
-
     }
 
-    private Document doPost(URI uri, List<NameValuePair> params) {
+    private Document doPost(final URI uri, final List<NameValuePair> params) {
         params.add(login);
-
-        HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(uri);
-        HttpResponse response = null;
+        final HttpClient client = new DefaultHttpClient();
+        final HttpPost post = new HttpPost(uri);
         String document = null;
         try {
-            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "ISO8859_1");         //
+            final UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "ISO8859_1");         //
             post.setEntity(entity);
-
-
-            response = client.execute(post);
+            final HttpResponse response = client.execute(post);
             document = EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
             Log.e(TAG, "Error getting data", e);
         }
         Document xml = null;
-
         try {
             xml = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
                     new InputSource(new StringReader(document))
-
             );
         } catch (SAXException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -79,41 +65,36 @@ public class HttpUtil {
     }
 
 
-    public List<MatchDay> getPlayingSchedule(URI uri, String username, String password) {
-
-
-        List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+    public List<MatchDay> getPlayingSchedule(final URI uri, final String username, final String password) {
+        final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
         formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
-        Document xml = doPost(uri, formparams);
-
-        return spielTagParser.createSpielplan(xml, username);
+        final Document xml = doPost(uri, formparams);
+        return this.matchDayParser.createSpielplan(xml, username);
     }
 
 
-    public Boolean uploadBet(URI uri, String username, String password, Match match) {
-        List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+    public Boolean uploadBet(final URI uri, final String username, final String password, final Match match) {
+        final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
         formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
         formparams.add(new BasicNameValuePair("tips", match.getId() + ":" + match.getHomeScoreTip() + ":" + match.getGuestScoreTip()));
-        Document xml = doPost(uri, formparams);
-
+        final Document xml = doPost(uri, formparams);
         return true;
 
     }
 
-    public CharSequence[] getRankings(URI uri, String username, String password) {
-        List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+    public CharSequence[] getRankings(final URI uri, final String username, final String password) {
+        final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
         formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
-        Document xml = doPost(uri, formparams);
-
+        final Document xml = doPost(uri, formparams);
         return parseStandings(xml);
     }
 
-    private CharSequence[] parseStandings(Document xml) {
-        NodeList playerNodes = xml.getElementsByTagName("player");
-        CharSequence[] scores = new CharSequence[playerNodes.getLength()];
+    private CharSequence[] parseStandings(final Document xml) {
+        final NodeList playerNodes = xml.getElementsByTagName("player");
+        final CharSequence[] scores = new CharSequence[playerNodes.getLength()];
         for (int i = 0; i < playerNodes.getLength(); ++i) {
             scores[i] = playerNodes.item(i).getAttributes().getNamedItem(PrefConstants.USERNAME).getTextContent() + " " + playerNodes.item(i).getAttributes().getNamedItem("score").getTextContent() + " (" + playerNodes.item(i).getAttributes().getNamedItem("tempscore").getTextContent() + ")";
 
@@ -121,22 +102,22 @@ public class HttpUtil {
         return scores;
     }
 
-    public TeamBet getTeamBetData(URI uri, String username, String password) {
-        List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+    public TeamBet getTeamBetData(final URI uri, final String username, final String password) {
+        final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
         formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
-        Document xml = doPost(uri, formparams);
+        final Document xml = doPost(uri, formparams);
         return parseTeamBetData(xml);
     }
 
-    private TeamBet parseTeamBetData(Document xml) {
-        NodeList playerNodes = xml.getElementsByTagName("team");
-        CharSequence[] teams = new CharSequence[playerNodes.getLength()];
+    private TeamBet parseTeamBetData(final Document xml) {
+        final NodeList playerNodes = xml.getElementsByTagName("team");
+        final CharSequence[] teams = new CharSequence[playerNodes.getLength()];
         for (int i = 0; i < playerNodes.getLength(); ++i) {
             teams[i] = playerNodes.item(i).getAttributes().getNamedItem("name").getTextContent();
 
         }
-        TeamBet tbd = new TeamBet();
+        final TeamBet tbd = new TeamBet();
         Arrays.sort(teams);
         tbd.setChoices(teams);
         tbd.setBettable(isTeamBettable(xml));
@@ -145,7 +126,7 @@ public class HttpUtil {
 
     }
 
-    private boolean isTeamBettable(Document xml) {
+    private boolean isTeamBettable(final Document xml) {
         return false;  //To change body of created methods use File | Settings | File Templates.
     }
 }

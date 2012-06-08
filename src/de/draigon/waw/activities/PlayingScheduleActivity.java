@@ -20,13 +20,7 @@ import java.util.List;
 
 import static de.draigon.waw.utils.PrefConstants.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Schnabel
- * Date: 05.06.12
- * Time: 11:48
- * To change this template use File | Settings | File Templates.
- */
+
 public class PlayingScheduleActivity extends Activity implements View.OnClickListener {
     public static final String TAG = "de.draigon.waw.activities.PlayingScheduleActivity";
 
@@ -34,13 +28,13 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     private SharedPreferences prefs;
     private ScrollView sv;
 
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        sv = new ScrollView(this);
-        ScrollView.LayoutParams lp = new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
-        sv.setLayoutParams(lp);
-        this.setContentView(sv);
+        this.prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        this.sv = new ScrollView(this);
+        final ScrollView.LayoutParams lp = new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
+        this.sv.setLayoutParams(lp);
+        this.setContentView(this.sv);
 
 
     }
@@ -48,7 +42,7 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     public void onResume() {
         super.onResume();
         try {
-            new PlayingScheduleDownloader().execute(new URI(prefs.getString(GET_SERVER, getResources().getString(R.string.default_get_server))));
+            new PlayingScheduleDownloader().execute(new URI(this.prefs.getString(GET_SERVER, getResources().getString(R.string.default_get_server))));
         } catch (URISyntaxException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -56,7 +50,7 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     }
 
 
-    public void onClick(View view) {
+    public void onClick(final View view) {
         final Intent intent = new Intent(this, MatchDetailsActivity.class);
         intent.putExtra("match", ((MatchLayout) view).getMatch());
         startActivity(intent);
@@ -66,18 +60,18 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     private class PlayingScheduleDownloader extends AsyncTask<URI, Integer, List<MatchDay>> {
 
         @Override
-        protected List<MatchDay> doInBackground(URI... uris) {
-            return new HttpUtil().getPlayingSchedule(uris[0], prefs.getString(USERNAME, ""), prefs.getString(PASSWORD, ""));
+        protected List<MatchDay> doInBackground(final URI... uris) {
+            return new HttpUtil().getPlayingSchedule(uris[0], PlayingScheduleActivity.this.prefs.getString(USERNAME, ""), PlayingScheduleActivity.this.prefs.getString(PASSWORD, ""));
 
         }
 
 
         @Override
-        protected void onPostExecute(List<MatchDay> spieltage) {
-            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            v = new MatchDayLayout(PlayingScheduleActivity.this, PlayingScheduleActivity.this, spieltage);
-            sv.removeAllViews();
-            sv.addView(v);
+        protected void onPostExecute(final List<MatchDay> spieltage) {
+            final ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            PlayingScheduleActivity.this.v = new MatchDayLayout(PlayingScheduleActivity.this, PlayingScheduleActivity.this, spieltage);
+            PlayingScheduleActivity.this.sv.removeAllViews();
+            PlayingScheduleActivity.this.sv.addView(PlayingScheduleActivity.this.v);
         }
     }
 }

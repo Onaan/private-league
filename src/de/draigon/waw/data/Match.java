@@ -3,13 +3,6 @@ package de.draigon.waw.data;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Schnabel
- * Date: 06.06.12
- * Time: 11:07
- * To change this template use File | Settings | File Templates.
- */
 public class Match implements Serializable {
     private String id;
     private String homeTeam;
@@ -22,92 +15,74 @@ public class Match implements Serializable {
     private boolean bettable;
 
     public boolean isBettable() {
-        return bettable;
+        return this.bettable;
     }
 
-    public void setBettable(boolean bettable) {
+    public void setBettable(final boolean bettable) {
         this.bettable = bettable;
     }
 
-
-    private State state;
-
     public String getId() {
-        return id;
+        return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
-    public static enum State {
-        UPCOMMING, RUNNING, FINISHED
-    }
-
-
     public String getHomeTeam() {
-        return homeTeam;
+        return this.homeTeam;
     }
 
-    public void setHomeTeam(String homeTeam) {
+    public void setHomeTeam(final String homeTeam) {
         this.homeTeam = homeTeam;
     }
 
     public String getGuestTeam() {
-        return guestTeam;
+        return this.guestTeam;
     }
 
-    public void setGuestTeam(String guestTeam) {
+    public void setGuestTeam(final String guestTeam) {
         this.guestTeam = guestTeam;
     }
 
     public String getHomeScore() {
-        return homeScore;
+        return this.homeScore;
     }
 
-    public void setHomeScore(String homeScore) {
+    public void setHomeScore(final String homeScore) {
         this.homeScore = homeScore;
     }
 
     public String getGuestScore() {
-        return guestScore;
+        return this.guestScore;
     }
 
-    public void setGuestScore(String guestScore) {
+    public void setGuestScore(final String guestScore) {
         this.guestScore = guestScore;
     }
 
     public String getHomeScoreTip() {
-        return homeScoreTip;
+        return this.homeScoreTip;
     }
 
-    public void setHomeScoreTip(String homeScoreTip) {
+    public void setHomeScoreTip(final String homeScoreTip) {
         this.homeScoreTip = homeScoreTip;
     }
 
     public String getGuestScoreTip() {
-        return guestScoreTip;
+        return this.guestScoreTip;
     }
 
-    public void setGuestScoreTip(String guestScoreTip) {
+    public void setGuestScoreTip(final String guestScoreTip) {
         this.guestScoreTip = guestScoreTip;
     }
 
     public Date getKickOff() {
-        return kickOff;
+        return this.kickOff;
     }
 
-    public void setKickOff(Date kickOff) {
+    public void setKickOff(final Date kickOff) {
         this.kickOff = kickOff;
     }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-
 }

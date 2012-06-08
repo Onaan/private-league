@@ -10,19 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import de.draigon.waw.R;
 import de.draigon.waw.data.TeamBet;
-import de.draigon.waw.utils.PrefConstants;
 import de.draigon.waw.utils.HttpUtil;
+import de.draigon.waw.utils.PrefConstants;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Schnabel
- * Date: 07.06.12
- * Time: 18:06
- * To change this template use File | Settings | File Templates.
- */
 
 public class TeamBetActivity extends Activity implements AdapterView.OnItemClickListener {
 
@@ -30,45 +23,43 @@ public class TeamBetActivity extends Activity implements AdapterView.OnItemClick
     private SharedPreferences prefs;
     private ArrayAdapter<CharSequence> adapter;
 
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teambet);
-        lv = (ListView) findViewById(R.id.lv_teambet);
-        prefs = getSharedPreferences(PrefConstants.PREFS_NAME, MODE_PRIVATE);
-        lv.setOnItemClickListener(this);
+        this.lv = (ListView) findViewById(R.id.lv_teambet);
+        this.prefs = getSharedPreferences(PrefConstants.PREFS_NAME, MODE_PRIVATE);
+        this.lv.setOnItemClickListener(this);
 
     }
 
     public void onResume() {
         super.onResume();
-        adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_list_item_1);
-        lv.setAdapter(adapter);
+        this.adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_list_item_1);
+        this.lv.setAdapter(this.adapter);
         try {
-            new getTeambet().execute(new URI(prefs.getString(PrefConstants.GET_SERVER, getResources().getString(R.string.default_get_server))));
+            new getTeambet().execute(new URI(this.prefs.getString(PrefConstants.GET_SERVER, getResources().getString(R.string.default_get_server))));
         } catch (URISyntaxException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+    public void onItemClick(final AdapterView<?> adapterView, final View view, final int i, final long l) {
     }
 
     private class getTeambet extends AsyncTask<URI, Integer, TeamBet> {
 
         @Override
-        protected TeamBet doInBackground(URI... uris) {
-            return new HttpUtil().getTeamBetData(uris[0], prefs.getString(PrefConstants.USERNAME, ""), prefs.getString(PrefConstants.PASSWORD, ""));  //To change body of implemented methods use File | Settings | File Templates.
+        protected TeamBet doInBackground(final URI... uris) {
+            return new HttpUtil().getTeamBetData(uris[0], TeamBetActivity.this.prefs.getString(PrefConstants.USERNAME, ""), TeamBetActivity.this.prefs.getString(PrefConstants.PASSWORD, ""));  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
-        protected void onPostExecute(TeamBet teams) {
-            adapter.clear();
-
-            for (CharSequence s : teams.getChoices()) {
-                adapter.add(s);
+        protected void onPostExecute(final TeamBet teams) {
+            TeamBetActivity.this.adapter.clear();
+            for (final CharSequence s : teams.getChoices()) {
+                TeamBetActivity.this.adapter.add(s);
                 if (s.equals(teams.getSelected())) {
-                    lv.setSelection(adapter.getCount() - 1);
+                    TeamBetActivity.this.lv.setSelection(TeamBetActivity.this.adapter.getCount() - 1);
                 }
             }
 

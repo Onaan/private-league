@@ -12,13 +12,7 @@ import de.draigon.waw.R;
 
 import static de.draigon.waw.utils.PrefConstants.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Schnabel
- * Date: 05.06.12
- * Time: 11:41
- * To change this template use File | Settings | File Templates.
- */
+
 public class SetLoginDataActivity extends Activity {
     private EditText username;
     private EditText password;
@@ -26,60 +20,58 @@ public class SetLoginDataActivity extends Activity {
     private SharedPreferences prefs;
     private RadioGroup rg;
 
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_login_data);
         this.username = (EditText) findViewById(R.id.et_set_login_data_name);
         this.password = (EditText) findViewById(R.id.et_set_login_data_password);
         this.showPassword = (CheckBox) findViewById(R.id.cb_set_login_data_show);
-        this.rg=(RadioGroup) findViewById(R.id.rg_set_login_data_server_select);
-
-        prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        this.rg = (RadioGroup) findViewById(R.id.rg_set_login_data_server_select);
+        this.prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
     }
 
     public void onResume() {
         super.onResume();
-        username.setText(prefs.getString(USERNAME, ""));
-        password.setText(prefs.getString(PASSWORD, ""));
-        showPassword.setChecked(prefs.getBoolean("showPassword", false));
-        togglePasswordVisibility(showPassword);
-        if(prefs.getString(GET_SERVER,"").equals(DP_GET_SERVER)){
-            rg.check(R.id.rb_set_login_data_server_select_2);
+        this.username.setText(this.prefs.getString(USERNAME, ""));
+        this.password.setText(this.prefs.getString(PASSWORD, ""));
+        this.showPassword.setChecked(this.prefs.getBoolean("showPassword", false));
+        togglePasswordVisibility(this.showPassword);
+        if (this.prefs.getString(GET_SERVER, "").equals(DP_GET_SERVER)) {
+            this.rg.check(R.id.rb_set_login_data_server_select_2);
         }
 
 
     }
 
+    @SuppressWarnings("unused")
     public void saveLoginData(final View view) {
-        SharedPreferences.Editor e = prefs.edit();
+        final SharedPreferences.Editor e = this.prefs.edit();
         String getServer = null;
         String postServer = null;
-        if (R.id.rb_set_login_data_server_select_1==rg.getCheckedRadioButtonId()){
+        if (R.id.rb_set_login_data_server_select_1 == this.rg.getCheckedRadioButtonId()) {
             getServer = IT_NRW_GET_SERVER;
             postServer = IT_NRW_POST_SERVER;
         }
-        if (R.id.rb_set_login_data_server_select_2==rg.getCheckedRadioButtonId()){
+        if (R.id.rb_set_login_data_server_select_2 == this.rg.getCheckedRadioButtonId()) {
             getServer = DP_GET_SERVER;
             postServer = DP_POST_SERVER;
         }
-
-        e.putString(POST_SERVER,postServer);
-        e.putString(GET_SERVER,getServer);
-        e.putString(USERNAME, username.getText().toString());
-        e.putString(PASSWORD, password.getText().toString());
-        e.putBoolean("showPassword", showPassword.isChecked());
-
+        e.putString(POST_SERVER, postServer);
+        e.putString(GET_SERVER, getServer);
+        e.putString(USERNAME, this.username.getText().toString());
+        e.putString(PASSWORD, this.password.getText().toString());
+        e.putBoolean("showPassword", this.showPassword.isChecked());
         e.commit();
         this.finish();
     }
 
     public void togglePasswordVisibility(final View view) {
-        if (!showPassword.isChecked()) {
-            password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        if (!this.showPassword.isChecked()) {
+            this.password.setTransformationMethod(PasswordTransformationMethod.getInstance());
         } else {
-            password.setTransformationMethod(null);
+            this.password.setTransformationMethod(null);
         }
     }
 }
