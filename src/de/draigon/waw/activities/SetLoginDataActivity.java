@@ -64,14 +64,14 @@ public class SetLoginDataActivity extends Activity {
         e.putString(POST_SERVER, postServer);
         e.putString(GET_SERVER, getServer);
         e.putString(USERNAME, this.username.getText().toString().trim());
-        e.putString(PASSWORD, this.password.getText().toString().trim());
+        e.putString(PASSWORD, this.password.getText().toString());
         e.putBoolean("showPassword", this.showPassword.isChecked());
         e.commit();
         Toast.makeText(getApplicationContext(), getResources().getText(R.string.set_login_data_save_message), Toast.LENGTH_SHORT).show();
         this.finish();
     }
 
-    private void togglePasswordVisibility(final View view) {
+    public void togglePasswordVisibility(final View view) {
         if (!this.showPassword.isChecked()) {
             this.password.setTransformationMethod(PasswordTransformationMethod.getInstance());
         } else {

@@ -7,6 +7,5 @@
 * updatebenachrichtigung
 * kein internet abfangen
 * anzeigen ergebnis/tendenz/sieger
-* upload nur bei noch nicht gestarteten spielen erlauben
 * refresh-knoepfe einbauen
-* login not case sensitive
+

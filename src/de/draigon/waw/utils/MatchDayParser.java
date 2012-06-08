@@ -71,7 +71,7 @@ public class MatchDayParser {
             if ("bets".equals(matchNode.getChildNodes().item(i).getNodeName())) {
                 for (int j = 0; j < matchNode.getChildNodes().item(i).getChildNodes().getLength(); ++j) {
                     if ("bet".equals(matchNode.getChildNodes().item(i).getChildNodes().item(j).getNodeName())
-                            && username.equals(matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes().getNamedItem(PrefConstants.USERNAME).getTextContent())
+                            && username.equalsIgnoreCase(matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes().getNamedItem(PrefConstants.USERNAME).getTextContent())
                             ) {
                         return matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes();
                     }
