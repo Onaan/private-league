@@ -17,5 +17,9 @@
     <string name="default_get_server">http://it.draigon.de/getBets.php</string>
     <string name="default_post_server">"http://it.draigon.de/placeBets.php"</string>
     <string name="matchdetails_upload_bet">Hochladen</string>
+    <string name="set_login_data_choose_group">Bitte Gruppe auswählen:</string>
+    <string name="rb_set_login_data_server_select_1">IT.NRW</string>
+    <string name="rb_set_login_data_server_select_2">Dennis private Gruppe</string>
+
 
 </resources>

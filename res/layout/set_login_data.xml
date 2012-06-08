@@ -28,14 +28,41 @@
               android:hint="@string/set_login_data_password"
             />
 
-    <CheckBox android:id="@+id/cb_set_login_data_show"
+
+
+
+        <TextView android:text="@string/set_login_data_choose_group"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"/>
+    <RadioGroup
+            android:id="@+id/rg_set_login_data_server_select"
+            android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+
+
+
+            >
+                 <RadioButton
+            android:id="@+id/rb_set_login_data_server_select_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rb_set_login_data_server_select_1"
+            android:checked="true" />
+
+         <RadioButton
+            android:id="@+id/rb_set_login_data_server_select_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rb_set_login_data_server_select_2"
+            android:checked="false" />
+    </RadioGroup>
+
+         <CheckBox android:id="@+id/cb_set_login_data_show"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="@string/set_login_data_show"
               android:onClick="togglePasswordVisibility"
             />
-
-
     <Button
             android:id="@+id/b_set_login_data_save"
             android:layout_width="wrap_content"
