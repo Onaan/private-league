@@ -1,4 +1,4 @@
-package de.draigon.waw.views;
+package de.draigon.waw.activities;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -9,9 +9,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import de.draigon.waw.R;
-import de.draigon.waw.TeamBetData;
+import de.draigon.waw.data.TeamBet;
 import de.draigon.waw.utils.PrefConstants;
-import de.draigon.waw.utils.WAWHttpClient;
+import de.draigon.waw.utils.HttpUtil;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,7 +24,7 @@ import java.net.URISyntaxException;
  * To change this template use File | Settings | File Templates.
  */
 
-public class TeamBetView extends Activity implements AdapterView.OnItemClickListener {
+public class TeamBetActivity extends Activity implements AdapterView.OnItemClickListener {
 
     private ListView lv;
     private SharedPreferences prefs;
@@ -54,15 +54,15 @@ public class TeamBetView extends Activity implements AdapterView.OnItemClickList
 
     }
 
-    private class getTeambet extends AsyncTask<URI, Integer, TeamBetData> {
+    private class getTeambet extends AsyncTask<URI, Integer, TeamBet> {
 
         @Override
-        protected TeamBetData doInBackground(URI... uris) {
-            return new WAWHttpClient().getTeamBetData(uris[0], prefs.getString(PrefConstants.USERNAME, ""), prefs.getString(PrefConstants.PASSWORD, ""));  //To change body of implemented methods use File | Settings | File Templates.
+        protected TeamBet doInBackground(URI... uris) {
+            return new HttpUtil().getTeamBetData(uris[0], prefs.getString(PrefConstants.USERNAME, ""), prefs.getString(PrefConstants.PASSWORD, ""));  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
-        protected void onPostExecute(TeamBetData teams) {
+        protected void onPostExecute(TeamBet teams) {
             adapter.clear();
 
             for (CharSequence s : teams.getChoices()) {

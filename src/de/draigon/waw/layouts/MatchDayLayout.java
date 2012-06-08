@@ -1,4 +1,4 @@
-package de.draigon.waw;
+package de.draigon.waw.layouts;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -8,6 +8,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import de.draigon.waw.R;
+import de.draigon.waw.data.MatchDay;
+import de.draigon.waw.data.Match;
 
 import java.util.List;
 
@@ -18,14 +21,14 @@ import java.util.List;
  * Time: 15:10
  * To change this template use File | Settings | File Templates.
  */
-public class MatchDayView extends LinearLayout implements AdapterView.OnItemSelectedListener {
+public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSelectedListener {
     private OnClickListener listener;
     private Context context;
     private Spinner spinner;
-    private List<Spieltag> spieltage;
+    private List<MatchDay> spieltage;
 
 
-    public MatchDayView(Context context, OnClickListener listener, List<Spieltag> spieltage) {
+    public MatchDayLayout(Context context, OnClickListener listener, List<MatchDay> spieltage) {
         super(context);
         this.context = context;
         this.listener = listener;
@@ -68,7 +71,7 @@ public class MatchDayView extends LinearLayout implements AdapterView.OnItemSele
     private void createMatch(Match m) {
 
 
-        MatchView t = new MatchView(context, m);
+        MatchLayout t = new MatchLayout(context, m);
 
         t.setOnClickListener(listener);
         this.addView(t);

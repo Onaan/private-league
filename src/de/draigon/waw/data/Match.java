@@ -1,4 +1,4 @@
-package de.draigon.waw;
+package de.draigon.waw.data;
 
 import java.io.Serializable;
 import java.util.Date;

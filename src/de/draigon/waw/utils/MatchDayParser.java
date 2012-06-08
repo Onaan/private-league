@@ -1,7 +1,7 @@
 package de.draigon.waw.utils;
 
-import de.draigon.waw.Match;
-import de.draigon.waw.Spieltag;
+import de.draigon.waw.data.Match;
+import de.draigon.waw.data.MatchDay;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -18,12 +18,12 @@ import java.util.List;
  * Time: 11:17
  * To change this template use File | Settings | File Templates.
  */
-public class SpieltagParser {
+public class MatchDayParser {
 
 
-    public List<Spieltag> createSpielplan(Document xml, String username) {
+    public List<MatchDay> createSpielplan(Document xml, String username) {
 
-        List<Spieltag> spieltage = new ArrayList<Spieltag>();
+        List<MatchDay> spieltage = new ArrayList<MatchDay>();
 
         NodeList rounds = xml.getElementsByTagName("round");
         for (int i = 0; i < rounds.getLength(); ++i) {
@@ -34,8 +34,8 @@ public class SpieltagParser {
         return spieltage;  //To change body of created methods use File | Settings | File Templates.
     }
 
-    private Spieltag parseRound(Node round, String username) {
-        Spieltag spieltag = new Spieltag(round.getAttributes().getNamedItem("name").getTextContent());
+    private MatchDay parseRound(Node round, String username) {
+        MatchDay spieltag = new MatchDay(round.getAttributes().getNamedItem("name").getTextContent());
         List<Match> matches = new ArrayList<Match>();
 
         NodeList childs = round.getChildNodes();

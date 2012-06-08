@@ -1,4 +1,6 @@
-package de.draigon.waw;
+package de.draigon.waw.data;
+
+import de.draigon.waw.data.Match;
 
 import java.util.List;
 
@@ -9,12 +11,12 @@ import java.util.List;
  * Time: 11:47
  * To change this template use File | Settings | File Templates.
  */
-public class Spieltag {
+public class MatchDay {
     private String name;
     private List<Match> matches;
 
 
-    public Spieltag(String name) {
+    public MatchDay(String name) {
         this.name = name;
     }
 

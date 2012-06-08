@@ -1,4 +1,4 @@
-package de.draigon.waw;
+package de.draigon.waw.layouts;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import de.draigon.waw.data.Match;
 
 import java.text.SimpleDateFormat;
 
@@ -17,13 +18,13 @@ import java.text.SimpleDateFormat;
  * Time: 11:16
  * To change this template use File | Settings | File Templates.
  */
-public class MatchView extends TableLayout {
+public class MatchLayout extends TableLayout {
     private Context context;
     private static SimpleDateFormat sdf = new SimpleDateFormat("E',' dd.MM.yyyy HH:mm");
     private Match match;
 
 
-    public MatchView(Context context, Match m) {
+    public MatchLayout(Context context, Match m) {
         super(context);
         this.context = context;
         this.match = m;

@@ -1,4 +1,4 @@
-package de.draigon.waw.views;
+package de.draigon.waw.activities;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import de.draigon.waw.Match;
+import de.draigon.waw.data.Match;
 import de.draigon.waw.R;
-import de.draigon.waw.utils.WAWHttpClient;
+import de.draigon.waw.utils.HttpUtil;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,7 +24,7 @@ import static de.draigon.waw.utils.PrefConstants.*;
  * Time: 14:32
  * To change this template use File | Settings | File Templates.
  */
-public class MatchDetails extends Activity {
+public class MatchDetailsActivity extends Activity {
     private Match match;
     private TextView home;
     private TextView guest;
@@ -71,14 +71,14 @@ public class MatchDetails extends Activity {
             match.setHomeScoreTip(homeTip.getText().toString());
             match.setGuestScoreTip(guestTip.getText().toString());
 
-            return new WAWHttpClient().uploadBet(uris[0], prefs.getString(USERNAME, ""), prefs.getString(PASSWORD, ""), match);
+            return new HttpUtil().uploadBet(uris[0], prefs.getString(USERNAME, ""), prefs.getString(PASSWORD, ""), match);
 
         }
 
 
         @Override
         protected void onPostExecute(Boolean success) {
-            MatchDetails.this.finish();
+            MatchDetailsActivity.this.finish();
 
         }
     }

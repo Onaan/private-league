@@ -1,4 +1,4 @@
-package de.draigon.waw.views;
+package de.draigon.waw.activities;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -18,7 +18,7 @@ import static de.draigon.waw.utils.PrefConstants.*;
  * Time: 11:41
  * To change this template use File | Settings | File Templates.
  */
-public class SetLoginData extends Activity {
+public class SetLoginDataActivity extends Activity {
     private EditText username;
     private EditText password;
     private CheckBox showPassword;

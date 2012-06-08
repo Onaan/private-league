@@ -1,4 +1,4 @@
-package de.draigon.waw;
+package de.draigon.waw.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
-import de.draigon.waw.utils.WAWHttpClient;
-import de.draigon.waw.views.MatchDetails;
+import de.draigon.waw.R;
+import de.draigon.waw.data.MatchDay;
+import de.draigon.waw.layouts.MatchDayLayout;
+import de.draigon.waw.layouts.MatchLayout;
+import de.draigon.waw.utils.HttpUtil;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,10 +27,10 @@ import static de.draigon.waw.utils.PrefConstants.*;
  * Time: 11:48
  * To change this template use File | Settings | File Templates.
  */
-public class Spielplan extends Activity implements View.OnClickListener {
-    public static final String TAG = "de.draigon.waw.Spielplan";
+public class PlayingScheduleActivity extends Activity implements View.OnClickListener {
+    public static final String TAG = "de.draigon.waw.activities.PlayingScheduleActivity";
 
-    private MatchDayView v;
+    private MatchDayLayout v;
     private SharedPreferences prefs;
     private ScrollView sv;
 
@@ -54,25 +57,25 @@ public class Spielplan extends Activity implements View.OnClickListener {
 
 
     public void onClick(View view) {
-        final Intent intent = new Intent(this, MatchDetails.class);
-        intent.putExtra("match", ((MatchView) view).getMatch());
+        final Intent intent = new Intent(this, MatchDetailsActivity.class);
+        intent.putExtra("match", ((MatchLayout) view).getMatch());
         startActivity(intent);
     }
 
 
-    private class PlayingScheduleDownloader extends AsyncTask<URI, Integer, List<Spieltag>> {
+    private class PlayingScheduleDownloader extends AsyncTask<URI, Integer, List<MatchDay>> {
 
         @Override
-        protected List<Spieltag> doInBackground(URI... uris) {
-            return new WAWHttpClient().getPlayingSchedule(uris[0], prefs.getString(USERNAME, ""), prefs.getString(PASSWORD, ""));
+        protected List<MatchDay> doInBackground(URI... uris) {
+            return new HttpUtil().getPlayingSchedule(uris[0], prefs.getString(USERNAME, ""), prefs.getString(PASSWORD, ""));
 
         }
 
 
         @Override
-        protected void onPostExecute(List<Spieltag> spieltage) {
+        protected void onPostExecute(List<MatchDay> spieltage) {
             ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            v = new MatchDayView(Spielplan.this, Spielplan.this, spieltage);
+            v = new MatchDayLayout(PlayingScheduleActivity.this, PlayingScheduleActivity.this, spieltage);
             sv.removeAllViews();
             sv.addView(v);
         }

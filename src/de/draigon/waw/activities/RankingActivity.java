@@ -1,4 +1,4 @@
-package de.draigon.waw.views;
+package de.draigon.waw.activities;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -6,9 +6,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import de.draigon.waw.MatchDayView;
+import de.draigon.waw.layouts.MatchDayLayout;
 import de.draigon.waw.R;
-import de.draigon.waw.utils.WAWHttpClient;
+import de.draigon.waw.utils.HttpUtil;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -22,13 +22,13 @@ import static de.draigon.waw.utils.PrefConstants.*;
  * Time: 11:48
  * To change this template use File | Settings | File Templates.
  */
-public class Ranking extends Activity {
+public class RankingActivity extends Activity {
     ListView lv;
     ArrayAdapter<CharSequence> adapter;
     SharedPreferences prefs;
 
 
-    private MatchDayView v;
+    private MatchDayLayout v;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +53,7 @@ public class Ranking extends Activity {
 
         @Override
         protected CharSequence[] doInBackground(URI... uris) {
-            return new WAWHttpClient().getRankings(uris[0], prefs.getString(USERNAME, ""), prefs.getString(PASSWORD, ""));  //To change body of implemented methods use File | Settings | File Templates.
+            return new HttpUtil().getRankings(uris[0], prefs.getString(USERNAME, ""), prefs.getString(PASSWORD, ""));  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override

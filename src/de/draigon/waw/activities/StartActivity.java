@@ -1,4 +1,4 @@
-package de.draigon.waw.views;
+package de.draigon.waw.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import de.draigon.waw.R;
-import de.draigon.waw.Spielplan;
+import de.draigon.waw.menues.SetServerDataMenu;
 
 import static de.draigon.waw.utils.PrefConstants.*;
 
@@ -36,7 +36,7 @@ public class StartActivity extends Activity {
         Log.v(TAG, TAG + ".onCreate() called");
         setContentView(R.layout.start_activity);
         loginPrefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        spielplanButton = (Button) findViewById(R.id.b_startActivity_spielplan);
+        spielplanButton = (Button) findViewById(R.id.b_startActivity_playing_schedule);
         rankingButton = (Button) findViewById(R.id.b_startActivity_ranking);
         teamBetButton = (Button) findViewById(R.id.b_startActivity_special_bet);
     }
@@ -57,23 +57,23 @@ public class StartActivity extends Activity {
     }
 
 
-    public void goToSpielplan(final View view) {
-        final Intent intent = new Intent(this, Spielplan.class);
+    public void goToPlayingSchedule(final View view) {
+        final Intent intent = new Intent(this, PlayingScheduleActivity.class);
         startActivity(intent);
     }
 
-    public void goToSetLoginDaten(final View view) {
-        final Intent intent = new Intent(this, SetLoginData.class);
+    public void goToSetLoginData(final View view) {
+        final Intent intent = new Intent(this, SetLoginDataActivity.class);
         startActivity(intent);
     }
 
     public void goToRanking(final View view) {
-        final Intent intent = new Intent(this, Ranking.class);
+        final Intent intent = new Intent(this, RankingActivity.class);
         startActivity(intent);
     }
 
     public void goToTeamBet(final View v) {
-        final Intent intent = new Intent(this, TeamBetView.class);
+        final Intent intent = new Intent(this, TeamBetActivity.class);
         startActivity(intent);
     }
 
@@ -91,7 +91,7 @@ public class StartActivity extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.server_location_menu_edit_server_data:
-                final Intent intent = new Intent(this, SetServerData.class);
+                final Intent intent = new Intent(this, SetServerDataMenu.class);
                 startActivity(intent);
                 break;
             default:

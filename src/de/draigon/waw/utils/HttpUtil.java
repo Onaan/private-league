@@ -1,9 +1,9 @@
 package de.draigon.waw.utils;
 
 import android.util.Log;
-import de.draigon.waw.Match;
-import de.draigon.waw.Spieltag;
-import de.draigon.waw.TeamBetData;
+import de.draigon.waw.data.Match;
+import de.draigon.waw.data.MatchDay;
+import de.draigon.waw.data.TeamBet;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -33,12 +33,12 @@ import java.util.List;
  * Time: 11:16
  * To change this template use File | Settings | File Templates.
  */
-public class WAWHttpClient {
-    public static final String TAG = WAWHttpClient.class.getName();
+public class HttpUtil {
+    public static final String TAG = HttpUtil.class.getName();
     private static final BasicNameValuePair login = new BasicNameValuePair("login", "true");
-    private SpieltagParser spielTagParser = new SpieltagParser();
+    private MatchDayParser spielTagParser = new MatchDayParser();
 
-    public WAWHttpClient() {
+    public HttpUtil() {
 
 
     }
@@ -79,7 +79,7 @@ public class WAWHttpClient {
     }
 
 
-    public List<Spieltag> getPlayingSchedule(URI uri, String username, String password) {
+    public List<MatchDay> getPlayingSchedule(URI uri, String username, String password) {
 
 
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
@@ -121,7 +121,7 @@ public class WAWHttpClient {
         return scores;
     }
 
-    public TeamBetData getTeamBetData(URI uri, String username, String password) {
+    public TeamBet getTeamBetData(URI uri, String username, String password) {
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
         formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
@@ -129,14 +129,14 @@ public class WAWHttpClient {
         return parseTeamBetData(xml);
     }
 
-    private TeamBetData parseTeamBetData(Document xml) {
+    private TeamBet parseTeamBetData(Document xml) {
         NodeList playerNodes = xml.getElementsByTagName("team");
         CharSequence[] teams = new CharSequence[playerNodes.getLength()];
         for (int i = 0; i < playerNodes.getLength(); ++i) {
             teams[i] = playerNodes.item(i).getAttributes().getNamedItem("name").getTextContent();
 
         }
-        TeamBetData tbd = new TeamBetData();
+        TeamBet tbd = new TeamBet();
         Arrays.sort(teams);
         tbd.setChoices(teams);
         tbd.setBettable(isTeamBettable(xml));

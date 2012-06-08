@@ -1,4 +1,4 @@
-package de.draigon.waw.views;
+package de.draigon.waw.menues;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -15,7 +15,7 @@ import de.draigon.waw.utils.PrefConstants;
  * Time: 22:18
  * To change this template use File | Settings | File Templates.
  */
-public class SetServerData extends Activity {
+public class SetServerDataMenu extends Activity {
 
     private SharedPreferences prefs;
     private EditText getServer;

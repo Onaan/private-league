@@ -1,4 +1,4 @@
-package de.draigon.waw;
+package de.draigon.waw.data;
 
 /**
  * Created by IntelliJ IDEA.
@@ -7,7 +7,7 @@ package de.draigon.waw;
  * Time: 19:30
  * To change this template use File | Settings | File Templates.
  */
-public class TeamBetData {
+public class TeamBet {
     private boolean bettable = false;
     private CharSequence[] choices;
     private CharSequence selected = null;
