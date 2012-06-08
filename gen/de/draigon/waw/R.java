@@ -71,5 +71,8 @@ public final class R {
         public static final int start_activity_ranking = 0x7f030002;
         public static final int start_activity_set_login_data = 0x7f030001;
         public static final int start_activity_teambet = 0x7f030004;
+        public static final int upload_bet_late = 0x7f030016;
+        public static final int upload_bet_success = 0x7f030015;
+        public static final int upload_bet_unknown_user = 0x7f030017;
     }
 }

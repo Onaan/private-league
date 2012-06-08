@@ -21,6 +21,9 @@
     <string name="set_login_data_choose_group">Bitte Gruppe auswählen:</string>
     <string name="rb_set_login_data_server_select_1">IT.NRW</string>
     <string name="rb_set_login_data_server_select_2">Dennis private Gruppe</string>
-
+    <string name="upload_bet_success">Wette erfolgreich platziert</string>
+    <string name="upload_bet_late">Wette konnte nicht platziert werden da der Einsendeschluss erreicht ist</string>
+    <string name="upload_bet_unknown_user">Wette konnte nicht platziert werden, bitte überprüfen sie die Logindaten
+    </string>
 
 </resources>

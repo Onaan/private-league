@@ -74,14 +74,19 @@ public class HttpUtil {
     }
 
 
-    public Boolean uploadBet(final URI uri, final String username, final String password, final Match match) {
+    public BetState uploadBet(final URI uri, final String username, final String password, final Match match) {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
         formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
         formparams.add(new BasicNameValuePair("tips", match.getId() + ":" + match.getHomeScoreTip() + ":" + match.getGuestScoreTip()));
         final Document xml = doPost(uri, formparams);
-        return true;     //TODO: error handling, check if upload was successful
+        return isBetPlacementSuccessful(xml);
 
+    }
+
+    private BetState isBetPlacementSuccessful(final Document xml) {
+        final NodeList betNode = xml.getElementsByTagName("bet");
+        return BetState.valueOf(betNode.item(0).getAttributes().getNamedItem("status").getTextContent());
     }
 
     public CharSequence[] getRankings(final URI uri, final String username, final String password) {
