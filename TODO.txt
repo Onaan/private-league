@@ -5,7 +5,6 @@
 * icon
 * sondertip senden/anzeigen
 * updatebenachrichtigung
-* anzeigen ob tip erfolgreich
 * kein internet abfangen
 * anzeigen ergebnis/tendenz/sieger
 * upload nur bei noch nicht gestarteten spielen erlauben

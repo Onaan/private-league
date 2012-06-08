@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ScrollView;
+import de.draigon.waw.data.Match;
 import de.draigon.waw.data.MatchDay;
 import de.draigon.waw.layouts.MatchDayLayout;
 import de.draigon.waw.layouts.MatchLayout;
@@ -52,9 +53,12 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
 
 
     public void onClick(final View view) {
-        final Intent intent = new Intent(this, MatchDetailsActivity.class);
-        intent.putExtra(MATCH, ((MatchLayout) view).getMatch());
-        startActivity(intent);
+        Match match = ((MatchLayout) view).getMatch();
+        if (match.isBettable()) {
+            final Intent intent = new Intent(this, MatchDetailsActivity.class);
+            intent.putExtra(MATCH, match);
+            startActivity(intent);
+        }
     }
 
 
