@@ -86,6 +86,9 @@ public class BetMatchActivity extends Activity {
                 case UNKNOWN_USER:
                     message = getResources().getString(R.string.upload_bet_unknown_user);
                     break;
+                case ILLEGAL_PARAMETER:
+                    message = getResources().getString(R.string.upload_bet_illegal_parameter);
+                    break;
                 default:
                     throw new IllegalStateException("Illegal BetState " + betState + "recieved");
             }

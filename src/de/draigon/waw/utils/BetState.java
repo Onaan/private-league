@@ -8,5 +8,5 @@ package de.draigon.waw.utils;
  * To change this template use File | Settings | File Templates.
  */
 public enum BetState {
-    OK, LATE, UNKNOWN_USER;
+    OK, LATE, UNKNOWN_USER, ILLEGAL_PARAMETER;
 }
