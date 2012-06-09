@@ -1,73 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical">
 
-
-    <TextView android:text="@string/set_login_data_name"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"/>
-
-    <EditText android:id="@+id/et_set_login_data_name"
-              android:singleLine="true"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:hint="@string/set_login_data_name"/>
-
-    <TextView android:text="@string/set_login_data_password"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"/>
-
-    <EditText android:id="@+id/et_set_login_data_password"
-              android:singleLine="true"
-              android:password="true"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:hint="@string/set_login_data_password"
-            />
-
-
-    <TextView android:text="@string/set_login_data_choose_group"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"/>
-    <RadioGroup
-            android:id="@+id/rg_set_login_data_server_select"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent">
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
 
-            >
-        <RadioButton
-                android:id="@+id/rb_set_login_data_server_select_1"
+        <TextView android:text="@string/set_login_data_name"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"/>
+
+        <EditText android:id="@+id/et_set_login_data_name"
+                  android:singleLine="true"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="@string/set_login_data_name"/>
+
+        <TextView android:text="@string/set_login_data_password"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"/>
+
+        <EditText android:id="@+id/et_set_login_data_password"
+                  android:singleLine="true"
+                  android:password="true"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="@string/set_login_data_password"
+                />
+
+
+        <TextView android:text="@string/set_login_data_choose_group"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"/>
+        <RadioGroup
+                android:id="@+id/rg_set_login_data_server_select"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+
+
+                >
+            <RadioButton
+                    android:id="@+id/rb_set_login_data_server_select_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rb_set_login_data_server_select_1"
+                    android:checked="true"/>
+
+            <RadioButton
+                    android:id="@+id/rb_set_login_data_server_select_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rb_set_login_data_server_select_2"
+                    android:checked="false"/>
+        </RadioGroup>
+
+        <CheckBox android:id="@+id/cb_set_login_data_show"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/set_login_data_show"
+                  android:onClick="togglePasswordVisibility"
+                />
+        <Button
+                android:id="@+id/b_set_login_data_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/rb_set_login_data_server_select_1"
-                android:checked="true"/>
+                android:layout_gravity="center|bottom"
+                android:onClick="saveLoginData"
+                android:text="@string/set_login_data_save"
+                android:layout_alignParentBottom="true"
+                />
 
-        <RadioButton
-                android:id="@+id/rb_set_login_data_server_select_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/rb_set_login_data_server_select_2"
-                android:checked="false"/>
-    </RadioGroup>
-
-    <CheckBox android:id="@+id/cb_set_login_data_show"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/set_login_data_show"
-              android:onClick="togglePasswordVisibility"
-            />
-    <Button
-            android:id="@+id/b_set_login_data_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:onClick="saveLoginData"
-            android:text="@string/set_login_data_save"
-            android:layout_alignParentBottom="true"
-            />
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

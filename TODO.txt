@@ -1,6 +1,4 @@
-* Fehlermeldung bei falschem logon (Overlay benutzer/pw unbekannt)
 * mehrere accounts auf einem gerate
-* anzeige der Tips anderer Spieler
 * spieltagauswahl scrollt nicht mit
 * icon
 * sondertip senden/anzeigen
