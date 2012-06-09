@@ -7,12 +7,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ScrollView;
+import android.widget.Toast;
+import de.draigon.waw.R;
 import de.draigon.waw.data.Match;
 import de.draigon.waw.data.MatchDay;
 import de.draigon.waw.layouts.MatchDayLayout;
 import de.draigon.waw.layouts.MatchLayout;
 import de.draigon.waw.utils.HttpUtil;
 
+import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -53,7 +56,7 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
 
 
     public void onClick(final View view) {
-        Match match = ((MatchLayout) view).getMatch();
+        final Match match = ((MatchLayout) view).getMatch();
         if (match.isBettable()) {
             final Intent intent = new Intent(this, BetMatchActivity.class);
             intent.putExtra(MATCH, match);
@@ -70,13 +73,22 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
 
         @Override
         protected List<MatchDay> doInBackground(final URI... uris) {
-            return new HttpUtil().getPlayingSchedule(uris[0], PlayingScheduleActivity.this.prefs.getString(USERNAME, ""), PlayingScheduleActivity.this.prefs.getString(PASSWORD, ""));
+            try {
+                return new HttpUtil().getPlayingSchedule(uris[0], PlayingScheduleActivity.this.prefs.getString(USERNAME, ""), PlayingScheduleActivity.this.prefs.getString(PASSWORD, ""));
+            } catch (ConnectException e) {
+                return null;
+            }
 
         }
 
 
         @Override
         protected void onPostExecute(final List<MatchDay> matchDays) {
+            if (matchDays == null) {
+                Toast.makeText(getApplicationContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
+                PlayingScheduleActivity.this.finish();
+                return;
+            }
             PlayingScheduleActivity.this.matchDayLayout = new MatchDayLayout(PlayingScheduleActivity.this, PlayingScheduleActivity.this, matchDays);
             PlayingScheduleActivity.this.scrollView.removeAllViews();
             PlayingScheduleActivity.this.scrollView.addView(PlayingScheduleActivity.this.matchDayLayout);

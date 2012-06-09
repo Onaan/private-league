@@ -25,8 +25,10 @@
     <string name="upload_bet_late">Wette konnte nicht platziert werden da der Einsendeschluss erreicht ist</string>
     <string name="upload_bet_unknown_user">Wette konnte nicht platziert werden, bitte überprüfen sie die Logindaten
     </string>
-    <string name="upload_bet_illegal_parameter">Wette konnte nicht platziert werden, bitte überprüfen sie ihre Eingaben
+    <string name="upload_bet_illegal_parameter">Wette konnte nicht platziert werden, bitte überprüfen sie ihre
+        Eingaben
     </string>
+    <string name="no_internet_connection">Server nicht erreichbar, bitte überprüfen sie ihre Internetverbindung</string>
 
 
 </resources>

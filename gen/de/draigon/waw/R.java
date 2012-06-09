@@ -64,6 +64,7 @@ public final class R {
         public static final int default_get_server = 0x7f04000f;
         public static final int default_post_server = 0x7f040010;
         public static final int matchdetails_upload_bet = 0x7f040011;
+        public static final int no_internet_connection = 0x7f040019;
         public static final int rb_set_login_data_server_select_1 = 0x7f040013;
         public static final int rb_set_login_data_server_select_2 = 0x7f040014;
         public static final int server_location_menu_edit_server_data = 0x7f04000b;

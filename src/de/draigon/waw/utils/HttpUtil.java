@@ -21,6 +21,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.ConnectException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,18 +36,22 @@ public class HttpUtil {
     public HttpUtil() {
     }
 
-    private Document doPost(final URI uri, final List<NameValuePair> params) {
+    private Document doPost(final URI uri, final List<NameValuePair> params) throws ConnectException {
         params.add(login);
         final HttpClient client = new DefaultHttpClient();
         final HttpPost post = new HttpPost(uri);
-        String document = null;
+        String document;
         try {
             final UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "ISO8859_1");
             post.setEntity(entity);
             final HttpResponse response = client.execute(post);
             document = EntityUtils.toString(response.getEntity());
+
+        } catch (ConnectException e) {
+            throw e;
         } catch (IOException e) {
             Log.e(TAG, "Error getting data", e);
+            throw new RuntimeException();
         }
         Document xml = null;
         try {
@@ -65,7 +70,7 @@ public class HttpUtil {
     }
 
 
-    public List<MatchDay> getPlayingSchedule(final URI uri, final String username, final String password) {
+    public List<MatchDay> getPlayingSchedule(final URI uri, final String username, final String password) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
         formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
@@ -74,7 +79,7 @@ public class HttpUtil {
     }
 
 
-    public BetState uploadBet(final URI uri, final String username, final String password, final Match match) {
+    public BetState uploadBet(final URI uri, final String username, final String password, final Match match) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
         formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
@@ -89,7 +94,7 @@ public class HttpUtil {
         return BetState.valueOf(betNode.item(0).getAttributes().getNamedItem("status").getTextContent());
     }
 
-    public CharSequence[] getRankings(final URI uri, final String username, final String password) {
+    public CharSequence[] getRankings(final URI uri, final String username, final String password) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
         formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
@@ -107,7 +112,7 @@ public class HttpUtil {
         return scores;
     }
 
-    public TeamBet getTeamBetData(final URI uri, final String username, final String password) {
+    public TeamBet getTeamBetData(final URI uri, final String username, final String password) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
         formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));

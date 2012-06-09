@@ -8,11 +8,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import de.draigon.waw.R;
 import de.draigon.waw.data.TeamBet;
 import de.draigon.waw.utils.HttpUtil;
 import de.draigon.waw.utils.PrefConstants;
 
+import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -52,11 +54,21 @@ public class TeamBetActivity extends Activity implements AdapterView.OnItemClick
 
         @Override
         protected TeamBet doInBackground(final URI... uris) {
-            return new HttpUtil().getTeamBetData(uris[0], TeamBetActivity.this.prefs.getString(PrefConstants.USERNAME, ""), TeamBetActivity.this.prefs.getString(PrefConstants.PASSWORD, ""));  //To change body of implemented methods use File | Settings | File Templates.
+            try {
+                return new HttpUtil().getTeamBetData(uris[0], TeamBetActivity.this.prefs.getString(PrefConstants.USERNAME, ""), TeamBetActivity.this.prefs.getString(PrefConstants.PASSWORD, ""));  //To change body of implemented methods use File | Settings | File Templates.
+            } catch (ConnectException e) {
+                return null;
+            }
+
         }
 
         @Override
         protected void onPostExecute(final TeamBet teams) {
+            if (teams == null) {
+                Toast.makeText(getApplicationContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
+                TeamBetActivity.this.finish();
+                return;
+            }
             TeamBetActivity.this.adapter.clear();
             for (final CharSequence s : teams.getChoices()) {
                 TeamBetActivity.this.adapter.add(s);

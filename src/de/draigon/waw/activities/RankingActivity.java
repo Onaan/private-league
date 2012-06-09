@@ -6,9 +6,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import de.draigon.waw.R;
 import de.draigon.waw.utils.HttpUtil;
 
+import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -44,11 +46,21 @@ public class RankingActivity extends Activity {
 
         @Override
         protected CharSequence[] doInBackground(final URI... uris) {
-            return new HttpUtil().getRankings(uris[0], RankingActivity.this.prefs.getString(USERNAME, ""), RankingActivity.this.prefs.getString(PASSWORD, ""));  //To change body of implemented methods use File | Settings | File Templates.
+            try {
+                return new HttpUtil().getRankings(uris[0], RankingActivity.this.prefs.getString(USERNAME, ""), RankingActivity.this.prefs.getString(PASSWORD, ""));  //To change body of implemented methods use File | Settings | File Templates.
+            } catch (ConnectException e) {
+                return null;
+            }
+
         }
 
         @Override
         protected void onPostExecute(final CharSequence[] rankings) {
+            if (rankings == null) {
+                Toast.makeText(getApplicationContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT);
+                RankingActivity.this.finish();
+                return;
+            }
             RankingActivity.this.adapter.clear();
             for (final CharSequence s : rankings) {
                 RankingActivity.this.adapter.add(s);

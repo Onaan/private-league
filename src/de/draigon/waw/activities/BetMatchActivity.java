@@ -13,6 +13,7 @@ import de.draigon.waw.data.Match;
 import de.draigon.waw.utils.BetState;
 import de.draigon.waw.utils.HttpUtil;
 
+import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -68,14 +69,24 @@ public class BetMatchActivity extends Activity {
         protected BetState doInBackground(final URI... uris) {
             BetMatchActivity.this.match.setHomeScoreBet(BetMatchActivity.this.homeTip.getText().toString());
             BetMatchActivity.this.match.setGuestScoreBet(BetMatchActivity.this.guestTip.getText().toString());
-            return new HttpUtil().uploadBet(uris[0], BetMatchActivity.this.prefs.getString(USERNAME, ""), BetMatchActivity.this.prefs.getString(PASSWORD, ""), BetMatchActivity.this.match);
+            try {
+                return new HttpUtil().uploadBet(uris[0], BetMatchActivity.this.prefs.getString(USERNAME, ""), BetMatchActivity.this.prefs.getString(PASSWORD, ""), BetMatchActivity.this.match);
+
+            } catch (ConnectException e) {
+                return null;
+            }
 
         }
 
 
         @Override
         protected void onPostExecute(final BetState betState) {
-            String message;
+            if (betState == null) {
+                Toast.makeText(getApplicationContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
+                BetMatchActivity.this.finish();
+                return;
+            }
+            final String message;
             switch (betState) {
                 case OK:
                     message = getResources().getString(R.string.upload_bet_success);
