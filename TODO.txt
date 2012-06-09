@@ -1,6 +1,4 @@
-* mehrere accounts auf einem gerate
 * spieltagauswahl scrollt nicht mit
-* icon
 * sondertip senden/anzeigen
 * updatebenachrichtigung
 * kein internet abfangen
