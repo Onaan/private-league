@@ -1,6 +1,5 @@
 * spieltagauswahl scrollt nicht mit
 * sondertip senden/anzeigen
-* updatebenachrichtigung
 * anzeigen ergebnis/tendenz/sieger
 * refresh-knoepfe einbauen
 
