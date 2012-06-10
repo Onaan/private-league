@@ -58,14 +58,14 @@ public class MatchDayParser {
         return match;
     }
 
-    private void populateBetList(Node matchNode, Match match) {
-        List<CharSequence> bets = match.getBets();
+    private void populateBetList(final Node matchNode, final Match match) {
+        final List<CharSequence> bets = match.getBets();
         for (int i = 0; i < matchNode.getChildNodes().getLength(); ++i) {
             if ("bets".equals(matchNode.getChildNodes().item(i).getNodeName())) {
                 for (int j = 0; j < matchNode.getChildNodes().item(i).getChildNodes().getLength(); ++j) {
                     if ("bet".equals(matchNode.getChildNodes().item(i).getChildNodes().item(j).getNodeName())) {
-                        NamedNodeMap attributes = matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes();
-                        String bet = attributes.getNamedItem("username").getTextContent() + " " + attributes.getNamedItem("home").getTextContent() + ":" + attributes.getNamedItem("guest").getTextContent();
+                        final NamedNodeMap attributes = matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes();
+                        final String bet = attributes.getNamedItem("username").getTextContent() + " " + attributes.getNamedItem("home").getTextContent() + ":" + attributes.getNamedItem("guest").getTextContent();
                         bets.add(bet);
 
                     }

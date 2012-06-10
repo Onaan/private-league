@@ -23,10 +23,10 @@ public class Match implements Serializable {
 
 
     public List<CharSequence> getBets() {
-        return bets;
+        return this.bets;
     }
 
-    public void setBets(List<CharSequence> bets) {
+    public void setBets(final List<CharSequence> bets) {
         this.bets = bets;
     }
 

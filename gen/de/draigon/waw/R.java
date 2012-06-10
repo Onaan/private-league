@@ -7,6 +7,7 @@
 
 package de.draigon.waw;
 
+@SuppressWarnings({"ALL"})
 public final class R {
     public static final class attr {
     }
@@ -61,10 +62,12 @@ public final class R {
 
     public static final class string {
         public static final int app_name = 0x7f040000;
+        public static final int cancel = 0x7f04001c;
         public static final int default_get_server = 0x7f04000f;
         public static final int default_post_server = 0x7f040010;
         public static final int matchdetails_upload_bet = 0x7f040011;
         public static final int no_internet_connection = 0x7f040019;
+        public static final int ok = 0x7f04001b;
         public static final int rb_set_login_data_server_select_1 = 0x7f040013;
         public static final int rb_set_login_data_server_select_2 = 0x7f040014;
         public static final int server_location_menu_edit_server_data = 0x7f04000b;
@@ -82,6 +85,8 @@ public final class R {
         public static final int start_activity_ranking = 0x7f040002;
         public static final int start_activity_set_login_data = 0x7f040001;
         public static final int start_activity_teambet = 0x7f040004;
+        public static final int update_dialog_update_failed = 0x7f04001d;
+        public static final int update_dialog_version_available = 0x7f04001a;
         public static final int upload_bet_illegal_parameter = 0x7f040018;
         public static final int upload_bet_late = 0x7f040016;
         public static final int upload_bet_success = 0x7f040015;

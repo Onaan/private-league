@@ -40,7 +40,7 @@ public class HttpUtil {
         params.add(login);
         final HttpClient client = new DefaultHttpClient();
         final HttpPost post = new HttpPost(uri);
-        String document;
+        final String document;
         try {
             final UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "ISO8859_1");
             post.setEntity(entity);
@@ -138,5 +138,10 @@ public class HttpUtil {
 
     private boolean isTeamBettable(final Document xml) {
         return false;  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    public String getServerAppVersion(final URI uri) throws ConnectException {
+        final Document result = doPost(uri, new ArrayList<NameValuePair>());
+        return result.getElementsByTagName("waw").item(0).getAttributes().getNamedItem("version").getTextContent();
     }
 }

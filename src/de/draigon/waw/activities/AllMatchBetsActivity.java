@@ -47,8 +47,8 @@ public class AllMatchBetsActivity extends Activity {
             this.guestScore.setTextColor(Color.YELLOW);
         }
         this.adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_list_item_1);
-        for (CharSequence s : match.getBets()) {
-            adapter.add(s);
+        for (final CharSequence s : this.match.getBets()) {
+            this.adapter.add(s);
             Log.d(TAG, s + "");
         }
         this.allBets.setAdapter(this.adapter);

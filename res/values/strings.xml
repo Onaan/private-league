@@ -29,6 +29,17 @@
         Eingaben
     </string>
     <string name="no_internet_connection">Server nicht erreichbar, bitte überprüfen sie ihre Internetverbindung</string>
+    <string name="update_dialog_version_available">Es ist eine neue Version verfügbar. Möchten sie diese
+        herunterladen?
+    </string>
+    <string name="ok">Ja</string>
+    <string name="cancel">Nein</string>
+    <string name="update_dialog_update_failed">Es ist ein Fehler aufgetreten. Bitte aktualisieren sie die Anwendung
+        manuell.
+    </string>
+    <!--<string name=""></string>
+    <string name=""></string>
+    <string name=""></string>-->
 
 
 </resources>

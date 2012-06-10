@@ -3,11 +3,19 @@ package de.draigon.waw.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import de.draigon.waw.R;
+import de.draigon.waw.dialogs.UpdateAvailableDialog;
+import de.draigon.waw.utils.HttpUtil;
+
+import java.net.ConnectException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import static de.draigon.waw.utils.PrefConstants.*;
 
@@ -28,6 +36,11 @@ public class StartActivity extends Activity {
         this.playingScheduleButton = (Button) findViewById(R.id.b_startActivity_playing_schedule);
         this.rankingButton = (Button) findViewById(R.id.b_startActivity_ranking);
         this.teamBetButton = (Button) findViewById(R.id.b_startActivity_special_bet);
+        try {
+            new UpdateChecker().execute(new URI(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     @Override
@@ -43,6 +56,40 @@ public class StartActivity extends Activity {
             this.playingScheduleButton.setEnabled(false);
             this.teamBetButton.setEnabled(false);
         }
+
+
+    }
+
+    private class UpdateChecker extends AsyncTask<URI, Integer, String> {
+
+
+        @Override
+        protected String doInBackground(final URI... uris) {
+            try {
+                return new HttpUtil().getServerAppVersion(uris[0]);
+            } catch (ConnectException e) {
+                return null;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(final String serverVersion) {
+            String app_ver = null;
+            try {
+                app_ver = StartActivity.this.getPackageManager().getPackageInfo(StartActivity.this.getPackageName(), 0).versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            Log.d(TAG, "Installed version :" + app_ver);
+            Log.d(TAG, "Version on server: " + serverVersion);
+            final boolean newVersion = app_ver.compareTo(serverVersion) < 0;
+            //http://android.draigon.de/private-league.apk
+            if (newVersion) {
+                new UpdateAvailableDialog(StartActivity.this).show();
+            }
+        }
+
 
     }
 

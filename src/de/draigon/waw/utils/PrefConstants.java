@@ -14,5 +14,6 @@ public class PrefConstants {
     public static final String DEFAULT_POST_SERVER = IT_NRW_POST_SERVER;
     public static final String MATCH_DAY = "matchDay";
     public static final String MATCH = "match";
+    public static final String APPLICATION_DOWNLOAD_LINK = "http://android.draigon.de/private-league.apk";
 
 }

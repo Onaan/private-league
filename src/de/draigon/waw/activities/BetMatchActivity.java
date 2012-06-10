@@ -53,7 +53,7 @@ public class BetMatchActivity extends Activity {
     @SuppressWarnings("unused")
     public void uploadBet(final View view) {
         try {
-            new BetUploader().execute(new URI(this.prefs.getString(POST_SERVER, getResources().getString(R.string.default_post_server))));
+            new BetUploader().execute(new URI(this.prefs.getString(POST_SERVER, DEFAULT_POST_SERVER)));
         } catch (URISyntaxException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 
