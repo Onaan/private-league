@@ -119,7 +119,7 @@ public class StartActivity extends Activity {
     /*   @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         final MenuInflater blowUp = getMenuInflater();
-        blowUp.inflate(R.menu.server_location, menu);
+        blowUp.inflate(R.menu.refresh_data, menu);
         return true;
     }
 

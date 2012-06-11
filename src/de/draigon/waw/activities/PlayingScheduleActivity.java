@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -46,11 +49,7 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            new PlayingScheduleDownloader().execute(new URI(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        refresh();
 
     }
 
@@ -92,6 +91,36 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
             PlayingScheduleActivity.this.matchDayLayout = new MatchDayLayout(PlayingScheduleActivity.this, PlayingScheduleActivity.this, matchDays);
             PlayingScheduleActivity.this.scrollView.removeAllViews();
             PlayingScheduleActivity.this.scrollView.addView(PlayingScheduleActivity.this.matchDayLayout);
+        }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        final MenuInflater blowUp = getMenuInflater();
+        blowUp.inflate(R.menu.refresh_data, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_refresh_data:
+                refresh();
+                break;
+            default:
+                throw new IllegalArgumentException(item.getItemId() + "");
+        }
+        return true;
+    }
+
+    private void refresh() {
+        try {
+            new PlayingScheduleDownloader().execute(new URI(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 }

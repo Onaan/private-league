@@ -7,13 +7,13 @@
 
 package de.draigon.waw;
 
-@SuppressWarnings({"ALL"})
 public final class R {
     public static final class attr {
     }
 
     public static final class drawable {
-        public static final int icon = 0x7f020000;
+        public static final int ic_menu_refresh = 0x7f020000;
+        public static final int icon = 0x7f020001;
     }
 
     public static final class id {
@@ -34,10 +34,10 @@ public final class R {
         public static final int lv_all_match_bets = 0x7f060004;
         public static final int lv_ranking = 0x7f06000a;
         public static final int lv_teambet = 0x7f060019;
+        public static final int menu_refresh_data = 0x7f06001a;
         public static final int rb_set_login_data_server_select_1 = 0x7f06000e;
         public static final int rb_set_login_data_server_select_2 = 0x7f06000f;
         public static final int rg_set_login_data_server_select = 0x7f06000d;
-        public static final int server_location_menu_edit_server_data = 0x7f06001a;
         public static final int t_all_match_bets_guest = 0x7f060003;
         public static final int t_all_match_bets_guest_score = 0x7f060002;
         public static final int t_all_match_bets_home = 0x7f060000;
@@ -57,7 +57,7 @@ public final class R {
     }
 
     public static final class menu {
-        public static final int server_location = 0x7f050000;
+        public static final int refresh_data = 0x7f050000;
     }
 
     public static final class string {
@@ -66,6 +66,7 @@ public final class R {
         public static final int default_get_server = 0x7f04000f;
         public static final int default_post_server = 0x7f040010;
         public static final int matchdetails_upload_bet = 0x7f040011;
+        public static final int menu_refresh_data = 0x7f04001e;
         public static final int no_internet_connection = 0x7f040019;
         public static final int ok = 0x7f04001b;
         public static final int rb_set_login_data_server_select_1 = 0x7f040013;

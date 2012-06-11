@@ -105,5 +105,6 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
 
     public void onNothingSelected(final AdapterView<?> adapterView) {
     }
+
 }
 

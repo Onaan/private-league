@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,6 +38,46 @@ public class AllMatchBetsActivity extends Activity {
         this.guest = (TextView) findViewById(R.id.t_all_match_bets_guest);
         this.homeScore = (TextView) findViewById(R.id.t_all_match_bets_home_score);
         this.guestScore = (TextView) findViewById(R.id.t_all_match_bets_guest_score);
+        this.adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_list_item_1);
+        for (final CharSequence s : this.match.getBets()) {
+            this.adapter.add(s);
+            Log.d(TAG, s + "");
+        }
+        this.allBets.setAdapter(this.adapter);
+        refresh();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        if ("-".equals(match.getHomeScore())) {
+            final MenuInflater blowUp = getMenuInflater();
+            blowUp.inflate(R.menu.refresh_data, menu);
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_refresh_data:
+                refresh();
+                break;
+            default:
+                throw new IllegalArgumentException(item.getItemId() + "");
+        }
+        return true;
+    }
+
+    private void refresh() {
         this.home.setText(this.match.getHome());
         this.guest.setText(this.match.getGuest());
         if (!"-".equals(this.match.getHomeScore())) {
@@ -46,18 +89,6 @@ public class AllMatchBetsActivity extends Activity {
             this.guestScore.setText(this.match.getGuestTempScore());
             this.guestScore.setTextColor(Color.YELLOW);
         }
-        this.adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_list_item_1);
-        for (final CharSequence s : this.match.getBets()) {
-            this.adapter.add(s);
-            Log.d(TAG, s + "");
-        }
-        this.allBets.setAdapter(this.adapter);
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
 

@@ -37,9 +37,9 @@
     <string name="update_dialog_update_failed">Es ist ein Fehler aufgetreten. Bitte aktualisieren sie die Anwendung
         manuell.
     </string>
+    <string name="menu_refresh_data">Daten aktualisieren</string>
     <!--<string name=""></string>
-    <string name=""></string>
-    <string name=""></string>-->
+   <string name=""></string>-->
 
 
 </resources>

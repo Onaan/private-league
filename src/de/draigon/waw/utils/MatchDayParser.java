@@ -44,7 +44,9 @@ public class MatchDayParser {
         populateBetList(matchNode, match);
         match.setGuest(guest.getNamedItem("name").getTextContent());
         match.setGuestScore(guest.getNamedItem("goals").getTextContent());
+        match.setGuestTempScore(guest.getNamedItem("tempgoals").getTextContent());
         match.setHomeScore(home.getNamedItem("goals").getTextContent());
+        match.setHomeTempScore(home.getNamedItem("tempgoals").getTextContent());
         match.setHome(home.getNamedItem("name").getTextContent());
         match.setId(matchNode.getAttributes().getNamedItem("id").getTextContent());
         match.setKickOff(new Date(Long.parseLong(matchNode.getAttributes().getNamedItem("kickoff").getTextContent()) * 1000));

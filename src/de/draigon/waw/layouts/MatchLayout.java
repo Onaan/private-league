@@ -22,24 +22,35 @@ public class MatchLayout extends TableLayout {
         super(context);
         this.context = context;
         this.match = m;
-        final TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
-        this.setLayoutParams(tlp);
-        this.addView(createMatchDate());
-        this.addView(createTableRow(m.getHome(), m.getHomeScore(), m.getHomeScoreBet()));
-        this.addView(createTableRow(m.getGuest(), m.getGuestScore(), m.getGuestScoreBet()));
+        drawView();
         this.setColumnShrinkable(1, true);
         this.setColumnStretchable(1, true);
 
     }
 
-    private TableRow createTableRow(final String team, final String score, final String bet) {
+    private void drawView() {
+        final LayoutParams tlp = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+        this.setLayoutParams(tlp);
+        this.addView(createMatchDate());
+        this.addView(createTableRow(match.getHome(), match.getHomeScore(), match.getHomeTempScore(), match.getHomeScoreBet()));
+        this.addView(createTableRow(match.getGuest(), match.getGuestScore(), match.getGuestTempScore(), match.getGuestScoreBet()));
+    }
+
+    private TableRow createTableRow(final String team, final String score, final String tempScore, final String bet) {
         final TableRow r = new TableRow(this.context);
         r.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         final TextView teamName = new TextView(this.context);
         teamName.setText(team);
         r.addView(teamName);
         final TextView teamScore = new TextView(this.context);
-        teamScore.setText(score + " (" + bet + ")");
+        String showScore;
+        if ("-".equals(score) && !"".equals(tempScore)) {
+            showScore = tempScore;
+            teamScore.setTextColor(Color.YELLOW);
+        } else {
+            showScore = score;
+        }
+        teamScore.setText(showScore + " (" + bet + ")");
         teamScore.setGravity(Gravity.RIGHT);
         r.addView(teamScore);
         return r;
