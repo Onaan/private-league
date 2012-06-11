@@ -22,6 +22,10 @@ public class Match implements Serializable {
     private List<CharSequence> bets = new ArrayList<CharSequence>();
 
 
+    public boolean isRunning() {
+        return (!bettable && homeScore == null && guestScore == null);
+    }
+
     public List<CharSequence> getBets() {
         return this.bets;
     }
@@ -35,7 +39,13 @@ public class Match implements Serializable {
     }
 
     public void setHomeTempScore(final String homeTempScore) {
-        this.homeTempScore = homeTempScore;
+        try {
+            Integer.parseInt(homeTempScore);
+            this.homeTempScore = homeTempScore;
+        } catch (IllegalArgumentException e) {
+            // Argument is not a number, so we keep the "-"
+        }
+
     }
 
     public String getGuestTempScore() {
@@ -43,6 +53,12 @@ public class Match implements Serializable {
     }
 
     public void setGuestTempScore(final String guestTempScore) {
+        try {
+            Integer.parseInt(guestTempScore);
+            this.guestTempScore = guestTempScore;
+        } catch (IllegalArgumentException e) {
+            // Argument is not a number, so we keep the "-"
+        }
         this.guestTempScore = guestTempScore;
     }
 

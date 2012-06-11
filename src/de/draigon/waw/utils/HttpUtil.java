@@ -144,4 +144,29 @@ public class HttpUtil {
         final Document result = doPost(uri, new ArrayList<NameValuePair>());
         return result.getElementsByTagName("waw").item(0).getAttributes().getNamedItem("version").getTextContent();
     }
+
+
+    /**
+     * Gets a single {@link Match} with the corresponding id.
+     *
+     * @param uri      URI of the server
+     * @param matchId  Id of the match to get
+     * @param username Users name on the server
+     * @param password Users password on the server
+     * @return The corresponding match, or null if no match is found
+     * @throws ConnectException If there is no internet or no server available
+     */
+    public Match getSingleMatch(URI uri, String matchId, String username, String password) throws ConnectException {
+        if (matchId != null) {
+            List<MatchDay> allMatches = getPlayingSchedule(uri, username, password);
+            for (MatchDay day : allMatches) {
+                for (Match match : day.getMatches()) {
+                    if (matchId.equals(match.getId())) {
+                        return match;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

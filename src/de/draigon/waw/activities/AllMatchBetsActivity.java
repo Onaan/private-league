@@ -1,7 +1,9 @@
 package de.draigon.waw.activities;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -10,10 +12,15 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import de.draigon.waw.R;
 import de.draigon.waw.data.Match;
+import de.draigon.waw.utils.HttpUtil;
 
-import static de.draigon.waw.utils.PrefConstants.MATCH;
+import java.net.ConnectException;
+import java.net.URI;
+
+import static de.draigon.waw.utils.PrefConstants.*;
 
 
 public class AllMatchBetsActivity extends Activity {
@@ -26,12 +33,14 @@ public class AllMatchBetsActivity extends Activity {
     private TextView homeScore;
     private TextView guest;
     private TextView guestScore;
+    private SharedPreferences prefs;
     private static final String TAG = AllMatchBetsActivity.class.getCanonicalName();
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_match_bets);
+        this.prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         this.allBets = (ListView) findViewById(R.id.lv_all_match_bets);
         this.match = (Match) getIntent().getSerializableExtra(MATCH);
         this.home = (TextView) findViewById(R.id.t_all_match_bets_home);
@@ -55,7 +64,7 @@ public class AllMatchBetsActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        if ("-".equals(match.getHomeScore())) {
+        if (this.match.isRunning()) {
             final MenuInflater blowUp = getMenuInflater();
             blowUp.inflate(R.menu.refresh_data, menu);
             return true;
@@ -69,7 +78,7 @@ public class AllMatchBetsActivity extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.menu_refresh_data:
-                refresh();
+                new SingleMatchDownloader().execute(this.match.getId());
                 break;
             default:
                 throw new IllegalArgumentException(item.getItemId() + "");
@@ -77,10 +86,33 @@ public class AllMatchBetsActivity extends Activity {
         return true;
     }
 
+    private class SingleMatchDownloader extends AsyncTask<String, Integer, Match> {
+
+
+        @Override
+        protected Match doInBackground(final String... matchId) {
+            try {
+                return new HttpUtil().getSingleMatch(URI.create(AllMatchBetsActivity.this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)), matchId[0], AllMatchBetsActivity.this.prefs.getString(USERNAME, ""), AllMatchBetsActivity.this.prefs.getString(PASSWORD, ""));
+            } catch (ConnectException e) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(final Match match) {
+            if (match == null) {
+                Toast.makeText(getApplicationContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            AllMatchBetsActivity.this.match = match;
+            refresh();
+        }
+    }
+
     private void refresh() {
         this.home.setText(this.match.getHome());
         this.guest.setText(this.match.getGuest());
-        if (!"-".equals(this.match.getHomeScore())) {
+        if (!this.match.isRunning()) {
             this.homeScore.setText(this.match.getHomeScore());
             this.guestScore.setText(this.match.getGuestScore());
         } else {

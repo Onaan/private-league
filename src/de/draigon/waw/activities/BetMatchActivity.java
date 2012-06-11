@@ -15,7 +15,6 @@ import de.draigon.waw.utils.HttpUtil;
 
 import java.net.ConnectException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import static de.draigon.waw.utils.PrefConstants.*;
 
@@ -52,14 +51,7 @@ public class BetMatchActivity extends Activity {
 
     @SuppressWarnings("unused")
     public void uploadBet(final View view) {
-        try {
-            new BetUploader().execute(new URI(this.prefs.getString(POST_SERVER, DEFAULT_POST_SERVER)));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-
-
-        }
-
+        new BetUploader().execute(URI.create(this.prefs.getString(POST_SERVER, DEFAULT_POST_SERVER)));
     }
 
 

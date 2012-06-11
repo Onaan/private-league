@@ -12,7 +12,6 @@ import de.draigon.waw.utils.HttpUtil;
 
 import java.net.ConnectException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import static de.draigon.waw.utils.PrefConstants.*;
 
@@ -35,11 +34,7 @@ public class RankingActivity extends Activity {
         super.onResume();
         this.adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_list_item_1);
         this.rankingList.setAdapter(this.adapter);
-        try {
-            new getRankings().execute(new URI(this.prefs.getString(GET_SERVER, getResources().getString(R.string.default_get_server))));
-        } catch (URISyntaxException e) {
-            throw new IllegalStateException(this.prefs.getString(GET_SERVER, getResources().getString(R.string.default_get_server)) + "is not  a valid URI", e);
-        }
+        new getRankings().execute(URI.create(this.prefs.getString(GET_SERVER, getResources().getString(R.string.default_get_server))));
     }
 
     private class getRankings extends AsyncTask<URI, Integer, CharSequence[]> {

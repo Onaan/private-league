@@ -20,7 +20,6 @@ import de.draigon.waw.utils.HttpUtil;
 
 import java.net.ConnectException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static de.draigon.waw.utils.PrefConstants.*;
@@ -117,10 +116,7 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     }
 
     private void refresh() {
-        try {
-            new PlayingScheduleDownloader().execute(new URI(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        new PlayingScheduleDownloader().execute(URI.create(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
+
     }
 }

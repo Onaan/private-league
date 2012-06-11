@@ -16,7 +16,6 @@ import de.draigon.waw.utils.PrefConstants;
 
 import java.net.ConnectException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 
 public class TeamBetActivity extends Activity implements AdapterView.OnItemClickListener {
@@ -40,11 +39,8 @@ public class TeamBetActivity extends Activity implements AdapterView.OnItemClick
         super.onResume();
         this.adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_list_item_1);
         this.lv.setAdapter(this.adapter);
-        try {
-            new getTeambet().execute(new URI(this.prefs.getString(PrefConstants.GET_SERVER, getResources().getString(R.string.default_get_server))));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        new getTeambet().execute(URI.create(this.prefs.getString(PrefConstants.GET_SERVER, getResources().getString(R.string.default_get_server))));
+
     }
 
     public void onItemClick(final AdapterView<?> adapterView, final View view, final int i, final long l) {
