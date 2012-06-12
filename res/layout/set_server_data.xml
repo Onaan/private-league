@@ -2,14 +2,19 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent" android:orientation="vertical">
-    <TextView android:layout_height="wrap_content" android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+    <TextView android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
               android:text="@string/set_server_data_get_server"/>
-    <EditText android:layout_height="wrap_content" android:layout_width="fill_parent"
+    <EditText android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
               android:id="@+id/et_set_server_data_get_server"/>
-    <TextView android:layout_height="wrap_content" android:layout_width="fill_parent"
+    <TextView android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
               android:text="@string/set_server_data_post_server"/>
-    <EditText android:layout_height="wrap_content" android:layout_width="fill_parent"
+    <EditText android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
               android:id="@+id/et_set_server_data_post_server"/>
     <Button
             android:id="@+id/b_set_server_data_save"

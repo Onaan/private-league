@@ -156,11 +156,11 @@ public class HttpUtil {
      * @return The corresponding match, or null if no match is found
      * @throws ConnectException If there is no internet or no server available
      */
-    public Match getSingleMatch(URI uri, String matchId, String username, String password) throws ConnectException {
+    public Match getSingleMatch(final URI uri, final String matchId, final String username, final String password) throws ConnectException {
         if (matchId != null) {
-            List<MatchDay> allMatches = getPlayingSchedule(uri, username, password);
-            for (MatchDay day : allMatches) {
-                for (Match match : day.getMatches()) {
+            final List<MatchDay> allMatches = getPlayingSchedule(uri, username, password);
+            for (final MatchDay day : allMatches) {
+                for (final Match match : day.getMatches()) {
                     if (matchId.equals(match.getId())) {
                         return match;
                     }

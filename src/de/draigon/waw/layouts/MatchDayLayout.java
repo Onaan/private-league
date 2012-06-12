@@ -3,7 +3,6 @@ package de.draigon.waw.layouts;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import de.draigon.waw.R;
+import de.draigon.waw.data.AllMatchDays;
 import de.draigon.waw.data.Match;
 import de.draigon.waw.data.MatchDay;
 
@@ -24,6 +24,8 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
     private final OnClickListener listener;
     private final Context context;
     private Spinner spinner;
+
+
     private final List<MatchDay> matchDays;
     private final SharedPreferences prefs;
     private static final String TAG = MatchDayLayout.class.getCanonicalName();
@@ -36,7 +38,6 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
         this.matchDays = matchDays;
         this.prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         setUp(this.prefs.getInt(MATCH_DAY, 0));
-        Log.e(TAG, this.prefs.getInt(MATCH_DAY, 0) + " day");
 
     }
 
@@ -104,6 +105,12 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
     }
 
     public void onNothingSelected(final AdapterView<?> adapterView) {
+    }
+
+    public AllMatchDays getMatchDays() {
+        final AllMatchDays am = new AllMatchDays();
+        am.addAll(this.matchDays);
+        return am;
     }
 
 }

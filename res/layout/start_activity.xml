@@ -7,24 +7,31 @@
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical" android:paddingTop="10dp">
+            android:orientation="vertical" paddingTop="10dp">
 
-        <Button android:id="@+id/b_startActivity_playing_schedule" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:onClick="goToPlayingSchedule"
+        <Button android:id="@+id/b_startActivity_playing_schedule"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:onClick="goToPlayingSchedule"
                 android:text="@string/start_activity_playing_schedule"/>
 
-        <Button android:id="@+id/b_startActivity_special_bet" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:onClick="goToTeambet"
+        <Button android:id="@+id/b_startActivity_special_bet"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:onClick="goToTeambet"
                 android:text="@string/start_activity_teambet"/>
 
 
-        <Button android:id="@+id/b_startActivity_ranking" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:onClick="goToRanking"
+        <Button android:id="@+id/b_startActivity_ranking"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:onClick="goToRanking"
                 android:text="@string/start_activity_ranking"/>
 
-        <Button android:id="@+id/b_startActivity_login" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:onClick="goToSetLoginData"
+        <Button android:id="@+id/b_startActivity_login"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:onClick="goToSetLoginData"
                 android:text="@string/start_activity_set_login_data"/>
-
     </LinearLayout>
 </ScrollView>

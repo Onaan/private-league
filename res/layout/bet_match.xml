@@ -2,7 +2,8 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent" android:orientation="vertical">
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -10,18 +11,34 @@
             android:textSize="25dp"
             android:gravity="center"
             />
-    <TableLayout android:layout_height="wrap_content" android:layout_width="fill_parent"
+    <TableLayout android:layout_height="wrap_content"
+                 android:layout_width="fill_parent"
             >
-        <TableRow android:layout_height="wrap_content" android:layout_width="wrap_content" android:gravity="center">
-            <EditText android:layout_height="wrap_content" android:layout_width="wrap_content"
-                      android:id="@+id/et_matchdetails_bet_home" android:gravity="center" android:numeric="integer"
-                      android:maxLength="2" android:width="60dp"/>
-            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text=":"
-                      android:gravity="center" android:width="30dp"/>
+        <TableRow android:layout_height="wrap_content"
+                  android:layout_width="wrap_content"
+                  android:gravity="center">
 
-            <EditText android:layout_height="wrap_content" android:layout_width="wrap_content"
-                      android:id="@+id/et_matchdetails_bet_guest" android:gravity="center" android:numeric="integer"
-                      android:maxLength="2" android:width="60dp"/>
+            <EditText android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:id="@+id/et_matchdetails_bet_home"
+                      android:gravity="center"
+                      android:numeric="integer"
+                      android:maxLength="2"
+                      android:width="60dp"/>
+
+            <TextView android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:text=":"
+                      android:gravity="center"
+                      android:width="30dp"/>
+
+            <EditText android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:id="@+id/et_matchdetails_bet_guest"
+                      android:gravity="center"
+                      android:numeric="integer"
+                      android:maxLength="2"
+                      android:width="60dp"/>
         </TableRow>
     </TableLayout>
     <TextView

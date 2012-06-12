@@ -16,7 +16,7 @@ public class MatchLayout extends TableLayout {
     private final Context context;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("E',' dd.MM.yyyy HH:mm");
     private final Match match;
-
+    public static final String TAG = MatchLayout.class.getName();
 
     public MatchLayout(final Context context, final Match m) {
         super(context);
@@ -32,8 +32,8 @@ public class MatchLayout extends TableLayout {
         final LayoutParams tlp = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
         this.setLayoutParams(tlp);
         this.addView(createMatchDate());
-        this.addView(createTableRow(match.getHome(), match.getHomeScore(), match.getHomeTempScore(), match.getHomeScoreBet()));
-        this.addView(createTableRow(match.getGuest(), match.getGuestScore(), match.getGuestTempScore(), match.getGuestScoreBet()));
+        this.addView(createTableRow(this.match.getHome(), this.match.getHomeScore(), this.match.getHomeTempScore(), this.match.getHomeScoreBet()));
+        this.addView(createTableRow(this.match.getGuest(), this.match.getGuestScore(), this.match.getGuestTempScore(), this.match.getGuestScoreBet()));
     }
 
     private TableRow createTableRow(final String team, final String score, final String tempScore, final String bet) {
@@ -43,7 +43,7 @@ public class MatchLayout extends TableLayout {
         teamName.setText(team);
         r.addView(teamName);
         final TextView teamScore = new TextView(this.context);
-        String showScore;
+        final String showScore;
         if ("-".equals(score) && !"".equals(tempScore)) {
             showScore = tempScore;
             teamScore.setTextColor(Color.YELLOW);

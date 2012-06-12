@@ -31,22 +31,41 @@ public class SetLoginDataActivity extends Activity {
         this.showPassword = (CheckBox) findViewById(R.id.cb_set_login_data_show);
         this.rg = (RadioGroup) findViewById(R.id.rg_set_login_data_server_select);
         this.prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        if (savedInstanceState == null) {
+            this.username.setText(this.prefs.getString(USERNAME, ""));
+            this.password.setText(this.prefs.getString(PASSWORD, ""));
+            this.showPassword.setChecked(this.prefs.getBoolean(SHOW_PASSWORD, false));
+            if (this.prefs.getString(GET_SERVER, "").equals(DP_GET_SERVER)) {
+                this.rg.check(R.id.rb_set_login_data_server_select_2);
+            }
+        } else {
+            this.username.setText(savedInstanceState.getString(USERNAME));
+            this.password.setText(savedInstanceState.getString(PASSWORD));
+            this.showPassword.setChecked(savedInstanceState.getBoolean(SHOW_PASSWORD));
+            this.rg.check(savedInstanceState.getInt(SELECTED_SERVER));
+            togglePasswordVisibility(this.showPassword);
+
+        }
+    }
+
+
+    @Override
+    public void onSaveInstanceState(final Bundle savedInstanceState) {
+        savedInstanceState.putString(USERNAME, this.username.getText().toString());
+        savedInstanceState.putString(PASSWORD, this.password.getText().toString());
+        savedInstanceState.putBoolean(SHOW_PASSWORD, this.showPassword.isChecked());
+        savedInstanceState.putInt(SELECTED_SERVER, this.rg.getCheckedRadioButtonId());
+
 
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
-        this.username.setText(this.prefs.getString(USERNAME, ""));
-        this.password.setText(this.prefs.getString(PASSWORD, ""));
-        this.showPassword.setChecked(this.prefs.getBoolean("showPassword", false));
-        togglePasswordVisibility(this.showPassword);
-        if (this.prefs.getString(GET_SERVER, "").equals(DP_GET_SERVER)) {
-            this.rg.check(R.id.rb_set_login_data_server_select_2);
-        }
-
 
     }
+
 
     @SuppressWarnings("unused")
     public void saveLoginData(final View view) {
@@ -65,7 +84,7 @@ public class SetLoginDataActivity extends Activity {
         e.putString(GET_SERVER, getServer);
         e.putString(USERNAME, this.username.getText().toString().trim());
         e.putString(PASSWORD, this.password.getText().toString());
-        e.putBoolean("showPassword", this.showPassword.isChecked());
+        e.putBoolean(SHOW_PASSWORD, this.showPassword.isChecked());
         e.commit();
         Toast.makeText(getApplicationContext(), getResources().getText(R.string.set_login_data_save_message), Toast.LENGTH_SHORT).show();
         this.finish();

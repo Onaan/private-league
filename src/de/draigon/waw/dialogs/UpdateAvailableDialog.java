@@ -18,13 +18,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Schnabel
- * Date: 10.06.12
- * Time: 15:24
- * To change this template use File | Settings | File Templates.
- */
+
 public class UpdateAvailableDialog {
     private final AlertDialog dialog;
     private final Activity caller;
@@ -64,12 +58,13 @@ public class UpdateAvailableDialog {
             final String[] apkUrlComponents = apkurl.split("/");
             final String fileName = apkUrlComponents[apkUrlComponents.length - 1];
             final File file = new File(PATH);
+            //noinspection ResultOfMethodCallIgnored
             file.mkdirs();
             final File outputFile = new File(file, fileName);
             final FileOutputStream fos = new FileOutputStream(outputFile);
             final InputStream is = c.getInputStream();
             final byte[] buffer = new byte[1024];
-            int len1 = 0;
+            int len1;
             while ((len1 = is.read(buffer)) != -1) {
                 fos.write(buffer, 0, len1);
             }

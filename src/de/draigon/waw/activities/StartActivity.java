@@ -71,7 +71,7 @@ public class StartActivity extends Activity {
 
         @Override
         protected void onPostExecute(final String serverVersion) {
-            String app_ver = null;
+            String app_ver = "";
             try {
                 app_ver = StartActivity.this.getPackageManager().getPackageInfo(StartActivity.this.getPackageName(), 0).versionName;
             } catch (PackageManager.NameNotFoundException e) {
@@ -80,7 +80,6 @@ public class StartActivity extends Activity {
             Log.d(TAG, "Installed version :" + app_ver);
             Log.d(TAG, "Version on server: " + serverVersion);
             final boolean newVersion = app_ver.compareTo(serverVersion) < 0;
-            //http://android.draigon.de/private-league.apk
             if (newVersion) {
                 new UpdateAvailableDialog(StartActivity.this).show();
             }

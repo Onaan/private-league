@@ -41,14 +41,29 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
         final ScrollView.LayoutParams lp = new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
         this.scrollView.setLayoutParams(lp);
         this.setContentView(this.scrollView);
+        if (savedInstanceState == null || savedInstanceState.getSerializable(MATCH_DAYS) == null) {
+            refresh();
+        } else {
+            //noinspection unchecked
+            this.matchDayLayout = new MatchDayLayout(this, this, (List<MatchDay>) savedInstanceState.getSerializable(MATCH_DAYS));
+            this.scrollView.removeAllViews();
+            this.scrollView.addView(this.matchDayLayout);
+        }
 
 
     }
 
     @Override
+    public void onSaveInstanceState(final Bundle savedInstanceState) {
+        if (this.matchDayLayout.getMatchDays() != null) {
+            savedInstanceState.putSerializable(MATCH_DAYS, this.matchDayLayout.getMatchDays());
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        refresh();
+
 
     }
 

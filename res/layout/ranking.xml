@@ -2,8 +2,13 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent" android:orientation="vertical">
-    <ListView android:layout_height="fill_parent" android:layout_width="fill_parent" android:isScrollContainer="true"
-              android:id="@+id/lv_ranking" android:clickable="false"/>
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+
+    <ListView android:layout_height="fill_parent"
+              android:layout_width="fill_parent"
+              android:isScrollContainer="true"
+              android:id="@+id/lv_ranking"
+              android:clickable="false"/>
 
 </LinearLayout>
