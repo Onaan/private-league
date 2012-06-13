@@ -11,7 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import de.draigon.waw.R;
 
-import static de.draigon.waw.utils.PrefConstants.*;
+import static de.draigon.waw.Constants.*;
 
 
 public class SetLoginDataActivity extends Activity {

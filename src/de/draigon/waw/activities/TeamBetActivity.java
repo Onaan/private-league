@@ -9,10 +9,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import de.draigon.waw.Constants;
 import de.draigon.waw.R;
 import de.draigon.waw.data.TeamBet;
 import de.draigon.waw.utils.HttpUtil;
-import de.draigon.waw.utils.PrefConstants;
 
 import java.net.ConnectException;
 import java.net.URI;
@@ -29,7 +29,7 @@ public class TeamBetActivity extends Activity implements AdapterView.OnItemClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teambet);
         this.lv = (ListView) findViewById(R.id.lv_teambet);
-        this.prefs = getSharedPreferences(PrefConstants.PREFS_NAME, MODE_PRIVATE);
+        this.prefs = getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE);
         this.lv.setOnItemClickListener(this);
 
     }
@@ -39,7 +39,7 @@ public class TeamBetActivity extends Activity implements AdapterView.OnItemClick
         super.onResume();
         this.adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_list_item_1);
         this.lv.setAdapter(this.adapter);
-        new getTeambet().execute(URI.create(this.prefs.getString(PrefConstants.GET_SERVER, getResources().getString(R.string.default_get_server))));
+        new getTeambet().execute(URI.create(this.prefs.getString(Constants.GET_SERVER, getResources().getString(R.string.default_get_server))));
 
     }
 
@@ -51,7 +51,7 @@ public class TeamBetActivity extends Activity implements AdapterView.OnItemClick
         @Override
         protected TeamBet doInBackground(final URI... uris) {
             try {
-                return new HttpUtil().getTeamBetData(uris[0], TeamBetActivity.this.prefs.getString(PrefConstants.USERNAME, ""), TeamBetActivity.this.prefs.getString(PrefConstants.PASSWORD, ""));  //To change body of implemented methods use File | Settings | File Templates.
+                return new HttpUtil().getTeamBetData(uris[0], TeamBetActivity.this.prefs.getString(Constants.USERNAME, ""), TeamBetActivity.this.prefs.getString(Constants.PASSWORD, ""));  //To change body of implemented methods use File | Settings | File Templates.
             } catch (ConnectException e) {
                 return null;
             }

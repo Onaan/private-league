@@ -8,8 +8,8 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Environment;
 import android.widget.Toast;
+import de.draigon.waw.Constants;
 import de.draigon.waw.R;
-import de.draigon.waw.utils.PrefConstants;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,7 +31,7 @@ public class UpdateAvailableDialog {
                 .setCancelable(false)
                 .setPositiveButton(res.getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        update(PrefConstants.APPLICATION_DOWNLOAD_LINK);
+                        update(Constants.APPLICATION_DOWNLOAD_LINK);
                     }
                 })
                 .setNegativeButton(res.getString(R.string.cancel), new DialogInterface.OnClickListener() {

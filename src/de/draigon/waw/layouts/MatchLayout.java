@@ -3,7 +3,7 @@ package de.draigon.waw.layouts;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -29,7 +29,7 @@ public class MatchLayout extends TableLayout {
     }
 
     private void drawView() {
-        final LayoutParams tlp = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+        final TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
         this.setLayoutParams(tlp);
         this.addView(createMatchDate());
         this.addView(createTableRow(this.match.getHome(), this.match.getHomeScore(), this.match.getHomeTempScore(), this.match.getHomeScoreBet()));
@@ -58,7 +58,7 @@ public class MatchLayout extends TableLayout {
 
     private TextView createMatchDate() {
         final TextView dateView = new TextView(this.context);
-        dateView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        dateView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         dateView.setText(sdf.format(this.match.getKickOff()));
         dateView.setTextColor(getDateColor());
         return dateView;

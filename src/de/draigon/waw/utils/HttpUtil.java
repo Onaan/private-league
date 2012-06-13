@@ -1,6 +1,7 @@
 package de.draigon.waw.utils;
 
 import android.util.Log;
+import de.draigon.waw.Constants;
 import de.draigon.waw.data.Match;
 import de.draigon.waw.data.MatchDay;
 import de.draigon.waw.data.TeamBet;
@@ -51,7 +52,7 @@ public class HttpUtil {
             throw e;
         } catch (IOException e) {
             Log.e(TAG, "Error getting data", e);
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
         Document xml = null;
         try {
@@ -65,15 +66,15 @@ public class HttpUtil {
         } catch (ParserConfigurationException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        Log.v(TAG, document);
+        //Log.v(TAG, document);
         return xml;
     }
 
 
     public List<MatchDay> getPlayingSchedule(final URI uri, final String username, final String password) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
-        formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
+        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
+        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
         final Document xml = doPost(uri, formparams);
         return this.matchDayParser.createSpielplan(xml, username);
     }
@@ -81,8 +82,8 @@ public class HttpUtil {
 
     public BetState uploadBet(final URI uri, final String username, final String password, final Match match) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
-        formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
+        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
+        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
         formparams.add(new BasicNameValuePair("tips", match.getId() + ":" + match.getHomeScoreBet() + ":" + match.getGuestScoreBet()));
         final Document xml = doPost(uri, formparams);
         return isBetPlacementSuccessful(xml);
@@ -96,8 +97,8 @@ public class HttpUtil {
 
     public CharSequence[] getRankings(final URI uri, final String username, final String password) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
-        formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
+        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
+        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
         final Document xml = doPost(uri, formparams);
         return parseStandings(xml);
     }
@@ -106,7 +107,7 @@ public class HttpUtil {
         final NodeList playerNodes = xml.getElementsByTagName("player");
         final CharSequence[] scores = new CharSequence[playerNodes.getLength()];
         for (int i = 0; i < playerNodes.getLength(); ++i) {
-            scores[i] = playerNodes.item(i).getAttributes().getNamedItem(PrefConstants.USERNAME).getTextContent() + " " + playerNodes.item(i).getAttributes().getNamedItem("score").getTextContent() + " (" + playerNodes.item(i).getAttributes().getNamedItem("tempscore").getTextContent() + ")";
+            scores[i] = playerNodes.item(i).getAttributes().getNamedItem(Constants.USERNAME).getTextContent() + " " + playerNodes.item(i).getAttributes().getNamedItem("score").getTextContent() + " (" + playerNodes.item(i).getAttributes().getNamedItem("tempscore").getTextContent() + ")";
 
         }
         return scores;
@@ -114,8 +115,8 @@ public class HttpUtil {
 
     public TeamBet getTeamBetData(final URI uri, final String username, final String password) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair(PrefConstants.USERNAME, username));
-        formparams.add(new BasicNameValuePair(PrefConstants.PASSWORD, password));
+        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
+        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
         final Document xml = doPost(uri, formparams);
         return parseTeamBetData(xml);
     }

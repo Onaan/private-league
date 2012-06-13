@@ -16,7 +16,7 @@ import de.draigon.waw.utils.HttpUtil;
 import java.net.ConnectException;
 import java.net.URI;
 
-import static de.draigon.waw.utils.PrefConstants.*;
+import static de.draigon.waw.Constants.*;
 
 
 public class StartActivity extends Activity {

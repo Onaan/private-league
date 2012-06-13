@@ -1,6 +1,7 @@
 package de.draigon.waw.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -20,12 +21,12 @@ import de.draigon.waw.utils.HttpUtil;
 import java.net.ConnectException;
 import java.net.URI;
 
-import static de.draigon.waw.utils.PrefConstants.*;
+import static de.draigon.waw.Constants.*;
 
 
 /**
  * Shows the score (temporary or final) of the match given as Intent-extra with the key
- * {@link de.draigon.waw.utils.PrefConstants}.MATCH.  Additionally the bets of all participants are shown.
+ * {@link de.draigon.waw.Constants}.MATCH.  Additionally the bets of all participants are shown.
  */
 public class AllMatchBetsActivity extends Activity {
 
@@ -124,7 +125,7 @@ public class AllMatchBetsActivity extends Activity {
         private final String TAG = SingleMatchDownloader.class.getName();
 
         /**
-         * Fetches a single match asynchronously from {@link de.draigon.waw.utils.PrefConstants}.GET_SERVER.
+         * Fetches a single match asynchronously from {@link de.draigon.waw.Constants}.GET_SERVER.
          *
          * @param matchId id of the match to fetch. Only the first argument is used
          * @return the match to fetch, or null if the match is not found, the parameter is null, or a ConnectException occurs while connecting to the server.
@@ -191,5 +192,13 @@ public class AllMatchBetsActivity extends Activity {
         }
     }
 
+
+    @Override
+    public void finish() {
+        final Intent intent = new Intent();
+        intent.putExtra(MATCH, this.match);
+        this.setResult(RESULT_OK, intent);
+        super.finish();
+    }
 
 }

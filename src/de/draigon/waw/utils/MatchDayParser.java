@@ -1,5 +1,6 @@
 package de.draigon.waw.utils;
 
+import de.draigon.waw.Constants;
 import de.draigon.waw.data.Match;
 import de.draigon.waw.data.MatchDay;
 import org.w3c.dom.Document;
@@ -90,7 +91,7 @@ public class MatchDayParser {
             if ("bets".equals(matchNode.getChildNodes().item(i).getNodeName())) {
                 for (int j = 0; j < matchNode.getChildNodes().item(i).getChildNodes().getLength(); ++j) {
                     if ("bet".equals(matchNode.getChildNodes().item(i).getChildNodes().item(j).getNodeName())
-                            && username.equalsIgnoreCase(matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes().getNamedItem(PrefConstants.USERNAME).getTextContent())
+                            && username.equalsIgnoreCase(matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes().getNamedItem(Constants.USERNAME).getTextContent())
                             ) {
                         return matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes();
                     }

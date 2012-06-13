@@ -3,8 +3,10 @@ package de.draigon.waw.layouts;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -16,8 +18,8 @@ import de.draigon.waw.data.MatchDay;
 
 import java.util.List;
 
-import static de.draigon.waw.utils.PrefConstants.MATCH_DAY;
-import static de.draigon.waw.utils.PrefConstants.PREFS_NAME;
+import static de.draigon.waw.Constants.MATCH_DAY;
+import static de.draigon.waw.Constants.PREFS_NAME;
 
 
 public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSelectedListener {
@@ -37,12 +39,15 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
         this.listener = listener;
         this.matchDays = matchDays;
         this.prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        setUp(this.prefs.getInt(MATCH_DAY, 0));
+        refresh();
 
     }
 
-    private void setUp(final int startPosition) {
-        this.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+    public void refresh() {
+        this.removeAllViews();
+        Log.d(TAG, "refreshing Layout");
+        int startPosition = this.prefs.getInt(MATCH_DAY, 0);
+        this.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
         this.setOrientation(VERTICAL);
         createSpinner();
         this.spinner.setOnItemSelectedListener(this);
@@ -59,6 +64,7 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
     }
 
     private void updateMatchDayData(final int startPosition) {
+        Log.v(TAG, "updating match day data for day " + startPosition);
         removeAllViews();
         this.addView(this.spinner);
         addLine();
@@ -70,6 +76,7 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
     }
 
     private void createMatch(final Match m) {
+        Log.v(TAG, "creating match with id: " + m.getId());
         final MatchLayout t = new MatchLayout(this.context, m);
         t.setOnClickListener(this.listener);
         this.addView(t);
@@ -80,8 +87,9 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
 
 
     private void addLine() {
+        Log.v(TAG, "adding line");
         final View v = new View(this.context);
-        v.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, getPixels(2)));
+        v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, getPixels(2)));
         v.setBackgroundColor(0xFF909090);
         this.addView(v);
     }
@@ -93,6 +101,7 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
     }
 
     private void createSpinner() {
+        Log.v(TAG, "creating spinner");
         this.spinner = new Spinner(this.context);
         final Spinner.LayoutParams slp = new Spinner.LayoutParams(Spinner.LayoutParams.FILL_PARENT, Spinner.LayoutParams.WRAP_CONTENT);
         this.spinner.setLayoutParams(slp);

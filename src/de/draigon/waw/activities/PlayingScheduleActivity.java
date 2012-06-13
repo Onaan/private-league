@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +23,7 @@ import java.net.ConnectException;
 import java.net.URI;
 import java.util.List;
 
-import static de.draigon.waw.utils.PrefConstants.*;
+import static de.draigon.waw.Constants.*;
 
 
 public class PlayingScheduleActivity extends Activity implements View.OnClickListener {
@@ -35,15 +36,17 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
+        Log.v(TAG, "onCreate called");
         super.onCreate(savedInstanceState);
         this.prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         this.scrollView = new ScrollView(this);
-        final ScrollView.LayoutParams lp = new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
-        this.scrollView.setLayoutParams(lp);
+        final ScrollView.LayoutParams scrollViewLayoutParams = new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
+        this.scrollView.setLayoutParams(scrollViewLayoutParams);
         this.setContentView(this.scrollView);
-        if (savedInstanceState == null || savedInstanceState.getSerializable(MATCH_DAYS) == null) {
+        if (savedInstanceState == null) {
             refresh();
         } else {
+            Log.d(TAG, "recreating playing schedule from savedInstanceState");
             //noinspection unchecked
             this.matchDayLayout = new MatchDayLayout(this, this, (List<MatchDay>) savedInstanceState.getSerializable(MATCH_DAYS));
             this.scrollView.removeAllViews();
@@ -63,6 +66,7 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
+        Log.v(TAG, "onResume called");
 
 
     }
@@ -70,15 +74,34 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
 
     public void onClick(final View view) {
         final Match match = ((MatchLayout) view).getMatch();
+        final Intent intent;
         if (match.isBettable()) {
-            final Intent intent = new Intent(this, BetMatchActivity.class);
-            intent.putExtra(MATCH, match);
-            startActivity(intent);
+            intent = new Intent(this, BetMatchActivity.class);
         } else {
-            final Intent intent = new Intent(this, AllMatchBetsActivity.class);
-            intent.putExtra(MATCH, match);
-            startActivity(intent);
+            intent = new Intent(this, AllMatchBetsActivity.class);
         }
+        intent.putExtra(MATCH, match);
+        startActivityForResult(intent, REQUEST_MATCH);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == REQUEST_MATCH) {
+            if (resultCode == RESULT_OK) {
+                Match match = (Match) intent.getSerializableExtra(MATCH);
+                Log.d(TAG, "recieved result, switching match with id: " + match.getId());
+                matchDayLayout.getMatchDays().updateMatch(match);
+                matchDayLayout.refresh();
+                Log.v(TAG, "finished refreshing of matchDayLayout");
+                this.scrollView.removeAllViews();
+                this.scrollView.addView(this.matchDayLayout);
+            }
+
+        } else {
+            Log.wtf(TAG, "unknown request code returned to onActivityResult, " +
+                    "expected: REQUEST_MATCH, recieved: " + requestCode);
+        }
+
     }
 
 

@@ -1,6 +1,7 @@
 package de.draigon.waw.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ import de.draigon.waw.utils.HttpUtil;
 import java.net.ConnectException;
 import java.net.URI;
 
-import static de.draigon.waw.utils.PrefConstants.*;
+import static de.draigon.waw.Constants.*;
 
 /**
  * Allows the betting of a given Match.
@@ -113,23 +114,31 @@ public class BetMatchActivity extends Activity {
                 return;
             }
             final String message;
+            final int result;
             switch (betState) {
                 case OK:
                     message = getResources().getString(R.string.upload_bet_success);
+                    result = RESULT_OK;
                     break;
                 case LATE:
                     message = getResources().getString(R.string.upload_bet_late);
+                    result = RESULT_CANCELED;
                     break;
                 case UNKNOWN_USER:
                     message = getResources().getString(R.string.upload_bet_unknown_user);
+                    result = RESULT_CANCELED;
                     break;
                 case ILLEGAL_PARAMETER:
                     message = getResources().getString(R.string.upload_bet_illegal_parameter);
+                    result = RESULT_CANCELED;
                     break;
                 default:
                     throw new IllegalStateException("Illegal BetState " + betState + "recieved");
             }
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            final Intent data = new Intent();
+            data.putExtra(MATCH, match);
+            setResult(result, data);
             BetMatchActivity.this.finish();
 
         }
