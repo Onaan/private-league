@@ -28,6 +28,7 @@ public class BetMatchActivity extends Activity {
 // ------------------------------ FIELDS ------------------------------
 
     private static final String TAG = BetMatchActivity.class.getName();
+    private boolean autofocus = true;
     private EditText guestScoreBet;
     private EditText homeScoreBet;
     private Match match;
@@ -35,6 +36,7 @@ public class BetMatchActivity extends Activity {
     private TextView guest;
     private TextView home;
 // ------------------- LIFECYCLE/CALLBACK METHODS -------------------
+
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -59,6 +61,30 @@ public class BetMatchActivity extends Activity {
         }
         this.home.setText(this.match.getHome());
         this.guest.setText(this.match.getGuest());
+        this.home.setFocusable(true);
+        final EditText.OnClickListener ocl = new EditText.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                //TODO: does not work consistently on ICS, looking for better solution
+                Log.v(TAG, "selecting all text");
+                ((EditText) view).selectAll();
+            }
+        };
+        final EditText.OnFocusChangeListener ofcl = new EditText.OnFocusChangeListener() {
+
+
+            @Override
+            public void onFocusChange(final View view, final boolean hasFocus) {
+                if (hasFocus && !BetMatchActivity.this.autofocus) {
+                    view.performClick();
+                }
+                BetMatchActivity.this.autofocus = false;
+            }
+        };
+        this.homeScoreBet.setOnClickListener(ocl);
+        this.homeScoreBet.setOnFocusChangeListener(ofcl);
+        this.guestScoreBet.setOnClickListener(ocl);
+        this.guestScoreBet.setOnFocusChangeListener(ofcl);
     }
 
     @Override
