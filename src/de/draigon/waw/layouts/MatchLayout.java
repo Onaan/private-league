@@ -13,10 +13,13 @@ import java.text.SimpleDateFormat;
 
 
 public class MatchLayout extends TableLayout {
-    private final Context context;
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("E',' dd.MM.yyyy HH:mm");
-    private final Match match;
+// ------------------------------ FIELDS ------------------------------
+
     public static final String TAG = MatchLayout.class.getName();
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("E',' dd.MM.yyyy HH:mm");
+    private final Context context;
+    private final Match match;
+// --------------------------- CONSTRUCTORS ---------------------------
 
     public MatchLayout(final Context context, final Match m) {
         super(context);
@@ -25,16 +28,13 @@ public class MatchLayout extends TableLayout {
         drawView();
         this.setColumnShrinkable(1, true);
         this.setColumnStretchable(1, true);
-
     }
+// --------------------- GETTER / SETTER METHODS ---------------------
 
-    private void drawView() {
-        final TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
-        this.setLayoutParams(tlp);
-        this.addView(createMatchDate());
-        this.addView(createTableRow(this.match.getHome(), this.match.getHomeScore(), this.match.getHomeTempScore(), this.match.getHomeScoreBet()));
-        this.addView(createTableRow(this.match.getGuest(), this.match.getGuestScore(), this.match.getGuestTempScore(), this.match.getGuestScoreBet()));
+    public Match getMatch() {
+        return this.match;
     }
+// -------------------------- OTHER METHODS --------------------------
 
     private TableRow createTableRow(final String team, final String score, final String tempScore, final String bet) {
         final TableRow r = new TableRow(this.context);
@@ -80,8 +80,11 @@ public class MatchLayout extends TableLayout {
         return Color.YELLOW;
     }
 
-
-    public Match getMatch() {
-        return this.match;
+    private void drawView() {
+        final TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
+        this.setLayoutParams(tlp);
+        this.addView(createMatchDate());
+        this.addView(createTableRow(this.match.getHome(), this.match.getHomeScore(), this.match.getHomeTempScore(), this.match.getHomeScoreBet()));
+        this.addView(createTableRow(this.match.getGuest(), this.match.getGuestScore(), this.match.getGuestTempScore(), this.match.getGuestScoreBet()));
     }
 }

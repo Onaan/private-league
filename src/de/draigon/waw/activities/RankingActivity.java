@@ -19,10 +19,13 @@ import java.net.URI;
 import static de.draigon.waw.Constants.*;
 
 public class RankingActivity extends Activity {
-    private ListView rankingList;
+// ------------------------------ FIELDS ------------------------------
+
     private ArrayAdapter<CharSequence> adapter;
-    private SharedPreferences prefs;
     private CharSequence[] rankings;
+    private ListView rankingList;
+    private SharedPreferences prefs;
+// ------------------- LIFECYCLE/CALLBACK METHODS -------------------
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -37,11 +40,16 @@ public class RankingActivity extends Activity {
         } else {
             updateRankings();
         }
-
     }
 
-    private void updateRankings() {
-        new getRankings().execute(URI.create(this.prefs.getString(GET_SERVER, getResources().getString(R.string.default_get_server))));
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle savedInstanceState) {
+        savedInstanceState.putSerializable(RANKING, this.rankings);
     }
 
     @Override
@@ -50,7 +58,6 @@ public class RankingActivity extends Activity {
         blowUp.inflate(R.menu.refresh_data, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
@@ -64,21 +71,22 @@ public class RankingActivity extends Activity {
         }
         return true;
     }
+// -------------------------- OTHER METHODS --------------------------
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
+    private void refresh(final CharSequence[] rankings) {
+        this.adapter.clear();
+        this.rankings = rankings;
+        for (final CharSequence s : rankings) {
+            this.adapter.add(s);
+        }
     }
 
-    @Override
-    public void onSaveInstanceState(final Bundle savedInstanceState) {
-        savedInstanceState.putSerializable(RANKING, this.rankings);
+    private void updateRankings() {
+        new getRankings().execute(URI.create(this.prefs.getString(GET_SERVER, getResources().getString(R.string.default_get_server))));
     }
+// -------------------------- INNER CLASSES --------------------------
 
     private class getRankings extends AsyncTask<URI, Integer, CharSequence[]> {
-
         @Override
         protected CharSequence[] doInBackground(final URI... uris) {
             try {
@@ -86,7 +94,6 @@ public class RankingActivity extends Activity {
             } catch (ConnectException e) {
                 return null;
             }
-
         }
 
         @Override
@@ -97,17 +104,6 @@ public class RankingActivity extends Activity {
                 return;
             }
             refresh(rankings);
-
-        }
-
-
-    }
-
-    private void refresh(final CharSequence[] rankings) {
-        this.adapter.clear();
-        this.rankings = rankings;
-        for (final CharSequence s : rankings) {
-            this.adapter.add(s);
         }
     }
 }

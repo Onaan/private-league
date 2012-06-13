@@ -25,14 +25,16 @@ import static de.draigon.waw.Constants.*;
  */
 
 public class BetMatchActivity extends Activity {
-    private Match match;
-    private TextView home;
-    private TextView guest;
-    private EditText homeScoreBet;
-    private EditText guestScoreBet;
-    private SharedPreferences prefs;
+// ------------------------------ FIELDS ------------------------------
 
-    public static final String TAG = BetMatchActivity.class.getName();
+    private static final String TAG = BetMatchActivity.class.getName();
+    private EditText guestScoreBet;
+    private EditText homeScoreBet;
+    private Match match;
+    private SharedPreferences prefs;
+    private TextView guest;
+    private TextView home;
+// ------------------- LIFECYCLE/CALLBACK METHODS -------------------
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -57,16 +59,13 @@ public class BetMatchActivity extends Activity {
         }
         this.home.setText(this.match.getHome());
         this.guest.setText(this.match.getGuest());
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         Log.v(TAG, "onResume called");
-
     }
-
 
     @Override
     public void onSaveInstanceState(final Bundle savedInstanceState) {
@@ -75,6 +74,7 @@ public class BetMatchActivity extends Activity {
         savedInstanceState.putString(HOME_SCORE_BET, this.homeScoreBet.getText().toString());
         savedInstanceState.putSerializable(GUEST_SCORE_BET, this.guestScoreBet.getText().toString());
     }
+// -------------------------- OTHER METHODS --------------------------
 
     @SuppressWarnings("unused")
     public void uploadBet(final View view) {
@@ -88,23 +88,19 @@ public class BetMatchActivity extends Activity {
         Log.d(TAG, "trying to upload bet");
         new BetUploader().execute(URI.create(this.prefs.getString(POST_SERVER, DEFAULT_POST_SERVER)));
     }
-
+// -------------------------- INNER CLASSES --------------------------
 
     private class BetUploader extends AsyncTask<URI, Integer, BetState> {
-
         @Override
         protected BetState doInBackground(final URI... uris) {
             BetMatchActivity.this.match.setHomeScoreBet(BetMatchActivity.this.homeScoreBet.getText().toString());
             BetMatchActivity.this.match.setGuestScoreBet(BetMatchActivity.this.guestScoreBet.getText().toString());
             try {
                 return new HttpUtil().uploadBet(uris[0], BetMatchActivity.this.prefs.getString(USERNAME, ""), BetMatchActivity.this.prefs.getString(PASSWORD, ""), BetMatchActivity.this.match);
-
             } catch (ConnectException e) {
                 return null;
             }
-
         }
-
 
         @Override
         protected void onPostExecute(final BetState betState) {
@@ -137,11 +133,9 @@ public class BetMatchActivity extends Activity {
             }
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             final Intent data = new Intent();
-            data.putExtra(MATCH, match);
+            data.putExtra(MATCH, BetMatchActivity.this.match);
             setResult(result, data);
             BetMatchActivity.this.finish();
-
         }
     }
-
 }

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
 <resources>
     <string name="app_name">private-league</string>
     <string name="start_activity_set_login_data">Login</string>

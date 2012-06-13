@@ -15,11 +15,14 @@ import static de.draigon.waw.Constants.*;
 
 
 public class SetLoginDataActivity extends Activity {
-    private EditText username;
-    private EditText password;
+// ------------------------------ FIELDS ------------------------------
+
     private CheckBox showPassword;
-    private SharedPreferences prefs;
+    private EditText password;
+    private EditText username;
     private RadioGroup rg;
+    private SharedPreferences prefs;
+// ------------------- LIFECYCLE/CALLBACK METHODS -------------------
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -44,10 +47,13 @@ public class SetLoginDataActivity extends Activity {
             this.showPassword.setChecked(savedInstanceState.getBoolean(SHOW_PASSWORD));
             this.rg.check(savedInstanceState.getInt(SELECTED_SERVER));
             togglePasswordVisibility(this.showPassword);
-
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     @Override
     public void onSaveInstanceState(final Bundle savedInstanceState) {
@@ -55,19 +61,10 @@ public class SetLoginDataActivity extends Activity {
         savedInstanceState.putString(PASSWORD, this.password.getText().toString());
         savedInstanceState.putBoolean(SHOW_PASSWORD, this.showPassword.isChecked());
         savedInstanceState.putInt(SELECTED_SERVER, this.rg.getCheckedRadioButtonId());
-
-
     }
+// -------------------------- OTHER METHODS --------------------------
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
-
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "UnusedParameters"})
     public void saveLoginData(final View view) {
         final SharedPreferences.Editor e = this.prefs.edit();
         String getServer = null;
@@ -90,6 +87,7 @@ public class SetLoginDataActivity extends Activity {
         this.finish();
     }
 
+    @SuppressWarnings({"WeakerAccess", "UnusedParameters"})
     public void togglePasswordVisibility(final View view) {
         if (!this.showPassword.isChecked()) {
             this.password.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -97,6 +95,4 @@ public class SetLoginDataActivity extends Activity {
             this.password.setTransformationMethod(null);
         }
     }
-
-
 }

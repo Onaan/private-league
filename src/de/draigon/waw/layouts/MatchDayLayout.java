@@ -23,15 +23,17 @@ import static de.draigon.waw.Constants.PREFS_NAME;
 
 
 public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSelectedListener {
-    private final OnClickListener listener;
+// ------------------------------ FIELDS ------------------------------
+
+    private static final String TAG = MatchDayLayout.class.getCanonicalName();
     private final Context context;
-    private Spinner spinner;
 
 
     private final List<MatchDay> matchDays;
+    private final OnClickListener listener;
     private final SharedPreferences prefs;
-    private static final String TAG = MatchDayLayout.class.getCanonicalName();
-
+    private Spinner spinner;
+// --------------------------- CONSTRUCTORS ---------------------------
 
     public MatchDayLayout(final Context context, final OnClickListener listener, final List<MatchDay> matchDays) {
         super(context);
@@ -40,13 +42,60 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
         this.matchDays = matchDays;
         this.prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         refresh();
+    }
+// ------------------------ INTERFACE METHODS ------------------------
+// --------------------- Interface OnItemSelectedListener ---------------------
 
+    @Override
+    public void onItemSelected(final AdapterView<?> adapterView, final View view, final int selected, final long l) {
+        updateMatchDayData(selected);
+    }
+
+    @Override
+    public void onNothingSelected(final AdapterView<?> adapterView) {
+    }
+// -------------------------- OTHER METHODS --------------------------
+
+    public AllMatchDays getMatchDays() {
+        final AllMatchDays am = new AllMatchDays();
+        am.addAll(this.matchDays);
+        return am;
+    }
+
+    @SuppressWarnings({"SameParameterValue"})
+    private int getPixels(final int dipValue) {
+        final Resources r = getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, r.getDisplayMetrics());
+    }
+
+    private void addLine() {
+        Log.v(TAG, "adding line");
+        final View v = new View(this.context);
+        v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, getPixels(2)));
+        v.setBackgroundColor(0xFF909090);
+        this.addView(v);
+    }
+
+    private void createMatch(final Match m) {
+        Log.v(TAG, "creating match with id: " + m.getId());
+        final MatchLayout t = new MatchLayout(this.context, m);
+        t.setOnClickListener(this.listener);
+        this.addView(t);
+        addLine();
+    }
+
+    private void createSpinner() {
+        Log.v(TAG, "creating spinner");
+        this.spinner = new Spinner(this.context);
+        final Spinner.LayoutParams slp = new Spinner.LayoutParams(Spinner.LayoutParams.FILL_PARENT, Spinner.LayoutParams.WRAP_CONTENT);
+        this.spinner.setLayoutParams(slp);
+        this.spinner.setPrompt(getResources().getString(R.string.spielplan_spinner_label));
     }
 
     public void refresh() {
         this.removeAllViews();
         Log.d(TAG, "refreshing Layout");
-        int startPosition = this.prefs.getInt(MATCH_DAY, 0);
+        final int startPosition = this.prefs.getInt(MATCH_DAY, 0);
         this.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
         this.setOrientation(VERTICAL);
         createSpinner();
@@ -59,8 +108,6 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
         this.spinner.setAdapter(matchDayAdapter);
         this.spinner.setSelection(startPosition);
         updateMatchDayData(startPosition);
-
-
     }
 
     private void updateMatchDayData(final int startPosition) {
@@ -70,57 +117,8 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
         addLine();
         for (final Match m : this.matchDays.get(startPosition).getMatches()) {
             createMatch(m);
-
         }
         this.prefs.edit().putInt(MATCH_DAY, startPosition).commit();
     }
-
-    private void createMatch(final Match m) {
-        Log.v(TAG, "creating match with id: " + m.getId());
-        final MatchLayout t = new MatchLayout(this.context, m);
-        t.setOnClickListener(this.listener);
-        this.addView(t);
-        addLine();
-
-
-    }
-
-
-    private void addLine() {
-        Log.v(TAG, "adding line");
-        final View v = new View(this.context);
-        v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, getPixels(2)));
-        v.setBackgroundColor(0xFF909090);
-        this.addView(v);
-    }
-
-    @SuppressWarnings({"SameParameterValue"})
-    private int getPixels(final int dipValue) {
-        final Resources r = getResources();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, r.getDisplayMetrics());
-    }
-
-    private void createSpinner() {
-        Log.v(TAG, "creating spinner");
-        this.spinner = new Spinner(this.context);
-        final Spinner.LayoutParams slp = new Spinner.LayoutParams(Spinner.LayoutParams.FILL_PARENT, Spinner.LayoutParams.WRAP_CONTENT);
-        this.spinner.setLayoutParams(slp);
-        this.spinner.setPrompt(getResources().getString(R.string.spielplan_spinner_label));
-    }
-
-    public void onItemSelected(final AdapterView<?> adapterView, final View view, final int selected, final long l) {
-        updateMatchDayData(selected);
-
-    }
-
-    public void onNothingSelected(final AdapterView<?> adapterView) {
-    }
-
-    public AllMatchDays getMatchDays() {
-        final AllMatchDays am = new AllMatchDays();
-        am.addAll(this.matchDays);
-        return am;
-    }
-
 }
 

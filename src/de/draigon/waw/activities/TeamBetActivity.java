@@ -19,10 +19,18 @@ import java.net.URI;
 
 
 public class TeamBetActivity extends Activity implements AdapterView.OnItemClickListener {
+// ------------------------------ FIELDS ------------------------------
 
+    private ArrayAdapter<CharSequence> adapter;
     private ListView lv;
     private SharedPreferences prefs;
-    private ArrayAdapter<CharSequence> adapter;
+// ------------------------ INTERFACE METHODS ------------------------
+// --------------------- Interface OnItemClickListener ---------------------
+
+    @Override
+    public void onItemClick(final AdapterView<?> adapterView, final View view, final int i, final long l) {
+    }
+// ------------------- LIFECYCLE/CALLBACK METHODS -------------------
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -31,7 +39,6 @@ public class TeamBetActivity extends Activity implements AdapterView.OnItemClick
         this.lv = (ListView) findViewById(R.id.lv_teambet);
         this.prefs = getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE);
         this.lv.setOnItemClickListener(this);
-
     }
 
     @Override
@@ -40,14 +47,10 @@ public class TeamBetActivity extends Activity implements AdapterView.OnItemClick
         this.adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_list_item_1);
         this.lv.setAdapter(this.adapter);
         new getTeambet().execute(URI.create(this.prefs.getString(Constants.GET_SERVER, getResources().getString(R.string.default_get_server))));
-
     }
-
-    public void onItemClick(final AdapterView<?> adapterView, final View view, final int i, final long l) {
-    }
+// -------------------------- INNER CLASSES --------------------------
 
     private class getTeambet extends AsyncTask<URI, Integer, TeamBet> {
-
         @Override
         protected TeamBet doInBackground(final URI... uris) {
             try {
@@ -55,7 +58,6 @@ public class TeamBetActivity extends Activity implements AdapterView.OnItemClick
             } catch (ConnectException e) {
                 return null;
             }
-
         }
 
         @Override
@@ -72,8 +74,6 @@ public class TeamBetActivity extends Activity implements AdapterView.OnItemClick
                     TeamBetActivity.this.lv.setSelection(TeamBetActivity.this.adapter.getCount() - 1);
                 }
             }
-
-
         }
     }
 }

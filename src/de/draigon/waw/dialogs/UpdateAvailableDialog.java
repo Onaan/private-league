@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 import de.draigon.waw.Constants;
 import de.draigon.waw.R;
@@ -20,8 +21,12 @@ import java.net.URL;
 
 
 public class UpdateAvailableDialog {
-    private final AlertDialog dialog;
+// ------------------------------ FIELDS ------------------------------
+
+    private static final String TAG = UpdateAvailableDialog.class.getName();
     private final Activity caller;
+    private final AlertDialog dialog;
+// --------------------------- CONSTRUCTORS ---------------------------
 
     public UpdateAvailableDialog(final Activity caller) {
         this.caller = caller;
@@ -30,23 +35,26 @@ public class UpdateAvailableDialog {
         builder.setMessage(res.getString(R.string.update_dialog_version_available))
                 .setCancelable(false)
                 .setPositiveButton(res.getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(final DialogInterface dialog, final int id) {
                         update(Constants.APPLICATION_DOWNLOAD_LINK);
                     }
                 })
                 .setNegativeButton(res.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(final DialogInterface dialog, final int id) {
                         dialog.cancel();
                     }
                 });
         this.dialog = builder.create();
-
     }
+// -------------------------- OTHER METHODS --------------------------
 
     public void show() {
         this.dialog.show();
     }
 
+    @SuppressWarnings({"SameParameterValue", "WeakerAccess"})
     public void update(final String apkurl) {
         try {
             final URL url = new URL(apkurl);
@@ -73,12 +81,10 @@ public class UpdateAvailableDialog {
             final Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/download/" + fileName)), "application/vnd.android.package-archive");
             this.caller.startActivity(intent);//installation is not working
-
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error getting data", e);
             Toast.makeText(this.caller.getApplicationContext(), this.caller.getResources().getText(R.string.update_dialog_update_failed), Toast.LENGTH_LONG).show();
+            throw new RuntimeException(e);
         }
     }
-
-
 }

@@ -29,18 +29,20 @@ import static de.draigon.waw.Constants.*;
  * {@link de.draigon.waw.Constants}.MATCH.  Additionally the bets of all participants are shown.
  */
 public class AllMatchBetsActivity extends Activity {
+// ------------------------------ FIELDS ------------------------------
 
-    private ListView allBets;
-
-    private ArrayAdapter<CharSequence> adapter;
-    private Match match;
-    private TextView home;
-    private TextView homeScore;
-    private TextView guest;
-    private TextView guestScore;
-    private SharedPreferences prefs;
     private static final String TAG = AllMatchBetsActivity.class.getCanonicalName();
 
+    private ArrayAdapter<CharSequence> adapter;
+
+    private ListView allBets;
+    private Match match;
+    private SharedPreferences prefs;
+    private TextView guest;
+    private TextView guestScore;
+    private TextView home;
+    private TextView homeScore;
+// ------------------- LIFECYCLE/CALLBACK METHODS -------------------
 
     /*
     Set up the view and refresh data
@@ -70,7 +72,12 @@ public class AllMatchBetsActivity extends Activity {
         }
         this.allBets.setAdapter(this.adapter);
         refresh();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.v(TAG, " onResume called");
     }
 
     @Override
@@ -80,11 +87,12 @@ public class AllMatchBetsActivity extends Activity {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.v(TAG, " onResume called");
+    public void finish() {
+        final Intent intent = new Intent();
+        intent.putExtra(MATCH, this.match);
+        this.setResult(RESULT_OK, intent);
+        super.finish();
     }
-
 
     /*
    As the only menu option is refresh, it's only accessible during a running match
@@ -102,7 +110,6 @@ public class AllMatchBetsActivity extends Activity {
         return false;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         Log.v(TAG, " menu option with id " + item.getItemId() + "selected");
@@ -117,6 +124,26 @@ public class AllMatchBetsActivity extends Activity {
         }
         return true;
     }
+// -------------------------- OTHER METHODS --------------------------
+
+    /**
+     * Updates the ui-thread to show the current match.
+     */
+    private void refresh() {
+        Log.v(TAG, "refreshing UI, match is running: " + this.match.isRunning());
+        this.home.setText(this.match.getHome());
+        this.guest.setText(this.match.getGuest());
+        if (!this.match.isRunning()) {
+            this.homeScore.setText(this.match.getHomeScore());
+            this.guestScore.setText(this.match.getGuestScore());
+        } else {
+            this.homeScore.setText(this.match.getHomeTempScore());
+            this.homeScore.setTextColor(Color.YELLOW);
+            this.guestScore.setText(this.match.getGuestTempScore());
+            this.guestScore.setTextColor(Color.YELLOW);
+        }
+    }
+// -------------------------- INNER CLASSES --------------------------
 
     /*
     Async task, getting a single match. Only called when refreshing the view.
@@ -173,32 +200,4 @@ public class AllMatchBetsActivity extends Activity {
             refresh();
         }
     }
-
-    /**
-     * Updates the ui-thread to show the current match.
-     */
-    private void refresh() {
-        Log.v(TAG, "refreshing UI, match is running: " + this.match.isRunning());
-        this.home.setText(this.match.getHome());
-        this.guest.setText(this.match.getGuest());
-        if (!this.match.isRunning()) {
-            this.homeScore.setText(this.match.getHomeScore());
-            this.guestScore.setText(this.match.getGuestScore());
-        } else {
-            this.homeScore.setText(this.match.getHomeTempScore());
-            this.homeScore.setTextColor(Color.YELLOW);
-            this.guestScore.setText(this.match.getGuestTempScore());
-            this.guestScore.setTextColor(Color.YELLOW);
-        }
-    }
-
-
-    @Override
-    public void finish() {
-        final Intent intent = new Intent();
-        intent.putExtra(MATCH, this.match);
-        this.setResult(RESULT_OK, intent);
-        super.finish();
-    }
-
 }

@@ -1,17 +1,12 @@
 package de.draigon.waw.data;
 
 public class TeamBet {
-    private boolean bettable = false;
+// ------------------------------ FIELDS ------------------------------
+
     private CharSequence[] choices;
     private CharSequence selected = null;
-
-    public CharSequence getSelected() {
-        return this.selected;
-    }
-
-    public void setSelected(final CharSequence selected) {
-        this.selected = selected;
-    }
+    private boolean bettable = false;
+// --------------------- GETTER / SETTER METHODS ---------------------
 
     public CharSequence[] getChoices() {
         return this.choices;
@@ -19,6 +14,14 @@ public class TeamBet {
 
     public void setChoices(final CharSequence[] choices) {
         this.choices = choices;
+    }
+
+    public CharSequence getSelected() {
+        return this.selected;
+    }
+
+    public void setSelected(final CharSequence selected) {
+        this.selected = selected;
     }
 
     public boolean isBettable() {

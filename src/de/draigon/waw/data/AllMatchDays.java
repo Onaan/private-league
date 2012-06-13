@@ -1,20 +1,15 @@
 package de.draigon.waw.data;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class AllMatchDays extends ArrayList<MatchDay> implements Serializable {
-
-    private void writeObject(final ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-        out.write(this.size());
-        for (final MatchDay m : this) {
-            out.writeObject(m);
-
-        }
-    }
+// -------------------------- OTHER METHODS --------------------------
 
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
@@ -23,13 +18,10 @@ public class AllMatchDays extends ArrayList<MatchDay> implements Serializable {
         }
     }
 
-    private void readObjectNoData() throws ObjectStreamException {
-    }
-
-    public void updateMatch(Match match) {
+    public void updateMatch(final Match match) {
         boolean finished = false;
-        for (MatchDay matchDay : this) {
-            List<Match> matches = matchDay.getMatches();
+        for (final MatchDay matchDay : this) {
+            final List<Match> matches = matchDay.getMatches();
             for (int i = 0; i < matches.size(); ++i) {
                 if (matches.get(i).getId().equals(match.getId())) {
                     matches.remove(i);
@@ -44,5 +36,11 @@ public class AllMatchDays extends ArrayList<MatchDay> implements Serializable {
         }
     }
 
-
+    private void writeObject(final ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.write(this.size());
+        for (final MatchDay m : this) {
+            out.writeObject(m);
+        }
+    }
 }

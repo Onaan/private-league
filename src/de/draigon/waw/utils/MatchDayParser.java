@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 public class MatchDayParser {
-
+// -------------------------- OTHER METHODS --------------------------
 
     public List<MatchDay> createSpielplan(final Document xml, final String username) {
         final List<MatchDay> matchDays = new ArrayList<MatchDay>();
@@ -61,31 +61,6 @@ public class MatchDayParser {
         return match;
     }
 
-    private void populateBetList(final Node matchNode, final Match match) {
-        final List<CharSequence> bets = match.getBets();
-        for (int i = 0; i < matchNode.getChildNodes().getLength(); ++i) {
-            if ("bets".equals(matchNode.getChildNodes().item(i).getNodeName())) {
-                for (int j = 0; j < matchNode.getChildNodes().item(i).getChildNodes().getLength(); ++j) {
-                    if ("bet".equals(matchNode.getChildNodes().item(i).getChildNodes().item(j).getNodeName())) {
-                        final NamedNodeMap attributes = matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes();
-                        final String bet = attributes.getNamedItem("username").getTextContent() + " " + attributes.getNamedItem("home").getTextContent() + ":" + attributes.getNamedItem("guest").getTextContent();
-                        bets.add(bet);
-
-                    }
-                }
-            }
-        }
-    }
-
-    private NamedNodeMap getTeamAttributes(final Node matchNode, final String team) {
-        for (int i = 0; i < matchNode.getChildNodes().getLength(); ++i) {
-            if (matchNode.getChildNodes().item(i).getNodeName().equals(team)) {
-                return matchNode.getChildNodes().item(i).getAttributes();
-            }
-        }
-        return null;
-    }
-
     private NamedNodeMap getBet(final Node matchNode, final String username) {
         for (int i = 0; i < matchNode.getChildNodes().getLength(); ++i) {
             if ("bets".equals(matchNode.getChildNodes().item(i).getNodeName())) {
@@ -99,5 +74,29 @@ public class MatchDayParser {
             }
         }
         return null;
+    }
+
+    private NamedNodeMap getTeamAttributes(final Node matchNode, final String team) {
+        for (int i = 0; i < matchNode.getChildNodes().getLength(); ++i) {
+            if (matchNode.getChildNodes().item(i).getNodeName().equals(team)) {
+                return matchNode.getChildNodes().item(i).getAttributes();
+            }
+        }
+        return null;
+    }
+
+    private void populateBetList(final Node matchNode, final Match match) {
+        final List<CharSequence> bets = match.getBets();
+        for (int i = 0; i < matchNode.getChildNodes().getLength(); ++i) {
+            if ("bets".equals(matchNode.getChildNodes().item(i).getNodeName())) {
+                for (int j = 0; j < matchNode.getChildNodes().item(i).getChildNodes().getLength(); ++j) {
+                    if ("bet".equals(matchNode.getChildNodes().item(i).getChildNodes().item(j).getNodeName())) {
+                        final NamedNodeMap attributes = matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes();
+                        final String bet = attributes.getNamedItem("username").getTextContent() + " " + attributes.getNamedItem("home").getTextContent() + ":" + attributes.getNamedItem("guest").getTextContent();
+                        bets.add(bet);
+                    }
+                }
+            }
+        }
     }
 }
