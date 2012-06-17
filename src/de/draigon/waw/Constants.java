@@ -4,8 +4,8 @@ public class Constants {
 // ------------------------------ FIELDS ------------------------------
 
     public static final String APPLICATION_DOWNLOAD_LINK = "http://android.draigon.de/private-league.apk";
-    public static final String DP_GET_SERVER = "http://waw.draigon.de/getBets.php";
-    public static final String DP_POST_SERVER = "http://waw.draigon.de/placeBets.php";
+    public static final String DP_GET_SERVER = "http://private-league.draigon.de/getBets.php";
+    public static final String DP_POST_SERVER = "http://private-league.draigon.de/placeBets.php";
     public static final String GET_SERVER = "getServer";
     public static final String GUEST_SCORE_BET = "guestScoreBet";
     public static final String HOME_SCORE_BET = "homeScoreBet";

@@ -1,6 +1,7 @@
 package de.draigon.waw.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -35,6 +36,7 @@ public class BetMatchActivity extends Activity {
     private SharedPreferences prefs;
     private TextView guest;
     private TextView home;
+    private ProgressDialog dialog;
 // ------------------- LIFECYCLE/CALLBACK METHODS -------------------
 
 
@@ -93,6 +95,13 @@ public class BetMatchActivity extends Activity {
         Log.v(TAG, "onResume called");
     }
 
+    public void onPause() {
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+        super.onPause();
+    }
+
     @Override
     public void onSaveInstanceState(final Bundle savedInstanceState) {
         Log.d(TAG, "putting match instance and temporary bet into savedInstanceState");
@@ -112,6 +121,7 @@ public class BetMatchActivity extends Activity {
             return;
         }
         Log.d(TAG, "trying to upload bet");
+        this.dialog = ProgressDialog.show(this, getResources().getString(R.string.progress_title), getResources().getString(R.string.progress_please_wait));
         new BetUploader().execute(URI.create(this.prefs.getString(POST_SERVER, DEFAULT_POST_SERVER)));
     }
 // -------------------------- INNER CLASSES --------------------------
@@ -157,6 +167,7 @@ public class BetMatchActivity extends Activity {
                 default:
                     throw new IllegalStateException("Illegal BetState " + betState + "recieved");
             }
+            BetMatchActivity.this.dialog.dismiss();
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             final Intent data = new Intent();
             data.putExtra(MATCH, BetMatchActivity.this.match);

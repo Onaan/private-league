@@ -1,6 +1,7 @@
 package de.draigon.waw.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -34,6 +35,7 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     private MatchDayLayout matchDayLayout;
     private ScrollView scrollView;
     private SharedPreferences prefs;
+    private ProgressDialog dialog;
 // ------------------------ INTERFACE METHODS ------------------------
 // --------------------- Interface OnClickListener ---------------------
 
@@ -62,12 +64,18 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
         this.setContentView(this.scrollView);
         if (savedInstanceState == null) {
             refresh();
+
+
         } else {
             Log.d(TAG, "recreating playing schedule from savedInstanceState");
             //noinspection unchecked
             this.matchDayLayout = new MatchDayLayout(this, this, (List<MatchDay>) savedInstanceState.getSerializable(MATCH_DAYS));
-            this.scrollView.removeAllViews();
-            this.scrollView.addView(this.matchDayLayout);
+            if (this.matchDayLayout.getMatchDays() != null) { //TODO: herausfinden warum das hier manchmal null ist, kann in der theorie nicht vorkommen... Das Problem tritt auf, wenn man nach dem starten das tel schnell dreht.
+                this.scrollView.removeAllViews();
+                this.scrollView.addView(this.matchDayLayout);
+            } else {
+                refresh();
+            }
         }
     }
 
@@ -75,17 +83,29 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     public void onResume() {
         super.onResume();
         Log.v(TAG, "onResume called");
+
+    }
+
+    public void onPause() {
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+        super.onPause();
     }
 
     @Override
     public void onSaveInstanceState(final Bundle savedInstanceState) {
-        if (this.matchDayLayout.getMatchDays() != null) {
+        if (this.matchDayLayout != null && this.matchDayLayout.getMatchDays() != null) {
             savedInstanceState.putSerializable(MATCH_DAYS, this.matchDayLayout.getMatchDays());
         }
     }
 
     @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
+    public void onActivityResult
+            (
+                    final int requestCode,
+                    final int resultCode,
+                    final Intent intent) {
         if (requestCode == REQUEST_MATCH) {
             if (resultCode == RESULT_OK) {
                 final Match match = (Match) intent.getSerializableExtra(MATCH);
@@ -103,14 +123,18 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     }
 
     @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
+    public boolean onCreateOptionsMenu
+            (
+                    final Menu menu) {
         final MenuInflater blowUp = getMenuInflater();
         blowUp.inflate(R.menu.refresh_data, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
+    public boolean onOptionsItemSelected
+            (
+                    final MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.menu_refresh_data:
@@ -124,7 +148,9 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
 // -------------------------- OTHER METHODS --------------------------
 
     private void refresh() {
+        this.dialog = ProgressDialog.show(this, getResources().getString(R.string.progress_title), getResources().getString(R.string.progress_please_wait));
         new PlayingScheduleDownloader().execute(URI.create(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
+
     }
 // -------------------------- INNER CLASSES --------------------------
 
@@ -148,6 +174,11 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
             PlayingScheduleActivity.this.matchDayLayout = new MatchDayLayout(PlayingScheduleActivity.this, PlayingScheduleActivity.this, matchDays);
             PlayingScheduleActivity.this.scrollView.removeAllViews();
             PlayingScheduleActivity.this.scrollView.addView(PlayingScheduleActivity.this.matchDayLayout);
+            synchronized (PlayingScheduleActivity.this) {
+                PlayingScheduleActivity.this.dialog.dismiss();
+
+            }
+
         }
     }
 }

@@ -88,20 +88,20 @@ public class HttpUtil {
             Log.e(TAG, "Error getting data", e);
             throw new RuntimeException(e);
         }
-        Document xml;
+        final Document xml;
         try {
             xml = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
                     new InputSource(new StringReader(document))
             );
         } catch (SAXException e) {
             Log.e(TAG, "Error getting data", e);
-            throw new RuntimeException(e);
+            throw new ConnectException("Error getting data");
         } catch (IOException e) {
             Log.e(TAG, "Error getting data", e);
-            throw new RuntimeException(e);
+            throw new ConnectException("Error getting data");
         } catch (ParserConfigurationException e) {
             Log.e(TAG, "Error getting data", e);
-            throw new RuntimeException(e);
+            throw new ConnectException("Error getting data");
         }
         //Log.v(TAG, document);
         return xml;
