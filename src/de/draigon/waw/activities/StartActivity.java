@@ -60,7 +60,7 @@ public class StartActivity extends Activity {
 
     @SuppressWarnings({"unused", "UnusedParameters", "UnusedDeclaration"})
     public void goToPlayingSchedule(final View view) {
-        final Intent intent = new Intent(this, PlayingScheduleActivity.class);
+        final Intent intent = new Intent(this, FixtureActivity.class);
         startActivity(intent);
     }
 

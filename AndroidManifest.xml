@@ -14,7 +14,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.SetLoginDataActivity"/>
-        <activity android:name=".activities.PlayingScheduleActivity"/>
+        <activity android:name=".activities.FixtureActivity"/>
         <activity android:name=".activities.RankingActivity"/>
         <activity android:name=".activities.BetMatchActivity"/>
         <activity android:name=".activities.TeamBetActivity"/>

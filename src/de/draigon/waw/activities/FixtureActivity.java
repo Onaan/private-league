@@ -28,10 +28,10 @@ import static de.draigon.waw.Constants.*;
 
 
 @SuppressWarnings({"UnusedDeclaration"})
-public class PlayingScheduleActivity extends Activity implements View.OnClickListener {
+public class FixtureActivity extends Activity implements View.OnClickListener {
 // ------------------------------ FIELDS ------------------------------
 
-    private static final String TAG = PlayingScheduleActivity.class.getCanonicalName();
+    private static final String TAG = FixtureActivity.class.getCanonicalName();
 
     private MatchDayLayout matchDayLayout;
     private ScrollView scrollView;
@@ -156,7 +156,7 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
         @Override
         protected List<MatchDay> doInBackground(final URI... uris) {
             try {
-                return new HttpUtil().getPlayingSchedule(uris[0], PlayingScheduleActivity.this.prefs.getString(USERNAME, ""), PlayingScheduleActivity.this.prefs.getString(PASSWORD, ""));
+                return new HttpUtil().getPlayingSchedule(uris[0], FixtureActivity.this.prefs.getString(USERNAME, ""), FixtureActivity.this.prefs.getString(PASSWORD, ""));
             } catch (ConnectException e) {
                 return null;
             }
@@ -166,14 +166,14 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
         protected void onPostExecute(final List<MatchDay> matchDays) {
             if (matchDays == null) {
                 Toast.makeText(getApplicationContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
-                PlayingScheduleActivity.this.finish();
+                FixtureActivity.this.finish();
                 return;
             }
-            PlayingScheduleActivity.this.matchDayLayout = new MatchDayLayout(PlayingScheduleActivity.this, PlayingScheduleActivity.this, matchDays);
-            PlayingScheduleActivity.this.scrollView.removeAllViews();
-            PlayingScheduleActivity.this.scrollView.addView(PlayingScheduleActivity.this.matchDayLayout);
-            synchronized (PlayingScheduleActivity.this) {
-                PlayingScheduleActivity.this.dialog.dismiss();
+            FixtureActivity.this.matchDayLayout = new MatchDayLayout(FixtureActivity.this, FixtureActivity.this, matchDays);
+            FixtureActivity.this.scrollView.removeAllViews();
+            FixtureActivity.this.scrollView.addView(FixtureActivity.this.matchDayLayout);
+            synchronized (FixtureActivity.this) {
+                FixtureActivity.this.dialog.dismiss();
             }
         }
     }
