@@ -27,6 +27,7 @@ public class Match implements Serializable {
         return this.bets;
     }
 
+    @SuppressWarnings({"UnusedDeclaration"})
     public void setBets(final List<CharSequence> bets) {
         this.bets = bets;
     }
@@ -43,6 +44,15 @@ public class Match implements Serializable {
         return this.guestScore;
     }
 
+    public void setGuestScore(final String guestScore) {
+        try {
+            Integer.parseInt(guestScore);
+            this.guestScore = guestScore;
+        } catch (IllegalArgumentException e) {
+            // Argument is not a number, so we keep the "-"
+        }
+    }
+
     public String getGuestScoreBet() {
         return this.guestScoreBet;
     }
@@ -53,6 +63,15 @@ public class Match implements Serializable {
 
     public String getGuestTempScore() {
         return this.guestTempScore;
+    }
+
+    public void setGuestTempScore(final String guestTempScore) {
+        try {
+            Integer.parseInt(guestTempScore);
+            this.guestTempScore = guestTempScore;
+        } catch (IllegalArgumentException e) {
+            // Argument is not a number, so we keep the ""
+        }
     }
 
     public String getHome() {
@@ -67,6 +86,15 @@ public class Match implements Serializable {
         return this.homeScore;
     }
 
+    public void setHomeScore(final String homeScore) {
+        try {
+            Integer.parseInt(homeScore);
+            this.homeScore = homeScore;
+        } catch (IllegalArgumentException e) {
+            // Argument is not a number, so we keep the "-"
+        }
+    }
+
     public String getHomeScoreBet() {
         return this.homeScoreBet;
     }
@@ -77,6 +105,15 @@ public class Match implements Serializable {
 
     public String getHomeTempScore() {
         return this.homeTempScore;
+    }
+
+    public void setHomeTempScore(final String homeTempScore) {
+        try {
+            Integer.parseInt(homeTempScore);
+            this.homeTempScore = homeTempScore;
+        } catch (IllegalArgumentException e) {
+            // Argument is not a number, so we keep the ""
+        }
     }
 
     public String getId() {
@@ -124,41 +161,5 @@ public class Match implements Serializable {
 
     public boolean isRunning() {
         return (!this.bettable && "-".equals(this.homeScore) && "-".equals(this.guestScore));
-    }
-
-    public void setGuestScore(final String guestScore) {
-        try {
-            Integer.parseInt(guestScore);
-            this.guestScore = guestScore;
-        } catch (IllegalArgumentException e) {
-            // Argument is not a number, so we keep the "-"
-        }
-    }
-
-    public void setGuestTempScore(final String guestTempScore) {
-        try {
-            Integer.parseInt(guestTempScore);
-            this.guestTempScore = guestTempScore;
-        } catch (IllegalArgumentException e) {
-            // Argument is not a number, so we keep the ""
-        }
-    }
-
-    public void setHomeScore(final String homeScore) {
-        try {
-            Integer.parseInt(homeScore);
-            this.homeScore = homeScore;
-        } catch (IllegalArgumentException e) {
-            // Argument is not a number, so we keep the "-"
-        }
-    }
-
-    public void setHomeTempScore(final String homeTempScore) {
-        try {
-            Integer.parseInt(homeTempScore);
-            this.homeTempScore = homeTempScore;
-        } catch (IllegalArgumentException e) {
-            // Argument is not a number, so we keep the ""
-        }
     }
 }

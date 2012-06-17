@@ -56,18 +56,6 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
     }
 // -------------------------- OTHER METHODS --------------------------
 
-    public AllMatchDays getMatchDays() {
-        final AllMatchDays am = new AllMatchDays();
-        am.addAll(this.matchDays);
-        return am;
-    }
-
-    @SuppressWarnings({"SameParameterValue"})
-    private int getPixels(final int dipValue) {
-        final Resources r = getResources();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, r.getDisplayMetrics());
-    }
-
     private void addLine() {
         Log.v(TAG, "adding line");
         final View v = new View(this.context);
@@ -90,6 +78,18 @@ public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSe
         final Spinner.LayoutParams slp = new Spinner.LayoutParams(Spinner.LayoutParams.FILL_PARENT, Spinner.LayoutParams.WRAP_CONTENT);
         this.spinner.setLayoutParams(slp);
         this.spinner.setPrompt(getResources().getString(R.string.spielplan_spinner_label));
+    }
+
+    public AllMatchDays getMatchDays() {
+        final AllMatchDays am = new AllMatchDays();
+        am.addAll(this.matchDays);
+        return am;
+    }
+
+    @SuppressWarnings({"SameParameterValue"})
+    private int getPixels(final int dipValue) {
+        final Resources r = getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, r.getDisplayMetrics());
     }
 
     public void refresh() {

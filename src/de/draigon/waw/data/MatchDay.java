@@ -33,6 +33,7 @@ public class MatchDay implements Serializable {
     }
 // -------------------------- OTHER METHODS --------------------------
 
+    @SuppressWarnings({"UnusedDeclaration"})
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         this.matches = new ArrayList<Match>();
@@ -41,6 +42,7 @@ public class MatchDay implements Serializable {
         }
     }
 
+    @SuppressWarnings({"UnusedDeclaration"})
     private void writeObject(final ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
         out.write(this.matches.size());

@@ -11,6 +11,7 @@ import java.util.List;
 public class AllMatchDays extends ArrayList<MatchDay> implements Serializable {
 // -------------------------- OTHER METHODS --------------------------
 
+    @SuppressWarnings({"UnusedDeclaration"})
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         for (int i = 0; i < in.readInt(); ++i) {
@@ -36,6 +37,7 @@ public class AllMatchDays extends ArrayList<MatchDay> implements Serializable {
         }
     }
 
+    @SuppressWarnings({"UnusedDeclaration"})
     private void writeObject(final ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
         out.write(this.size());

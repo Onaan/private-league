@@ -28,6 +28,7 @@ import static de.draigon.waw.Constants.*;
  * Shows the score (temporary or final) of the match given as Intent-extra with the key
  * {@link de.draigon.waw.Constants}.MATCH.  Additionally the bets of all participants are shown.
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public class AllMatchBetsActivity extends Activity {
 // ------------------------------ FIELDS ------------------------------
 

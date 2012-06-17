@@ -16,12 +16,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Updater {
-    private final Context context;
-    private static final String TAG = Updater.class.getName();
+// ------------------------------ FIELDS ------------------------------
 
-    public Updater(Context context) {
+    private static final String TAG = Updater.class.getName();
+    private final Context context;
+// --------------------------- CONSTRUCTORS ---------------------------
+
+    public Updater(final Context context) {
         this.context = context;
     }
+// -------------------------- OTHER METHODS --------------------------
 
     @SuppressWarnings({"SameParameterValue", "WeakerAccess"})
     public void update(final String apkurl) {

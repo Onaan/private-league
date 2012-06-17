@@ -19,6 +19,7 @@ import java.net.URI;
 import static de.draigon.waw.Constants.*;
 
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class StartActivity extends Activity {
 // ------------------------------ FIELDS ------------------------------
 
@@ -57,25 +58,25 @@ public class StartActivity extends Activity {
     }
 // -------------------------- OTHER METHODS --------------------------
 
-    @SuppressWarnings({"unused", "UnusedParameters"})
+    @SuppressWarnings({"unused", "UnusedParameters", "UnusedDeclaration"})
     public void goToPlayingSchedule(final View view) {
         final Intent intent = new Intent(this, PlayingScheduleActivity.class);
         startActivity(intent);
     }
 
-    @SuppressWarnings({"unused", "UnusedParameters"})
+    @SuppressWarnings({"unused", "UnusedParameters", "UnusedDeclaration"})
     public void goToRanking(final View view) {
         final Intent intent = new Intent(this, RankingActivity.class);
         startActivity(intent);
     }
 
-    @SuppressWarnings({"unused", "UnusedParameters"})
+    @SuppressWarnings({"unused", "UnusedParameters", "UnusedDeclaration"})
     public void goToSetLoginData(final View view) {
         final Intent intent = new Intent(this, SetLoginDataActivity.class);
         startActivity(intent);
     }
 
-    @SuppressWarnings({"unused", "UnusedParameters"})
+    @SuppressWarnings({"unused", "UnusedParameters", "UnusedDeclaration"})
     public void goToTeamBet(final View view) {
         final Intent intent = new Intent(this, TeamBetActivity.class);
         startActivity(intent);

@@ -41,37 +41,6 @@ public class HttpUtil {
     }
 // -------------------------- OTHER METHODS --------------------------
 
-    private BetState isBetPlacementSuccessful(final Document xml) {
-        final NodeList betNode = xml.getElementsByTagName("bet");
-        return BetState.valueOf(betNode.item(0).getAttributes().getNamedItem("status").getTextContent());
-    }
-
-    public BetState uploadBet(final URI uri, final String username, final String password, final Match match) throws ConnectException {
-        final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
-        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
-        formparams.add(new BasicNameValuePair("tips", match.getId() + ":" + match.getHomeScoreBet() + ":" + match.getGuestScoreBet()));
-        final Document xml = doPost(uri, formparams);
-        return isBetPlacementSuccessful(xml);
-    }
-
-    public CharSequence[] getRankings(final URI uri, final String username, final String password) throws ConnectException {
-        final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
-        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
-        final Document xml = doPost(uri, formparams);
-        return parseStandings(xml);
-    }
-
-    private CharSequence[] parseStandings(final Document xml) {
-        final NodeList playerNodes = xml.getElementsByTagName("player");
-        final CharSequence[] scores = new CharSequence[playerNodes.getLength()];
-        for (int i = 0; i < playerNodes.getLength(); ++i) {
-            scores[i] = playerNodes.item(i).getAttributes().getNamedItem(Constants.USERNAME).getTextContent() + " " + playerNodes.item(i).getAttributes().getNamedItem("score").getTextContent() + " (" + playerNodes.item(i).getAttributes().getNamedItem("tempscore").getTextContent() + ")";
-        }
-        return scores;
-    }
-
     private Document doPost(final URI uri, final List<NameValuePair> params) throws ConnectException {
         params.add(login);
         final HttpClient client = new DefaultHttpClient();
@@ -115,6 +84,19 @@ public class HttpUtil {
         return this.matchDayParser.createSpielplan(xml, username);
     }
 
+    public CharSequence[] getRankings(final URI uri, final String username, final String password) throws ConnectException {
+        final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
+        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
+        final Document xml = doPost(uri, formparams);
+        return parseStandings(xml);
+    }
+
+    public String getServerAppVersion(final URI uri) throws ConnectException {
+        final Document result = doPost(uri, new ArrayList<NameValuePair>());
+        return result.getElementsByTagName("waw").item(0).getAttributes().getNamedItem("version").getTextContent();
+    }
+
     /**
      * Gets a single {@link Match} with the corresponding id.
      *
@@ -139,17 +121,32 @@ public class HttpUtil {
         return null;
     }
 
-    public String getServerAppVersion(final URI uri) throws ConnectException {
-        final Document result = doPost(uri, new ArrayList<NameValuePair>());
-        return result.getElementsByTagName("waw").item(0).getAttributes().getNamedItem("version").getTextContent();
-    }
-
     public TeamBet getTeamBetData(final URI uri, final String username, final String password) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
         formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
         final Document xml = doPost(uri, formparams);
         return parseTeamBetData(xml);
+    }
+
+    private BetState isBetPlacementSuccessful(final Document xml) {
+        final NodeList betNode = xml.getElementsByTagName("bet");
+        return BetState.valueOf(betNode.item(0).getAttributes().getNamedItem("status").getTextContent());
+    }
+
+    @SuppressWarnings({"UnusedParameters", "SameReturnValue"})
+    private boolean isTeamBettable(final Document xml) {
+        //TODO: Implement
+        return false;
+    }
+
+    private CharSequence[] parseStandings(final Document xml) {
+        final NodeList playerNodes = xml.getElementsByTagName("player");
+        final CharSequence[] scores = new CharSequence[playerNodes.getLength()];
+        for (int i = 0; i < playerNodes.getLength(); ++i) {
+            scores[i] = playerNodes.item(i).getAttributes().getNamedItem(Constants.USERNAME).getTextContent() + " " + playerNodes.item(i).getAttributes().getNamedItem("score").getTextContent() + " (" + playerNodes.item(i).getAttributes().getNamedItem("tempscore").getTextContent() + ")";
+        }
+        return scores;
     }
 
     private TeamBet parseTeamBetData(final Document xml) {
@@ -166,9 +163,12 @@ public class HttpUtil {
         return teamBet;
     }
 
-    @SuppressWarnings({"UnusedParameters"})
-    private boolean isTeamBettable(final Document xml) {
-        //TODO: Implement
-        return false;
+    public BetState uploadBet(final URI uri, final String username, final String password, final Match match) throws ConnectException {
+        final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
+        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
+        formparams.add(new BasicNameValuePair("tips", match.getId() + ":" + match.getHomeScoreBet() + ":" + match.getGuestScoreBet()));
+        final Document xml = doPost(uri, formparams);
+        return isBetPlacementSuccessful(xml);
     }
 }

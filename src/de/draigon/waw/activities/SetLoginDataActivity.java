@@ -14,6 +14,7 @@ import de.draigon.waw.R;
 import static de.draigon.waw.Constants.*;
 
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class SetLoginDataActivity extends Activity {
 // ------------------------------ FIELDS ------------------------------
 
@@ -64,7 +65,7 @@ public class SetLoginDataActivity extends Activity {
     }
 // -------------------------- OTHER METHODS --------------------------
 
-    @SuppressWarnings({"unused", "UnusedParameters"})
+    @SuppressWarnings({"unused", "UnusedParameters", "UnusedDeclaration"})
     public void saveLoginData(final View view) {
         final SharedPreferences.Editor e = this.prefs.edit();
         String getServer = null;

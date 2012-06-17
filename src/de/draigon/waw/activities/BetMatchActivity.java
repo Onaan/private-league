@@ -25,6 +25,7 @@ import static de.draigon.waw.Constants.*;
  * Allows the betting of a given Match.
  */
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class BetMatchActivity extends Activity {
 // ------------------------------ FIELDS ------------------------------
 
@@ -38,7 +39,6 @@ public class BetMatchActivity extends Activity {
     private TextView home;
     private ProgressDialog dialog;
 // ------------------- LIFECYCLE/CALLBACK METHODS -------------------
-
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -73,8 +73,6 @@ public class BetMatchActivity extends Activity {
             }
         };
         final EditText.OnFocusChangeListener ofcl = new EditText.OnFocusChangeListener() {
-
-
             @Override
             public void onFocusChange(final View view, final boolean hasFocus) {
                 if (hasFocus && !BetMatchActivity.this.autofocus) {
@@ -95,9 +93,10 @@ public class BetMatchActivity extends Activity {
         Log.v(TAG, "onResume called");
     }
 
+    @Override
     public void onPause() {
-        if (dialog != null) {
-            dialog.dismiss();
+        if (this.dialog != null) {
+            this.dialog.dismiss();
         }
         super.onPause();
     }
@@ -111,7 +110,7 @@ public class BetMatchActivity extends Activity {
     }
 // -------------------------- OTHER METHODS --------------------------
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "UnusedParameters", "UnusedDeclaration"})
     public void uploadBet(final View view) {
         if ("-".equals(this.homeScoreBet.getText().toString()) || "-".equals(this.guestScoreBet.getText().toString())) {
             Log.w(TAG, "illegal parameter, " + this.homeScoreBet.getText().toString() + ":" +
@@ -126,6 +125,7 @@ public class BetMatchActivity extends Activity {
     }
 // -------------------------- INNER CLASSES --------------------------
 
+    @SuppressWarnings({"UnusedDeclaration"})
     private class BetUploader extends AsyncTask<URI, Integer, BetState> {
         @Override
         protected BetState doInBackground(final URI... uris) {

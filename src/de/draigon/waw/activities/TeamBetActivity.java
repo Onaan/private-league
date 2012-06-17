@@ -18,6 +18,7 @@ import java.net.ConnectException;
 import java.net.URI;
 
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class TeamBetActivity extends Activity implements AdapterView.OnItemClickListener {
 // ------------------------------ FIELDS ------------------------------
 
@@ -39,7 +40,6 @@ public class TeamBetActivity extends Activity implements AdapterView.OnItemClick
         this.lv = (ListView) findViewById(R.id.lv_teambet);
         this.prefs = getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE);
         this.lv.setOnItemClickListener(this);
-
     }
 
     @Override

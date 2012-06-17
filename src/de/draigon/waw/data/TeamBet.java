@@ -20,10 +20,12 @@ public class TeamBet {
         return this.selected;
     }
 
+    @SuppressWarnings({"SameParameterValue"})
     public void setSelected(final CharSequence selected) {
         this.selected = selected;
     }
 
+    @SuppressWarnings({"UnusedDeclaration"})
     public boolean isBettable() {
         return this.bettable;
     }

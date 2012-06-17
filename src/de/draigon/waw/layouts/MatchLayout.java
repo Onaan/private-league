@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 public class MatchLayout extends TableLayout {
 // ------------------------------ FIELDS ------------------------------
 
+    @SuppressWarnings({"UnusedDeclaration"})
     public static final String TAG = MatchLayout.class.getName();
     private static final SimpleDateFormat sdf = new SimpleDateFormat("E',' dd.MM.yyyy HH:mm");
     private final Context context;
@@ -36,6 +37,14 @@ public class MatchLayout extends TableLayout {
     }
 // -------------------------- OTHER METHODS --------------------------
 
+    private TextView createMatchDate() {
+        final TextView dateView = new TextView(this.context);
+        dateView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        dateView.setText(sdf.format(this.match.getKickOff()));
+        dateView.setTextColor(getDateColor());
+        return dateView;
+    }
+
     private TableRow createTableRow(final String team, final String score, final String tempScore, final String bet) {
         final TableRow r = new TableRow(this.context);
         r.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
@@ -56,12 +65,12 @@ public class MatchLayout extends TableLayout {
         return r;
     }
 
-    private TextView createMatchDate() {
-        final TextView dateView = new TextView(this.context);
-        dateView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        dateView.setText(sdf.format(this.match.getKickOff()));
-        dateView.setTextColor(getDateColor());
-        return dateView;
+    private void drawView() {
+        final TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
+        this.setLayoutParams(tlp);
+        this.addView(createMatchDate());
+        this.addView(createTableRow(this.match.getHome(), this.match.getHomeScore(), this.match.getHomeTempScore(), this.match.getHomeScoreBet()));
+        this.addView(createTableRow(this.match.getGuest(), this.match.getGuestScore(), this.match.getGuestTempScore(), this.match.getGuestScoreBet()));
     }
 
     private int getDateColor() {
@@ -78,13 +87,5 @@ public class MatchLayout extends TableLayout {
         }
         // das Spiel laeuft bzw ist beendet
         return Color.YELLOW;
-    }
-
-    private void drawView() {
-        final TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
-        this.setLayoutParams(tlp);
-        this.addView(createMatchDate());
-        this.addView(createTableRow(this.match.getHome(), this.match.getHomeScore(), this.match.getHomeTempScore(), this.match.getHomeScoreBet()));
-        this.addView(createTableRow(this.match.getGuest(), this.match.getGuestScore(), this.match.getGuestTempScore(), this.match.getGuestScoreBet()));
     }
 }

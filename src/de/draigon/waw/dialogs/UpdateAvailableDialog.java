@@ -12,7 +12,9 @@ import de.draigon.waw.utils.Updater;
 public class UpdateAvailableDialog {
 // ------------------------------ FIELDS ------------------------------
 
+    @SuppressWarnings({"UnusedDeclaration"})
     private static final String TAG = UpdateAvailableDialog.class.getName();
+    @SuppressWarnings({"UnusedDeclaration"})
     private final Activity caller;
     private final AlertDialog dialog;
     private final Updater updater;
@@ -28,7 +30,7 @@ public class UpdateAvailableDialog {
                 .setPositiveButton(res.getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, final int id) {
-                        updater.update(Constants.APPLICATION_DOWNLOAD_LINK);
+                        UpdateAvailableDialog.this.updater.update(Constants.APPLICATION_DOWNLOAD_LINK);
                     }
                 })
                 .setNegativeButton(res.getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -44,5 +46,4 @@ public class UpdateAvailableDialog {
     public void show() {
         this.dialog.show();
     }
-
 }

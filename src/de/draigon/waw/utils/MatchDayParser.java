@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MatchDayParser {
+class MatchDayParser {
 // -------------------------- OTHER METHODS --------------------------
 
     public List<MatchDay> createSpielplan(final Document xml, final String username) {
@@ -24,17 +24,28 @@ public class MatchDayParser {
         return matchDays;
     }
 
-    private MatchDay parseRound(final Node round, final String username) {
-        final MatchDay spieltag = new MatchDay(round.getAttributes().getNamedItem("name").getTextContent());
-        final List<Match> matches = new ArrayList<Match>();
-        final NodeList childs = round.getChildNodes();
-        for (int i = 0; i < childs.getLength(); ++i) {
-            if (Node.ELEMENT_NODE == childs.item(i).getNodeType()) {
-                matches.add(this.parseMatch(childs.item(i), username));
+    private NamedNodeMap getBet(final Node matchNode, final String username) {
+        for (int i = 0; i < matchNode.getChildNodes().getLength(); ++i) {
+            if ("bets".equals(matchNode.getChildNodes().item(i).getNodeName())) {
+                for (int j = 0; j < matchNode.getChildNodes().item(i).getChildNodes().getLength(); ++j) {
+                    if ("bet".equals(matchNode.getChildNodes().item(i).getChildNodes().item(j).getNodeName())
+                            && username.equalsIgnoreCase(matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes().getNamedItem(Constants.USERNAME).getTextContent())
+                            ) {
+                        return matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes();
+                    }
+                }
             }
         }
-        spieltag.setMatches(matches);
-        return spieltag;
+        return null;
+    }
+
+    private NamedNodeMap getTeamAttributes(final Node matchNode, final String team) {
+        for (int i = 0; i < matchNode.getChildNodes().getLength(); ++i) {
+            if (matchNode.getChildNodes().item(i).getNodeName().equals(team)) {
+                return matchNode.getChildNodes().item(i).getAttributes();
+            }
+        }
+        return null;
     }
 
     private Match parseMatch(final Node matchNode, final String username) {
@@ -61,28 +72,17 @@ public class MatchDayParser {
         return match;
     }
 
-    private NamedNodeMap getBet(final Node matchNode, final String username) {
-        for (int i = 0; i < matchNode.getChildNodes().getLength(); ++i) {
-            if ("bets".equals(matchNode.getChildNodes().item(i).getNodeName())) {
-                for (int j = 0; j < matchNode.getChildNodes().item(i).getChildNodes().getLength(); ++j) {
-                    if ("bet".equals(matchNode.getChildNodes().item(i).getChildNodes().item(j).getNodeName())
-                            && username.equalsIgnoreCase(matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes().getNamedItem(Constants.USERNAME).getTextContent())
-                            ) {
-                        return matchNode.getChildNodes().item(i).getChildNodes().item(j).getAttributes();
-                    }
-                }
+    private MatchDay parseRound(final Node round, final String username) {
+        final MatchDay spieltag = new MatchDay(round.getAttributes().getNamedItem("name").getTextContent());
+        final List<Match> matches = new ArrayList<Match>();
+        final NodeList childs = round.getChildNodes();
+        for (int i = 0; i < childs.getLength(); ++i) {
+            if (Node.ELEMENT_NODE == childs.item(i).getNodeType()) {
+                matches.add(this.parseMatch(childs.item(i), username));
             }
         }
-        return null;
-    }
-
-    private NamedNodeMap getTeamAttributes(final Node matchNode, final String team) {
-        for (int i = 0; i < matchNode.getChildNodes().getLength(); ++i) {
-            if (matchNode.getChildNodes().item(i).getNodeName().equals(team)) {
-                return matchNode.getChildNodes().item(i).getAttributes();
-            }
-        }
-        return null;
+        spieltag.setMatches(matches);
+        return spieltag;
     }
 
     private void populateBetList(final Node matchNode, final Match match) {

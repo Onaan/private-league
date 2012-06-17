@@ -19,6 +19,7 @@ import java.net.URI;
 
 import static de.draigon.waw.Constants.*;
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class RankingActivity extends Activity {
 // ------------------------------ FIELDS ------------------------------
 
@@ -49,9 +50,10 @@ public class RankingActivity extends Activity {
         super.onResume();
     }
 
+    @Override
     public void onPause() {
-        if (dialog != null) {
-            dialog.dismiss();
+        if (this.dialog != null) {
+            this.dialog.dismiss();
         }
         super.onPause();
     }

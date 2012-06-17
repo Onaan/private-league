@@ -27,6 +27,7 @@ import java.util.List;
 import static de.draigon.waw.Constants.*;
 
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class PlayingScheduleActivity extends Activity implements View.OnClickListener {
 // ------------------------------ FIELDS ------------------------------
 
@@ -64,8 +65,6 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
         this.setContentView(this.scrollView);
         if (savedInstanceState == null) {
             refresh();
-
-
         } else {
             Log.d(TAG, "recreating playing schedule from savedInstanceState");
             //noinspection unchecked
@@ -83,12 +82,12 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     public void onResume() {
         super.onResume();
         Log.v(TAG, "onResume called");
-
     }
 
+    @Override
     public void onPause() {
-        if (dialog != null) {
-            dialog.dismiss();
+        if (this.dialog != null) {
+            this.dialog.dismiss();
         }
         super.onPause();
     }
@@ -150,7 +149,6 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
     private void refresh() {
         this.dialog = ProgressDialog.show(this, getResources().getString(R.string.progress_title), getResources().getString(R.string.progress_please_wait));
         new PlayingScheduleDownloader().execute(URI.create(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
-
     }
 // -------------------------- INNER CLASSES --------------------------
 
@@ -176,9 +174,7 @@ public class PlayingScheduleActivity extends Activity implements View.OnClickLis
             PlayingScheduleActivity.this.scrollView.addView(PlayingScheduleActivity.this.matchDayLayout);
             synchronized (PlayingScheduleActivity.this) {
                 PlayingScheduleActivity.this.dialog.dismiss();
-
             }
-
         }
     }
 }
