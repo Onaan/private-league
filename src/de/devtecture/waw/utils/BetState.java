@@ -1,4 +1,4 @@
-package de.draigon.waw.utils;
+package de.devtecture.waw.utils;
 
 public enum BetState {
     OK, LATE, UNKNOWN_USER, ILLEGAL_PARAMETER;

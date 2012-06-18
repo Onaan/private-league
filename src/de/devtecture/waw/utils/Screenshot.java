@@ -1,4 +1,4 @@
-package de.draigon.waw.utils;
+package de.devtecture.waw.utils;
 
 import android.graphics.Bitmap;
 import android.view.View;

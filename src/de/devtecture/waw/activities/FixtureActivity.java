@@ -1,4 +1,4 @@
-package de.draigon.waw.activities;
+package de.devtecture.waw.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -13,18 +13,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.Toast;
-import de.draigon.waw.R;
-import de.draigon.waw.data.Match;
-import de.draigon.waw.data.MatchDay;
-import de.draigon.waw.layouts.MatchDayLayout;
-import de.draigon.waw.layouts.MatchLayout;
-import de.draigon.waw.utils.HttpUtil;
+import de.devtecture.waw.R;
+import de.devtecture.waw.data.Match;
+import de.devtecture.waw.data.MatchDay;
+import de.devtecture.waw.layouts.MatchDayLayout;
+import de.devtecture.waw.layouts.MatchLayout;
+import de.devtecture.waw.utils.HttpUtil;
 
 import java.net.ConnectException;
 import java.net.URI;
 import java.util.List;
 
-import static de.draigon.waw.Constants.*;
+import static de.devtecture.waw.Constants.*;
 
 
 @SuppressWarnings({"UnusedDeclaration"})

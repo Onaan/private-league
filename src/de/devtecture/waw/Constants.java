@@ -1,4 +1,4 @@
-package de.draigon.waw;
+package de.devtecture.waw;
 
 public class Constants {
 // ------------------------------ FIELDS ------------------------------
@@ -26,4 +26,8 @@ public class Constants {
 
     public static final String DEFAULT_GET_SERVER = IT_NRW_GET_SERVER;
     public static final String DEFAULT_POST_SERVER = IT_NRW_POST_SERVER;
+    public static final String COMMAND_MATCHES = "matches";
+    public static final String COMMAND = "command";
+
+    public static final String COMMAND_VERSION = "version";
 }

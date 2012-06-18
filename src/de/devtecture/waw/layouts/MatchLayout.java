@@ -1,4 +1,4 @@
-package de.draigon.waw.layouts;
+package de.devtecture.waw.layouts;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import de.draigon.waw.data.Match;
+import de.devtecture.waw.data.Match;
 
 import java.text.SimpleDateFormat;
 

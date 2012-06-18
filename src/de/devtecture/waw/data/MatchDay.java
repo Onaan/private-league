@@ -1,4 +1,4 @@
-package de.draigon.waw.data;
+package de.devtecture.waw.data;
 
 
 import java.io.IOException;

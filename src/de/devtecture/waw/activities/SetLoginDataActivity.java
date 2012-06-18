@@ -1,4 +1,4 @@
-package de.draigon.waw.activities;
+package de.devtecture.waw.activities;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -9,9 +9,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-import de.draigon.waw.R;
+import de.devtecture.waw.R;
 
-import static de.draigon.waw.Constants.*;
+import static de.devtecture.waw.Constants.*;
 
 
 @SuppressWarnings({"UnusedDeclaration"})

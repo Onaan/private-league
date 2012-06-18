@@ -1,4 +1,4 @@
-package de.draigon.waw.data;
+package de.devtecture.waw.data;
 
 public class TeamBet {
 // ------------------------------ FIELDS ------------------------------

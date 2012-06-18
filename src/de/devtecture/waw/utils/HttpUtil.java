@@ -1,10 +1,10 @@
-package de.draigon.waw.utils;
+package de.devtecture.waw.utils;
 
 import android.util.Log;
-import de.draigon.waw.Constants;
-import de.draigon.waw.data.Match;
-import de.draigon.waw.data.MatchDay;
-import de.draigon.waw.data.TeamBet;
+import de.devtecture.waw.Constants;
+import de.devtecture.waw.data.Match;
+import de.devtecture.waw.data.MatchDay;
+import de.devtecture.waw.data.TeamBet;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -72,7 +72,7 @@ public class HttpUtil {
             Log.e(TAG, "Error getting data", e);
             throw new ConnectException("Error getting data");
         }
-        //Log.v(TAG, document);
+        Log.v(TAG, document);
         return xml;
     }
 
@@ -80,8 +80,10 @@ public class HttpUtil {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
         formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
+        formparams.add(new BasicNameValuePair(Constants.COMMAND, Constants.COMMAND_MATCHES));
         final Document xml = doPost(uri, formparams);
-        return this.matchDayParser.createSpielplan(xml, username);
+        final String screenName = xml.getElementsByTagName("waw").item(0).getAttributes().getNamedItem("username").getTextContent();
+        return this.matchDayParser.createSpielplan(xml, screenName);
     }
 
     public CharSequence[] getRankings(final URI uri, final String username, final String password) throws ConnectException {
@@ -93,6 +95,8 @@ public class HttpUtil {
     }
 
     public String getServerAppVersion(final URI uri) throws ConnectException {
+        final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+        formparams.add(new BasicNameValuePair(Constants.COMMAND, Constants.COMMAND_VERSION));
         final Document result = doPost(uri, new ArrayList<NameValuePair>());
         return result.getElementsByTagName("waw").item(0).getAttributes().getNamedItem("version").getTextContent();
     }

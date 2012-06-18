@@ -1,4 +1,4 @@
-package de.draigon.waw.activities;
+package de.devtecture.waw.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,14 +9,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import de.draigon.waw.R;
-import de.draigon.waw.dialogs.UpdateAvailableDialog;
-import de.draigon.waw.utils.HttpUtil;
+import de.devtecture.waw.R;
+import de.devtecture.waw.dialogs.UpdateAvailableDialog;
+import de.devtecture.waw.utils.HttpUtil;
 
 import java.net.ConnectException;
 import java.net.URI;
 
-import static de.draigon.waw.Constants.*;
+import static de.devtecture.waw.Constants.*;
 
 
 @SuppressWarnings({"UnusedDeclaration"})

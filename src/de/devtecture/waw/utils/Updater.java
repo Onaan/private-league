@@ -1,4 +1,4 @@
-package de.draigon.waw.utils;
+package de.devtecture.waw.utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
-import de.draigon.waw.R;
+import de.devtecture.waw.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
