@@ -1,4 +1,4 @@
-package de.devtecture.waw.activities;
+package de.draigon.waw.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,14 +9,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import de.devtecture.waw.R;
-import de.devtecture.waw.dialogs.UpdateAvailableDialog;
-import de.devtecture.waw.utils.HttpUtil;
+import de.draigon.waw.R;
+import de.draigon.waw.dialogs.UpdateAvailableDialog;
+import de.draigon.waw.tasks.GroupChecker;
+import de.draigon.waw.utils.HttpUtil;
 
 import java.net.ConnectException;
 import java.net.URI;
 
-import static de.devtecture.waw.Constants.*;
+import static de.draigon.waw.Constants.*;
 
 
 @SuppressWarnings({"UnusedDeclaration"})
@@ -40,6 +41,7 @@ public class StartActivity extends Activity {
         this.rankingButton = (Button) findViewById(R.id.b_startActivity_ranking);
         this.teamBetButton = (Button) findViewById(R.id.b_startActivity_special_bet);
         new UpdateChecker().execute(URI.create(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
+        new GroupChecker(this).execute(URI.create(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
     }
 
     @Override
@@ -89,6 +91,7 @@ public class StartActivity extends Activity {
             try {
                 return new HttpUtil().getServerAppVersion(uris[0]);
             } catch (ConnectException e) {
+                Log.e(TAG, "error determining server version", e);
                 return null;
             }
         }
@@ -103,8 +106,7 @@ public class StartActivity extends Activity {
             }
             Log.d(TAG, "Installed version :" + app_ver);
             Log.d(TAG, "Version on server: " + serverVersion);
-            final boolean newVersion = app_ver.compareTo(serverVersion) < 0;
-            if (newVersion) {
+            if (app_ver != null && app_ver.compareTo(serverVersion) < 0) {
                 new UpdateAvailableDialog(StartActivity.this).show();
             }
         }

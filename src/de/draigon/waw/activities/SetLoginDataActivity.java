@@ -1,4 +1,4 @@
-package de.devtecture.waw.activities;
+package de.draigon.waw.activities;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -9,9 +9,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-import de.devtecture.waw.R;
+import de.draigon.waw.R;
+import de.draigon.waw.tasks.GroupChecker;
 
-import static de.devtecture.waw.Constants.*;
+import java.net.URI;
+
+import static de.draigon.waw.Constants.*;
 
 
 @SuppressWarnings({"UnusedDeclaration"})
@@ -84,6 +87,7 @@ public class SetLoginDataActivity extends Activity {
         e.putString(PASSWORD, this.password.getText().toString());
         e.putBoolean(SHOW_PASSWORD, this.showPassword.isChecked());
         e.commit();
+        new GroupChecker(this).execute(URI.create(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
         Toast.makeText(getApplicationContext(), getResources().getText(R.string.set_login_data_save_message), Toast.LENGTH_SHORT).show();
         this.finish();
     }

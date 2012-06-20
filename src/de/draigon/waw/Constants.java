@@ -1,4 +1,4 @@
-package de.devtecture.waw;
+package de.draigon.waw;
 
 public class Constants {
 // ------------------------------ FIELDS ------------------------------
@@ -22,6 +22,7 @@ public class Constants {
     public static final String SHOW_PASSWORD = "showPassword";
     public static final String USERNAME = "username";
     public static final int REQUEST_MATCH = 1;
+    public static final String GROUPS = "groups";
 
 
     public static final String DEFAULT_GET_SERVER = IT_NRW_GET_SERVER;
@@ -30,4 +31,5 @@ public class Constants {
     public static final String COMMAND = "command";
 
     public static final String COMMAND_VERSION = "version";
+    public static final String COMMAND_GROUPS = "groups";
 }

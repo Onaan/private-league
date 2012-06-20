@@ -1,4 +1,4 @@
-package de.devtecture.waw.layouts;
+package de.draigon.waw.layouts;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,15 +11,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import de.devtecture.waw.R;
-import de.devtecture.waw.data.AllMatchDays;
-import de.devtecture.waw.data.Match;
-import de.devtecture.waw.data.MatchDay;
+import de.draigon.waw.R;
+import de.draigon.waw.data.AllMatchDays;
+import de.draigon.waw.data.Match;
+import de.draigon.waw.data.MatchDay;
 
 import java.util.List;
 
-import static de.devtecture.waw.Constants.MATCH_DAY;
-import static de.devtecture.waw.Constants.PREFS_NAME;
+import static de.draigon.waw.Constants.MATCH_DAY;
+import static de.draigon.waw.Constants.PREFS_NAME;
 
 
 public class MatchDayLayout extends LinearLayout implements AdapterView.OnItemSelectedListener {

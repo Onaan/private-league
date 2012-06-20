@@ -1,4 +1,4 @@
-package de.devtecture.waw.activities;
+package de.draigon.waw.activities;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -9,10 +9,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import de.devtecture.waw.Constants;
-import de.devtecture.waw.R;
-import de.devtecture.waw.data.TeamBet;
-import de.devtecture.waw.utils.HttpUtil;
+import de.draigon.waw.Constants;
+import de.draigon.waw.R;
+import de.draigon.waw.data.TeamBet;
+import de.draigon.waw.utils.HttpUtil;
 
 import java.net.ConnectException;
 import java.net.URI;

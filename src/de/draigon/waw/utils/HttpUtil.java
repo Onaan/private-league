@@ -1,10 +1,10 @@
-package de.devtecture.waw.utils;
+package de.draigon.waw.utils;
 
 import android.util.Log;
-import de.devtecture.waw.Constants;
-import de.devtecture.waw.data.Match;
-import de.devtecture.waw.data.MatchDay;
-import de.devtecture.waw.data.TeamBet;
+import de.draigon.waw.Constants;
+import de.draigon.waw.data.Match;
+import de.draigon.waw.data.MatchDay;
+import de.draigon.waw.data.TeamBet;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -97,7 +97,7 @@ public class HttpUtil {
     public String getServerAppVersion(final URI uri) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
         formparams.add(new BasicNameValuePair(Constants.COMMAND, Constants.COMMAND_VERSION));
-        final Document result = doPost(uri, new ArrayList<NameValuePair>());
+        final Document result = doPost(uri, formparams);
         return result.getElementsByTagName("waw").item(0).getAttributes().getNamedItem("version").getTextContent();
     }
 
@@ -174,5 +174,24 @@ public class HttpUtil {
         formparams.add(new BasicNameValuePair("tips", match.getId() + ":" + match.getHomeScoreBet() + ":" + match.getGuestScoreBet()));
         final Document xml = doPost(uri, formparams);
         return isBetPlacementSuccessful(xml);
+    }
+
+    public CharSequence[] getGroups(final URI uri, final String username, final String password) throws ConnectException {
+        final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
+        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
+        formparams.add(new BasicNameValuePair(Constants.COMMAND, Constants.COMMAND_GROUPS));
+        final Document xml = doPost(uri, formparams);
+        return parseGroups(xml);
+    }
+
+    private CharSequence[] parseGroups(Document xml) {
+        final NodeList groupNodes = xml.getElementsByTagName("group");
+        final CharSequence[] groups = new CharSequence[groupNodes.getLength()];
+        for (int i = 0; i < groupNodes.getLength(); ++i) {
+            groups[i] = groupNodes.item(i).getAttributes().getNamedItem("name").getTextContent();
+        }
+        Arrays.sort(groups);
+        return groups;
     }
 }

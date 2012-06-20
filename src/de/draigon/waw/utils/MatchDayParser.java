@@ -1,8 +1,8 @@
-package de.devtecture.waw.utils;
+package de.draigon.waw.utils;
 
-import de.devtecture.waw.Constants;
-import de.devtecture.waw.data.Match;
-import de.devtecture.waw.data.MatchDay;
+import de.draigon.waw.Constants;
+import de.draigon.waw.data.Match;
+import de.draigon.waw.data.MatchDay;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;

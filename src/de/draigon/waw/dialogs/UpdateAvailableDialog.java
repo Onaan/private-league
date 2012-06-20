@@ -1,12 +1,12 @@
-package de.devtecture.waw.dialogs;
+package de.draigon.waw.dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
-import de.devtecture.waw.Constants;
-import de.devtecture.waw.R;
-import de.devtecture.waw.utils.Updater;
+import de.draigon.waw.Constants;
+import de.draigon.waw.R;
+import de.draigon.waw.utils.Updater;
 
 
 public class UpdateAvailableDialog {

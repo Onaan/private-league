@@ -1,4 +1,4 @@
-package de.devtecture.waw.data;
+package de.draigon.waw.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;

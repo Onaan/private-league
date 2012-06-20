@@ -1,4 +1,4 @@
-package de.devtecture.waw.activities;
+package de.draigon.waw.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,19 +14,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.devtecture.waw.R;
-import de.devtecture.waw.data.Match;
-import de.devtecture.waw.utils.HttpUtil;
+import de.draigon.waw.R;
+import de.draigon.waw.data.Match;
+import de.draigon.waw.utils.HttpUtil;
 
 import java.net.ConnectException;
 import java.net.URI;
 
-import static de.devtecture.waw.Constants.*;
+import static de.draigon.waw.Constants.*;
 
 
 /**
  * Shows the score (temporary or final) of the match given as Intent-extra with the key
- * {@link de.devtecture.waw.Constants}.MATCH.  Additionally the bets of all participants are shown.
+ * {@link de.draigon.waw.Constants}.MATCH.  Additionally the bets of all participants are shown.
  */
 @SuppressWarnings({"UnusedDeclaration"})
 public class AllMatchBetsActivity extends Activity {
@@ -153,7 +153,7 @@ public class AllMatchBetsActivity extends Activity {
         private final String TAG = SingleMatchDownloader.class.getName();
 
         /**
-         * Fetches a single match asynchronously from {@link de.devtecture.waw.Constants}.GET_SERVER.
+         * Fetches a single match asynchronously from {@link de.draigon.waw.Constants}.GET_SERVER.
          *
          * @param matchId id of the match to fetch. Only the first argument is used
          * @return the match to fetch, or null if the match is not found, the parameter is null, or a ConnectException occurs while connecting to the server.
