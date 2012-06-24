@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.draigon.waw.R;
 import de.draigon.waw.data.Match;
+import de.draigon.waw.data.User;
 import de.draigon.waw.utils.HttpUtil;
 
 import java.net.ConnectException;
@@ -43,6 +44,7 @@ public class AllMatchBetsActivity extends Activity {
     private TextView guestScore;
     private TextView home;
     private TextView homeScore;
+    private User user;
 // ------------------- LIFECYCLE/CALLBACK METHODS -------------------
 
     /*
@@ -56,9 +58,11 @@ public class AllMatchBetsActivity extends Activity {
         if (savedInstanceState == null) {
             Log.d(TAG, "setting match to instance sent with intent");
             this.match = (Match) getIntent().getSerializableExtra(MATCH);
+            this.user = (User) getIntent().getSerializableExtra(USER);
         } else {
             Log.d(TAG, "recreating match instance from savedInstanceState");
             this.match = (Match) savedInstanceState.getSerializable(MATCH);
+            this.user = (User) savedInstanceState.getSerializable(USER);
         }
         this.prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         this.allBets = (ListView) findViewById(R.id.lv_all_match_bets);
@@ -85,12 +89,14 @@ public class AllMatchBetsActivity extends Activity {
     public void onSaveInstanceState(final Bundle savedInstanceState) {
         Log.d(TAG, "putting match instance into savedInstanceState");
         savedInstanceState.putSerializable(MATCH, this.match);
+        savedInstanceState.putSerializable(USER, this.user);
     }
 
     @Override
     public void finish() {
         final Intent intent = new Intent();
         intent.putExtra(MATCH, this.match);
+        intent.putExtra(USER, this.user);
         this.setResult(RESULT_OK, intent);
         super.finish();
     }
@@ -105,6 +111,7 @@ public class AllMatchBetsActivity extends Activity {
             final MenuInflater blowUp = getMenuInflater();
             blowUp.inflate(R.menu.refresh_data, menu);
             Log.v(TAG, " match is running, showing menu");
+            menu.removeItem(R.id.menu_switch_group_multi);
             return true;
         }
         Log.v(TAG, " match is not running, not showing menu");
@@ -170,8 +177,7 @@ public class AllMatchBetsActivity extends Activity {
                 final Match result = new HttpUtil().getSingleMatch(
                         URI.create(AllMatchBetsActivity.this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)),
                         matchId[0],
-                        AllMatchBetsActivity.this.prefs.getString(USERNAME, ""),
-                        AllMatchBetsActivity.this.prefs.getString(PASSWORD, ""));
+                        AllMatchBetsActivity.this.user);
                 if (result != null) {
                     Log.v(this.TAG, "returning Match with Id: " + result.getId());
                 } else {

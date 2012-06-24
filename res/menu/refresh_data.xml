@@ -7,9 +7,9 @@
           android:icon="@drawable/ic_menu_allfriends"
           android:id="@+id/menu_switch_group_multi"/>
 
-    <item android:title="@string/menu_switch_group"
+    <!--item android:title="@string/menu_switch_group"
           android:icon="@drawable/ic_menu_cc"
-          android:id="@+id/menu_switch_group"/>
+          android:id="@+id/menu_switch_group"/-->
 
     <item android:title="@string/menu_refresh_data"
           android:icon="@drawable/ic_menu_refresh"

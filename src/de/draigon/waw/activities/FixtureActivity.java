@@ -16,6 +16,7 @@ import android.widget.Toast;
 import de.draigon.waw.R;
 import de.draigon.waw.data.Match;
 import de.draigon.waw.data.MatchDay;
+import de.draigon.waw.data.User;
 import de.draigon.waw.layouts.MatchDayLayout;
 import de.draigon.waw.layouts.MatchLayout;
 import de.draigon.waw.utils.HttpUtil;
@@ -37,6 +38,7 @@ public class FixtureActivity extends Activity implements View.OnClickListener {
     private ScrollView scrollView;
     private SharedPreferences prefs;
     private ProgressDialog dialog;
+    private User user;
 // ------------------------ INTERFACE METHODS ------------------------
 // --------------------- Interface OnClickListener ---------------------
 
@@ -50,6 +52,7 @@ public class FixtureActivity extends Activity implements View.OnClickListener {
             intent = new Intent(this, AllMatchBetsActivity.class);
         }
         intent.putExtra(MATCH, match);
+        intent.putExtra(USER, this.user);
         startActivityForResult(intent, REQUEST_MATCH);
     }
 // ------------------- LIFECYCLE/CALLBACK METHODS -------------------
@@ -64,14 +67,17 @@ public class FixtureActivity extends Activity implements View.OnClickListener {
         this.scrollView.setLayoutParams(scrollViewLayoutParams);
         this.setContentView(this.scrollView);
         if (savedInstanceState == null) {
+            this.user = (User) getIntent().getSerializableExtra(USER);
             refresh();
         } else {
             Log.d(TAG, "recreating playing schedule from savedInstanceState");
             //noinspection unchecked
+            this.user = (User) savedInstanceState.getSerializable(USER);
             this.matchDayLayout = new MatchDayLayout(this, this, (List<MatchDay>) savedInstanceState.getSerializable(MATCH_DAYS));
             if (this.matchDayLayout.getMatchDays() != null) { //TODO: herausfinden warum das hier manchmal null ist, kann in der theorie nicht vorkommen... Das Problem tritt auf, wenn man nach dem starten das tel schnell dreht.
                 this.scrollView.removeAllViews();
                 this.scrollView.addView(this.matchDayLayout);
+                refreshTitle();
             } else {
                 refresh();
             }
@@ -97,6 +103,7 @@ public class FixtureActivity extends Activity implements View.OnClickListener {
         if (this.matchDayLayout != null && this.matchDayLayout.getMatchDays() != null) {
             savedInstanceState.putSerializable(MATCH_DAYS, this.matchDayLayout.getMatchDays());
         }
+        savedInstanceState.putSerializable(USER, this.user);
     }
 
     @Override
@@ -108,6 +115,7 @@ public class FixtureActivity extends Activity implements View.OnClickListener {
         if (requestCode == REQUEST_MATCH) {
             if (resultCode == RESULT_OK) {
                 final Match match = (Match) intent.getSerializableExtra(MATCH);
+                this.user = (User) intent.getSerializableExtra(USER);
                 Log.d(TAG, "recieved result, switching match with id: " + match.getId());
                 this.matchDayLayout.getMatchDays().updateMatch(match);
                 this.matchDayLayout.refresh();
@@ -125,12 +133,19 @@ public class FixtureActivity extends Activity implements View.OnClickListener {
     public boolean onCreateOptionsMenu(final Menu menu) {
         final MenuInflater blowUp = getMenuInflater();
         blowUp.inflate(R.menu.refresh_data, menu);
+        if (this.user.getNumberOfGroups() < 2) {
+            menu.removeItem(R.id.menu_switch_group_multi);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
+        // Handle item selection
         switch (item.getItemId()) {
+            case R.id.menu_switch_group_multi:
+                final String newGroup = this.user.switchGroup();
+                Toast.makeText(this, getResources().getString(R.string.group_switched_to) + " " + newGroup, Toast.LENGTH_SHORT).show();
             case R.id.menu_refresh_data:
                 refresh();
                 break;
@@ -145,13 +160,21 @@ public class FixtureActivity extends Activity implements View.OnClickListener {
         this.dialog = ProgressDialog.show(this, getResources().getString(R.string.progress_title), getResources().getString(R.string.progress_please_wait));
         new PlayingScheduleDownloader().execute(URI.create(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
     }
+
+    private void refreshTitle() {
+        setTitle(this.user.getActiveGroup());
+    }
+
+    private void renameActivity() {
+        setTitle(this.user.getActiveGroup());
+    }
 // -------------------------- INNER CLASSES --------------------------
 
     private class PlayingScheduleDownloader extends AsyncTask<URI, Integer, List<MatchDay>> {
         @Override
         protected List<MatchDay> doInBackground(final URI... uris) {
             try {
-                return new HttpUtil().getPlayingSchedule(uris[0], FixtureActivity.this.prefs.getString(USERNAME, ""), FixtureActivity.this.prefs.getString(PASSWORD, ""));
+                return new HttpUtil().getPlayingSchedule(uris[0], FixtureActivity.this.user);
             } catch (ConnectException e) {
                 return null;
             }
@@ -167,6 +190,7 @@ public class FixtureActivity extends Activity implements View.OnClickListener {
             FixtureActivity.this.matchDayLayout = new MatchDayLayout(FixtureActivity.this, FixtureActivity.this, matchDays);
             FixtureActivity.this.scrollView.removeAllViews();
             FixtureActivity.this.scrollView.addView(FixtureActivity.this.matchDayLayout);
+            renameActivity();
             synchronized (FixtureActivity.this) {
                 FixtureActivity.this.dialog.dismiss();
             }

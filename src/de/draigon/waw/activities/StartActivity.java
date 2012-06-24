@@ -10,8 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import de.draigon.waw.R;
+import de.draigon.waw.data.User;
 import de.draigon.waw.dialogs.UpdateAvailableDialog;
-import de.draigon.waw.tasks.GroupChecker;
 import de.draigon.waw.utils.HttpUtil;
 
 import java.net.ConnectException;
@@ -41,7 +41,6 @@ public class StartActivity extends Activity {
         this.rankingButton = (Button) findViewById(R.id.b_startActivity_ranking);
         this.teamBetButton = (Button) findViewById(R.id.b_startActivity_special_bet);
         new UpdateChecker().execute(URI.create(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
-        new GroupChecker(this).execute(URI.create(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
     }
 
     @Override
@@ -60,28 +59,31 @@ public class StartActivity extends Activity {
     }
 // -------------------------- OTHER METHODS --------------------------
 
+    private Intent createUserIntent(final Class clazz) {
+        final User user = new User(this.prefs.getString(USERNAME, ""), this.prefs.getString(PASSWORD, ""));
+        final Intent intent = new Intent(this, clazz);
+        intent.putExtra(USER, user);
+        return intent;
+    }
+
     @SuppressWarnings({"unused", "UnusedParameters", "UnusedDeclaration"})
     public void goToPlayingSchedule(final View view) {
-        final Intent intent = new Intent(this, FixtureActivity.class);
-        startActivity(intent);
+        startActivity(createUserIntent(FixtureActivity.class));
     }
 
     @SuppressWarnings({"unused", "UnusedParameters", "UnusedDeclaration"})
     public void goToRanking(final View view) {
-        final Intent intent = new Intent(this, RankingActivity.class);
-        startActivity(intent);
+        startActivity(createUserIntent(RankingActivity.class));
     }
 
     @SuppressWarnings({"unused", "UnusedParameters", "UnusedDeclaration"})
     public void goToSetLoginData(final View view) {
-        final Intent intent = new Intent(this, SetLoginDataActivity.class);
-        startActivity(intent);
+        startActivity(createUserIntent(SetLoginDataActivity.class));
     }
 
     @SuppressWarnings({"unused", "UnusedParameters", "UnusedDeclaration"})
     public void goToTeamBet(final View view) {
-        final Intent intent = new Intent(this, TeamBetActivity.class);
-        startActivity(intent);
+        startActivity(createUserIntent(TeamBetActivity.class));
     }
 // -------------------------- INNER CLASSES --------------------------
 

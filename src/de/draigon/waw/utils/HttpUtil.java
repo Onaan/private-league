@@ -1,10 +1,10 @@
 package de.draigon.waw.utils;
 
 import android.util.Log;
-import de.draigon.waw.Constants;
 import de.draigon.waw.data.Match;
 import de.draigon.waw.data.MatchDay;
 import de.draigon.waw.data.TeamBet;
+import de.draigon.waw.data.User;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -26,13 +26,15 @@ import java.net.ConnectException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+
+import static de.draigon.waw.Constants.*;
 
 
 public class HttpUtil {
 // ------------------------------ FIELDS ------------------------------
 
-    private static final BasicNameValuePair login = new BasicNameValuePair("login", "true");
     private static final String TAG = HttpUtil.class.getName();
     private final MatchDayParser matchDayParser = new MatchDayParser();
 // --------------------------- CONSTRUCTORS ---------------------------
@@ -42,7 +44,7 @@ public class HttpUtil {
 // -------------------------- OTHER METHODS --------------------------
 
     private Document doPost(final URI uri, final List<NameValuePair> params) throws ConnectException {
-        params.add(login);
+        Log.v(TAG, params.toString());
         final HttpClient client = new DefaultHttpClient();
         final HttpPost post = new HttpPost(uri);
         final String document;
@@ -57,6 +59,7 @@ public class HttpUtil {
             Log.e(TAG, "Error getting data", e);
             throw new RuntimeException(e);
         }
+        Log.v(TAG, document);
         final Document xml;
         try {
             xml = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
@@ -72,31 +75,44 @@ public class HttpUtil {
             Log.e(TAG, "Error getting data", e);
             throw new ConnectException("Error getting data");
         }
-        Log.v(TAG, document);
         return xml;
     }
 
-    public List<MatchDay> getPlayingSchedule(final URI uri, final String username, final String password) throws ConnectException {
+    public CharSequence[] getGroups(final URI uri, final String username, final String password) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
-        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
-        formparams.add(new BasicNameValuePair(Constants.COMMAND, Constants.COMMAND_MATCHES));
+        formparams.add(new BasicNameValuePair(USERNAME, username));
+        formparams.add(new BasicNameValuePair(PASSWORD, password));
+        formparams.add(new BasicNameValuePair(COMMAND, COMMAND_GROUPS));
+        final Document xml = doPost(uri, formparams);
+        return parseGroups(xml);
+    }
+
+    public List<MatchDay> getPlayingSchedule(final URI uri, final User user) throws ConnectException {
+        final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+        formparams.add(new BasicNameValuePair(USERNAME, user.getUserName()));
+        formparams.add(new BasicNameValuePair(PASSWORD, user.getPassword()));
+        formparams.add(new BasicNameValuePair(GROUP, user.getActiveGroup()));
+        formparams.add(new BasicNameValuePair(COMMAND, COMMAND_MATCHES + ":" + COMMAND_GROUPS));
         final Document xml = doPost(uri, formparams);
         final String screenName = xml.getElementsByTagName("waw").item(0).getAttributes().getNamedItem("username").getTextContent();
+        updateUserGroups(xml, user);
         return this.matchDayParser.createSpielplan(xml, screenName);
     }
 
-    public CharSequence[] getRankings(final URI uri, final String username, final String password) throws ConnectException {
+    public CharSequence[] getRankings(final URI uri, final User user) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
-        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
+        formparams.add(new BasicNameValuePair(USERNAME, user.getUserName()));
+        formparams.add(new BasicNameValuePair(PASSWORD, user.getPassword()));
+        formparams.add(new BasicNameValuePair(GROUP, user.getActiveGroup()));
+        formparams.add(new BasicNameValuePair(COMMAND, COMMAND_HIGHSCORES + ":" + COMMAND_GROUPS));
         final Document xml = doPost(uri, formparams);
+        updateUserGroups(xml, user);
         return parseStandings(xml);
     }
 
     public String getServerAppVersion(final URI uri) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair(Constants.COMMAND, Constants.COMMAND_VERSION));
+        formparams.add(new BasicNameValuePair(COMMAND, COMMAND_VERSION));
         final Document result = doPost(uri, formparams);
         return result.getElementsByTagName("waw").item(0).getAttributes().getNamedItem("version").getTextContent();
     }
@@ -104,16 +120,14 @@ public class HttpUtil {
     /**
      * Gets a single {@link Match} with the corresponding id.
      *
-     * @param uri      URI of the server
-     * @param matchId  Id of the match to get
-     * @param username Users name on the server
-     * @param password Users password on the server
+     * @param uri     URI of the server
+     * @param matchId Id of the match to get
      * @return The corresponding match, or null if no match is found
      * @throws ConnectException If there is no internet or no server available
      */
-    public Match getSingleMatch(final URI uri, final String matchId, final String username, final String password) throws ConnectException {
+    public Match getSingleMatch(final URI uri, final String matchId, final User user) throws ConnectException {
         if (matchId != null) {
-            final List<MatchDay> allMatches = getPlayingSchedule(uri, username, password);
+            final List<MatchDay> allMatches = getPlayingSchedule(uri, user);
             for (final MatchDay day : allMatches) {
                 for (final Match match : day.getMatches()) {
                     if (matchId.equals(match.getId())) {
@@ -127,8 +141,8 @@ public class HttpUtil {
 
     public TeamBet getTeamBetData(final URI uri, final String username, final String password) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
-        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
+        formparams.add(new BasicNameValuePair(USERNAME, username));
+        formparams.add(new BasicNameValuePair(PASSWORD, password));
         final Document xml = doPost(uri, formparams);
         return parseTeamBetData(xml);
     }
@@ -144,11 +158,21 @@ public class HttpUtil {
         return false;
     }
 
+    private CharSequence[] parseGroups(final Document xml) {
+        final NodeList groupNodes = xml.getElementsByTagName("group");
+        final CharSequence[] groups = new CharSequence[groupNodes.getLength()];
+        for (int i = 0; i < groupNodes.getLength(); ++i) {
+            groups[i] = groupNodes.item(i).getAttributes().getNamedItem("name").getTextContent();
+        }
+        Arrays.sort(groups);
+        return groups;
+    }
+
     private CharSequence[] parseStandings(final Document xml) {
         final NodeList playerNodes = xml.getElementsByTagName("player");
         final CharSequence[] scores = new CharSequence[playerNodes.getLength()];
         for (int i = 0; i < playerNodes.getLength(); ++i) {
-            scores[i] = playerNodes.item(i).getAttributes().getNamedItem(Constants.USERNAME).getTextContent() + " " + playerNodes.item(i).getAttributes().getNamedItem("score").getTextContent() + " (" + playerNodes.item(i).getAttributes().getNamedItem("tempscore").getTextContent() + ")";
+            scores[i] = playerNodes.item(i).getAttributes().getNamedItem(USERNAME).getTextContent() + " " + playerNodes.item(i).getAttributes().getNamedItem("score").getTextContent() + " (" + playerNodes.item(i).getAttributes().getNamedItem("tempscore").getTextContent() + ")";
         }
         return scores;
     }
@@ -167,31 +191,23 @@ public class HttpUtil {
         return teamBet;
     }
 
-    public BetState uploadBet(final URI uri, final String username, final String password, final Match match) throws ConnectException {
+    private void updateUserGroups(final Document xml, final User user) {
+        final String activeGroup = xml.getElementsByTagName("waw").item(0).getAttributes().getNamedItem("selectedGroup").getTextContent();
+        final NodeList groupNodes = xml.getElementsByTagName("group");
+        final Collection<String> groups = new ArrayList<String>();
+        for (int i = 0; i < groupNodes.getLength(); ++i) {
+            groups.add(groupNodes.item(i).getAttributes().getNamedItem("name").getTextContent());
+        }
+        user.setNewGroups(groups);
+        user.setActiveGroup(activeGroup);
+    }
+
+    public BetState uploadBet(final URI uri, final User user, final Match match) throws ConnectException {
         final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
-        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
+        formparams.add(new BasicNameValuePair(USERNAME, user.getUserName()));
+        formparams.add(new BasicNameValuePair(PASSWORD, user.getPassword()));
         formparams.add(new BasicNameValuePair("tips", match.getId() + ":" + match.getHomeScoreBet() + ":" + match.getGuestScoreBet()));
         final Document xml = doPost(uri, formparams);
         return isBetPlacementSuccessful(xml);
-    }
-
-    public CharSequence[] getGroups(final URI uri, final String username, final String password) throws ConnectException {
-        final List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        formparams.add(new BasicNameValuePair(Constants.USERNAME, username));
-        formparams.add(new BasicNameValuePair(Constants.PASSWORD, password));
-        formparams.add(new BasicNameValuePair(Constants.COMMAND, Constants.COMMAND_GROUPS));
-        final Document xml = doPost(uri, formparams);
-        return parseGroups(xml);
-    }
-
-    private CharSequence[] parseGroups(Document xml) {
-        final NodeList groupNodes = xml.getElementsByTagName("group");
-        final CharSequence[] groups = new CharSequence[groupNodes.getLength()];
-        for (int i = 0; i < groupNodes.getLength(); ++i) {
-            groups[i] = groupNodes.item(i).getAttributes().getNamedItem("name").getTextContent();
-        }
-        Arrays.sort(groups);
-        return groups;
     }
 }

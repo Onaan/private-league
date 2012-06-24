@@ -23,6 +23,7 @@ public class Constants {
     public static final String USERNAME = "username";
     public static final int REQUEST_MATCH = 1;
     public static final String GROUPS = "groups";
+    public static final String USER = "user";
 
 
     public static final String DEFAULT_GET_SERVER = IT_NRW_GET_SERVER;
@@ -32,4 +33,6 @@ public class Constants {
 
     public static final String COMMAND_VERSION = "version";
     public static final String COMMAND_GROUPS = "groups";
+    public static final String COMMAND_HIGHSCORES = "highscores";
+    public static final String GROUP = "group";
 }

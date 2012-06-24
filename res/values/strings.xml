@@ -43,6 +43,7 @@
     <string name="progress_please_wait">bitte warten...</string>
     <string name="menu_switch_group">Gruppe wechseln</string>
     <string name="groups_refreshed">Gruppen aktualisiert</string>
+    <string name="group_switched_to">Aktuelle Gruppe:</string>
 
     <!--<string name=""></string>
    <string name=""></string>-->

@@ -10,9 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 import de.draigon.waw.R;
-import de.draigon.waw.tasks.GroupChecker;
-
-import java.net.URI;
+import de.draigon.waw.data.User;
 
 import static de.draigon.waw.Constants.*;
 
@@ -25,6 +23,7 @@ public class SetLoginDataActivity extends Activity {
     private EditText password;
     private EditText username;
     private RadioGroup rg;
+    private User user;
     private SharedPreferences prefs;
 // ------------------- LIFECYCLE/CALLBACK METHODS -------------------
 
@@ -39,19 +38,19 @@ public class SetLoginDataActivity extends Activity {
         this.rg = (RadioGroup) findViewById(R.id.rg_set_login_data_server_select);
         this.prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         if (savedInstanceState == null) {
-            this.username.setText(this.prefs.getString(USERNAME, ""));
-            this.password.setText(this.prefs.getString(PASSWORD, ""));
+            this.user = (User) getIntent().getSerializableExtra(USER);
             this.showPassword.setChecked(this.prefs.getBoolean(SHOW_PASSWORD, false));
             if (this.prefs.getString(GET_SERVER, "").equals(DP_GET_SERVER)) {
                 this.rg.check(R.id.rb_set_login_data_server_select_2);
             }
         } else {
-            this.username.setText(savedInstanceState.getString(USERNAME));
-            this.password.setText(savedInstanceState.getString(PASSWORD));
+            this.user = (User) savedInstanceState.getSerializable(USER);
             this.showPassword.setChecked(savedInstanceState.getBoolean(SHOW_PASSWORD));
             this.rg.check(savedInstanceState.getInt(SELECTED_SERVER));
             togglePasswordVisibility(this.showPassword);
         }
+        this.username.setText(this.user.getUserName());
+        this.password.setText(this.user.getPassword());
     }
 
     @Override
@@ -61,8 +60,7 @@ public class SetLoginDataActivity extends Activity {
 
     @Override
     public void onSaveInstanceState(final Bundle savedInstanceState) {
-        savedInstanceState.putString(USERNAME, this.username.getText().toString());
-        savedInstanceState.putString(PASSWORD, this.password.getText().toString());
+        savedInstanceState.putSerializable(USER, this.user);
         savedInstanceState.putBoolean(SHOW_PASSWORD, this.showPassword.isChecked());
         savedInstanceState.putInt(SELECTED_SERVER, this.rg.getCheckedRadioButtonId());
     }
@@ -87,7 +85,6 @@ public class SetLoginDataActivity extends Activity {
         e.putString(PASSWORD, this.password.getText().toString());
         e.putBoolean(SHOW_PASSWORD, this.showPassword.isChecked());
         e.commit();
-        new GroupChecker(this).execute(URI.create(this.prefs.getString(GET_SERVER, DEFAULT_GET_SERVER)));
         Toast.makeText(getApplicationContext(), getResources().getText(R.string.set_login_data_save_message), Toast.LENGTH_SHORT).show();
         this.finish();
     }

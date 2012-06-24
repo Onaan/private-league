@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.draigon.waw.R;
 import de.draigon.waw.data.Match;
+import de.draigon.waw.data.User;
 import de.draigon.waw.utils.BetState;
 import de.draigon.waw.utils.HttpUtil;
 
@@ -38,6 +39,7 @@ public class BetMatchActivity extends Activity {
     private TextView guest;
     private TextView home;
     private ProgressDialog dialog;
+    private User user;
 // ------------------- LIFECYCLE/CALLBACK METHODS -------------------
 
     @Override
@@ -53,11 +55,13 @@ public class BetMatchActivity extends Activity {
         if (savedInstanceState == null) {
             Log.d(TAG, "setting match to instance sent with intent");
             this.match = (Match) getIntent().getSerializableExtra(MATCH);
+            this.user = (User) getIntent().getSerializableExtra(USER);
             this.homeScoreBet.setText(this.match.getHomeScoreBet());
             this.guestScoreBet.setText(this.match.getGuestScoreBet());
         } else {
             Log.d(TAG, "recreating match instance and temporary bet from savedInstanceState");
             this.match = (Match) savedInstanceState.getSerializable(MATCH);
+            this.user = (User) savedInstanceState.getSerializable(USER);
             this.homeScoreBet.setText(savedInstanceState.getString(HOME_SCORE_BET));
             this.guestScoreBet.setText(savedInstanceState.getString(GUEST_SCORE_BET));
         }
@@ -105,6 +109,7 @@ public class BetMatchActivity extends Activity {
     public void onSaveInstanceState(final Bundle savedInstanceState) {
         Log.d(TAG, "putting match instance and temporary bet into savedInstanceState");
         savedInstanceState.putSerializable(MATCH, this.match);
+        savedInstanceState.putSerializable(USER, this.user);
         savedInstanceState.putString(HOME_SCORE_BET, this.homeScoreBet.getText().toString());
         savedInstanceState.putSerializable(GUEST_SCORE_BET, this.guestScoreBet.getText().toString());
     }
@@ -132,7 +137,7 @@ public class BetMatchActivity extends Activity {
             BetMatchActivity.this.match.setHomeScoreBet(BetMatchActivity.this.homeScoreBet.getText().toString());
             BetMatchActivity.this.match.setGuestScoreBet(BetMatchActivity.this.guestScoreBet.getText().toString());
             try {
-                return new HttpUtil().uploadBet(uris[0], BetMatchActivity.this.prefs.getString(USERNAME, ""), BetMatchActivity.this.prefs.getString(PASSWORD, ""), BetMatchActivity.this.match);
+                return new HttpUtil().uploadBet(uris[0], BetMatchActivity.this.user, BetMatchActivity.this.match);
             } catch (ConnectException e) {
                 return null;
             }
@@ -171,6 +176,7 @@ public class BetMatchActivity extends Activity {
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             final Intent data = new Intent();
             data.putExtra(MATCH, BetMatchActivity.this.match);
+            data.putExtra(USER, BetMatchActivity.this.user);
             setResult(result, data);
             BetMatchActivity.this.finish();
         }
